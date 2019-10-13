@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<title> Sensory interface </title>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="app.js"></script>
+</head>
+
+<body onload="getDataFromURL()">
+    <div class="container-fluid">
+        <h2>Sensory interface</h2>
+
+        <h3>Data</h3>
+        Data in tab-delimited CSV format:<br>
+        <textarea id="dataInput">1	2	3
+4	5	6</textarea>
+        <br>
+        <button onclick="processData()">Process</button>
+        <br>
+        <br>
+        <h3>Options</h3>
+
+        Value range:<br>
+        <div class="container-fluid">
+            Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
+            10.<br>
+            <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)" checked>Auto<br>
+            <input type="radio" id="manualOption" name="value_range" value="manual" onclick="onRadioChange(this)">Manual<br>
+            Min value:
+            <input type="number" name="Minimum value" id="minValue" value="" disabled>
+            <br>
+            Max value:
+            <input type="number" name="Maximum value" id="maxValue" value="" disabled>
+
+            <br>
+        </div>
+        <div style="display: none;" aria-hidden="true">
+            Sounds:
+            <select>
+                <option value="synthetic">Synthetic sound waves</option>
+                <option value="piano">Piano</option>
+                <option value="opera">Opera singer</option>
+                <option value="lalala">Lalala</option>
+                <option value="motorcycle">Motorcycle</option>
+                <option value="laughter">People laughing</option>
+                <option value="farts">Farts</option>
+                <option value="arnold">Arnold</option>
+            </select>
+            <br>
+        </div>
+        <br>
+        <button id="updateButton" onclick="processData()" disabled>Update</button>
+        <br>
+        <br>
+
+        <div id="tableContainer"></div>
+    </div>
+</body>
+
+</html>
