@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
-<title> Sensory interface </title>
 
 <head>
+    <meta charset="utf-8">
+    <title> Sensory interface </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -27,8 +28,10 @@
         <div class="container-fluid">
             Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
             10.<br>
-            <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)" checked>Auto<br>
-            <input type="radio" id="manualOption" name="value_range" value="manual" onclick="onRadioChange(this)">Manual<br>
+            <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)"
+                checked>Auto<br>
+            <input type="radio" id="manualOption" name="value_range" value="manual"
+                onclick="onRadioChange(this)">Manual<br>
             Min value:
             <input type="number" name="Minimum value" id="minValue" value="" disabled>
             <br>
@@ -55,6 +58,7 @@
         <button id="updateButton" onclick="processData()" disabled>Update</button>
         <br>
         <br>
+        <a href="about.html">About</a>
 
         <div id="tableContainer"></div>
     </div>
