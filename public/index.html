@@ -14,11 +14,9 @@
         <h2>Sensory interface</h2>
 
         <h3>Data</h3>
-        Data in tab-delimited CSV format:<br>
+        <label for="dataInput">Data in tab-delimited CSV format:</label><br>
         <textarea id="dataInput" onblur="findMinAndMaxValues()">1	2	3
 4	5	6</textarea>
-        <br>
-        <br>
         <br>
         <h3>Options</h3>
 
@@ -26,16 +24,31 @@
         <div class="container-fluid">
             Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
             10.<br>
-            <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)"
-                checked>Auto<br>
-            <input type="radio" id="manualOption" name="value_range" value="manual"
-                onclick="onRadioChange(this)">Manual<br>
-            Min value:
-            <input type="number" name="Minimum value" id="minValue" value="" disabled>
-            <br>
-            Max value:
-            <input type="number" name="Maximum value" id="maxValue" value="" disabled>
-
+            <fieldset>
+                <legend>Mode</legend>
+                <div>
+                    <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)"
+                        checked>Auto<br>
+                    <label for="autoOption">Auto</label>
+                </div>
+                <div>
+                    <input type="radio" id="manualOption" name="value_range" value="manual"
+                        onclick="onRadioChange(this)">Manual<br>
+                    <label for="manualOption">Manual</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Value range</legend>
+                <div>
+                    <label for="minValue">Min value:</label>
+                    <input type="number" name="Minimum value" id="minValue" value="" disabled>
+                </div>
+                <br>
+                <div>
+                    <label for="maxValue">Max value:</label>
+                    <input type="number" name="Maximum value" id="maxValue" value="" disabled>
+                </div>
+            </fieldset>
             <br>
         </div>
         <div style="display: none;" aria-hidden="true">
