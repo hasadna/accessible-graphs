@@ -9,6 +9,11 @@ function updateURL() {
     let maxValue = document.getElementById("maxValue").value;
     let currentUrl = new URL(window.location.href);
     let newUrl = currentUrl.origin;
+    if (newUrl == "null") {
+        // For local host only
+        newUrl = window.location.pathname;
+        newUrl = newUrl.substring(0, newUrl.lastIndexOf("/"));
+    }
     newUrl += "/view/index.html?";
     newUrl += "data=" + input;
     newUrl += "&minValue=" + minValue;
