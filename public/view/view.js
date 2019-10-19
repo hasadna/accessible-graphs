@@ -4,6 +4,8 @@ let audioContext = new AudioContext();
 let oscillator = null;
 // This variable is not used currently.
 let source = null;
+// This variable stores the current cell under touch point in case touch is available.
+// In case touch is not available, it stores the current focussed cell.
 let currentCellUnderTouchPoint = null;
 let timeOut = null;
 
@@ -80,16 +82,16 @@ function navigateGrid(event) {
     switch (keyName) {
         case "ArrowDown":
             if (currentCell.parentNode.nextSibling != null) {
-                let index = getChildIndex(currentCell);
+                let index = getColumnIndex(currentCell);
                 newFocussedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case "ArrowUp":
             if (currentCell.parentNode.previousSibling != null) {
-                let index = getChildIndex(currentCell);
+                let index = getColumnIndex(currentCell);
                 newFocussedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
-        break;
+            break;
         case "ArrowLeft":
             newFocussedCell = currentCell.previousSibling;
             break;
@@ -111,44 +113,105 @@ function navigateGrid(event) {
     }
 }
 
-function getChildIndex(currentChild) {
+function getColumnIndex(currentCell) {
     let index = 0;
-    while (currentChild.previousSibling) {
+    while (currentCell.previousSibling) {
         index++;
-        currentChild = currentChild.previousSibling;
+        currentCell = currentCell.previousSibling;
     }
     return index;
+}
+
+function getRowIndex(currentCell) {
+    let currentRow = currentCell.parentNode;
+    let index = 0;
+    while (currentRow.previousSibling != null) {
+        index++;
+        currentRow = currentRow.previousSibling;
+    }
+    return index;
+}
+
+function get2DCoordinates(currentCell) {
+    let grid = document.getElementById("tableContainer").firstChild;
+    let columnCount = grid.firstChild.childNodes.length;
+    let columnNumber = getColumnIndex(currentCell);
+    let xCoordinate = columnNumber - Math.floor(columnCount / 2);
+    if ((columnCount % 2 == 0) && (xCoordinate >= 0)) {
+        xCoordinate++;
+    }
+    let rowCount = grid.childNodes.length;
+    let rowNumber = getRowIndex(currentCell);
+    let yCoordinate = rowNumber - Math.floor(rowCount / 2);
+    if ((rowCount % 2 == 0) && (yCoordinate >= 0)) {
+        yCoordinate++;
+    }
+    yCoordinate = -yCoordinate;
+    return {
+        x: xCoordinate,
+        y: yCoordinate,
+    }
+}
+
+function getMaxDistancePossible() {
+    let grid = document.getElementById("tableContainer").firstChild;
+    let cellWithMaxCoordinates = grid.firstChild.lastChild;
+    let maxCoordinates = get2DCoordinates(cellWithMaxCoordinates);
+    let maxDistance = 0;
+    maxDistance += Math.pow(maxCoordinates.x, 2);
+    maxDistance += Math.pow(maxCoordinates.y, 2);
+    maxDistance = Math.sqrt(maxDistance);
+    return maxDistance;
+}
+
+function createAndSetPanner(currentCell) {
+    let panner = audioContext.createPanner();
+    panner.panningModel = "HRTF";
+    panner.distanceModel = "linear";
+    panner.refDistance = 0;
+    panner.rolloffFactor = (panner.maxDistance * 99) / (getMaxDistancePossible() * 100);
+    let coordinates = get2DCoordinates(currentCell);
+    panner.setPosition(coordinates.x, coordinates.y, 0);
+    return panner;
+}
+
+function createAndSetOscillator(currentCell) {
+    oscillator = audioContext.createOscillator();
+    let selectedValue = currentCell.firstChild.data;
+    const MAX_FREQUENCY = 1000;
+    const MIN_FREQUENCY = 100;
+    let minValue = getDataFromURL("minValue");
+    let maxValue = getDataFromURL("maxValue");
+    selectedValue = parseFloat(selectedValue);
+    minValue = parseFloat(minValue);
+    maxValue = parseFloat(maxValue);
+    if (selectedValue < minValue) {
+        selectedValue = minValue;
+    }
+    if (selectedValue > maxValue) {
+        selectedValue = maxValue;
+    }
+    let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+    oscillator.frequency.value = frequency;
+    oscillator.channelCount = 1;
 }
 
 function startSoundPlayback(event) {
     currentCellUnderTouchPoint = event.currentTarget;
     event.preventDefault();
     stopSoundPlayback(event);
-    let selectedValue = event.currentTarget.firstChild.data;
-    playSound(selectedValue);
+    playSound(event);
 }
 
-function playSound(selectedValue) {
+function playSound(event) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
-    oscillator = audioContext.createOscillator();
-    const MAX_FREQUENCY = 1000;
-    const MIN_FREQUENCY = 100;
-    let minValue = getDataFromURL("minValue");
-    let maxValue = getDataFromURL("maxValue");
-    maxValue = parseFloat(maxValue);
-    minValue = parseFloat(minValue);
-    selectedValue = parseFloat(selectedValue);
-    if (selectedValue > maxValue) {
-        selectedValue = maxValue;
-    }
-    if (selectedValue < minValue) {
-        selectedValue = minValue;
-    }
-    let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
-    oscillator.frequency.value = frequency;
-    oscillator.connect(audioContext.destination);
+    let currentCell = currentCellUnderTouchPoint;
+    createAndSetOscillator(currentCell);
+    let panner = createAndSetPanner(currentCell);
+    oscillator.connect(panner);
+    panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
     timeOut = setTimeout(() => {
         stopSoundPlayback(event);
@@ -210,8 +273,7 @@ function onCellChange(event) {
     }
     currentCellUnderTouchPoint = elementUnderTouch;
     stopSoundPlayback(event);
-    let selectedValue = elementUnderTouch.firstChild.data;
-    playSound(selectedValue);
+    playSound(event);
     event.stopPropagation();
 }
 
@@ -219,7 +281,7 @@ function getDataFromURL(variableName) {
     let url = new URL(window.location.href);
     let params = url.searchParams;
     if (params.has(variableName) == false) {
-        return"";
+        return "";
     }
     return params.get(variableName);
 }
