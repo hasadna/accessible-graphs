@@ -5,7 +5,7 @@ let oscillator = null;
 // This variable is not used currently.
 let source = null;
 // This variable stores the current cell under touch point in case touch is available.
-// In case touch is not available, it stores the current focussed cell.
+// In case touch is not available, it stores the current focused cell.
 let currentCellUnderTouchPoint = null;
 let timeOut = null;
 
@@ -21,19 +21,21 @@ function processData() {
 }
 
 function createGrid() {
-    let input = getDataFromURL("data");
-    let lines = input.split("\n");
     let grid = document.createElement("div");
     grid.setAttribute("role", "grid");
     grid.setAttribute("aria-readonly", "true");
     grid.style.width = "100%";
     grid.style.height = "70%";
     grid.className = "table";
+    let input = getDataFromURL("data");
+    let lines = input.split("\n");
     let line;
+    let rowIndex = 0;
     for (line of lines) {
         let gridRow = document.createElement("div");
         gridRow.setAttribute("role", "row");
         gridRow.className = "row";
+        let columnIndex = 0;
         let values = line.split("\t");
         let value;
         for (value of values) {
@@ -42,9 +44,13 @@ function createGrid() {
             gridCell.className = "cell";
             gridCell.appendChild(document.createTextNode(value));
             gridCell.setAttribute("aria-readonly", "true");
+            gridCell.setAttribute("row", rowIndex);
+            gridCell.setAttribute("col", columnIndex);
             gridRow.appendChild(gridCell);
+            columnIndex++;
         }
         grid.appendChild(gridRow);
+        rowIndex++;
     }
     return grid;
 }
@@ -82,13 +88,13 @@ function navigateGrid(event) {
     switch (keyName) {
         case "ArrowDown":
             if (currentCell.parentNode.nextSibling != null) {
-                let index = getColumnIndex(currentCell);
+                let index = currentCell.getAttribute("col");
                 newFocussedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case "ArrowUp":
             if (currentCell.parentNode.previousSibling != null) {
-                let index = getColumnIndex(currentCell);
+                let index = currentCell.getAttribute("col");
                 newFocussedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
             break;
@@ -113,35 +119,16 @@ function navigateGrid(event) {
     }
 }
 
-function getColumnIndex(currentCell) {
-    let index = 0;
-    while (currentCell.previousSibling) {
-        index++;
-        currentCell = currentCell.previousSibling;
-    }
-    return index;
-}
-
-function getRowIndex(currentCell) {
-    let currentRow = currentCell.parentNode;
-    let index = 0;
-    while (currentRow.previousSibling != null) {
-        index++;
-        currentRow = currentRow.previousSibling;
-    }
-    return index;
-}
-
 function get2DCoordinates(currentCell) {
     let grid = document.getElementById("tableContainer").firstChild;
     let columnCount = grid.firstChild.childNodes.length;
-    let columnNumber = getColumnIndex(currentCell);
+    let columnNumber = currentCell.getAttribute("col");
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
     if ((columnCount % 2 == 0) && (xCoordinate >= 0)) {
         xCoordinate++;
     }
     let rowCount = grid.childNodes.length;
-    let rowNumber = getRowIndex(currentCell);
+    let rowNumber = currentCell.getAttribute("row");
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
     if ((rowCount % 2 == 0) && (yCoordinate >= 0)) {
         yCoordinate++;
