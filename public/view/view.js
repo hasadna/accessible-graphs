@@ -11,11 +11,11 @@ let timeOut = null;
 
 function processData() {
     let grid = createGrid();
-    let oldGrid = document.getElementById("tableContainer").firstChild;
+    let oldGrid = document.getElementById("gridContainer").firstChild;
     if (oldGrid != null) {
-        document.getElementById("tableContainer").removeChild(oldGrid);
+        document.getElementById("gridContainer").removeChild(oldGrid);
     }
-    document.getElementById("tableContainer").appendChild(grid);
+    document.getElementById("gridContainer").appendChild(grid);
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
 }
@@ -23,10 +23,11 @@ function processData() {
 function createGrid() {
     let grid = document.createElement("div");
     grid.setAttribute("role", "grid");
+    grid.setAttribute("id", "grid");
     grid.setAttribute("aria-readonly", "true");
     grid.style.width = "100%";
     grid.style.height = "70%";
-    grid.className = "table";
+    grid.className = "  table";
     let input = getDataFromURL("data");
     let lines = input.split("\n");
     let line;
@@ -120,7 +121,7 @@ function navigateGrid(event) {
 }
 
 function get2DCoordinates(currentCell) {
-    let grid = document.getElementById("tableContainer").firstChild;
+    let grid = document.getElementById("grid");
     let columnCount = grid.firstChild.childNodes.length;
     let columnNumber = currentCell.getAttribute("col");
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
@@ -141,7 +142,7 @@ function get2DCoordinates(currentCell) {
 }
 
 function getMaxDistancePossible() {
-    let grid = document.getElementById("tableContainer").firstChild;
+    let grid = document.getElementById("grid");
     let cellWithMaxCoordinates = grid.firstChild.lastChild;
     let maxCoordinates = get2DCoordinates(cellWithMaxCoordinates);
     let maxDistance = 0;
