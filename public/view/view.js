@@ -124,7 +124,9 @@ function navigateGrid(event) {
 * This function maps the row and col attributes for each cell in the grid 
 * to 2D coordinates (x,y)
 * Row index is mapped to y coordinate, and col index is mapped to x coordinate
-* The row and col attributes is zero based indexes. For example, the values of row and col for a cell found in the second row and in the third column is: 
+* The row and col attributes is zero based indexes. 
+* For example, the values of row and col attributes for a cell found in 
+* the second row, and in the third column is:
 * Row is 1, and col is 2
 */
 function get2DCoordinates(currentCell) {
