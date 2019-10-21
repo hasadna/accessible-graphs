@@ -27,7 +27,7 @@ function createGrid() {
     grid.setAttribute("aria-readonly", "true");
     grid.style.width = "100%";
     grid.style.height = "70%";
-    grid.className = "  table";
+    grid.className = "table";
     let input = getDataFromURL("data");
     let lines = input.split("\n");
     let line;
@@ -120,17 +120,24 @@ function navigateGrid(event) {
     }
 }
 
+/**
+* This function maps the row and col attributes for each cell in the grid 
+* to 2D coordinates (x,y)
+* Row index is mapped to y coordinate, and col index is mapped to x coordinate
+* The row and col attributes is zero based indexes. For example, the values of row and col for a cell found in the second row and in the third column is: 
+* Row is 1, and col is 2
+*/
 function get2DCoordinates(currentCell) {
-    /*
-    * This function maps the row and col attributes for each cell in the grid to 2D coordinates (x,y)
-    * Row index is mapped to y coordinate, and col index is mapped to x coordinate
-    * The row and col attributes is zero based indexes. For example, the values of row and col for a cell found in the second row and in the third column is: 
-    * Row is 1, and col is 2
-    * To map those indexes to 2D coordinates, we subtract row/column count divided in to 2, rounded downwards to it's nearest integer, from the cell's row/col index:
+    /**
+    * This function does the mapping from indexes to 2D coordinates as follows:
+    * We subtract row/column count divided in to 2,
+    * rounded downwards to it's nearest integer, from the cell's row/col index:
     * Let's assume we want to map the row index to y coordinate, then we will do the following: 
     * Row index - floor(row count / 2)
-    * To keep the values of the coordinates symmetric with respect to x-axis and y-axis, we increment the value of x/y coordinate if it's positive,and row/column count is even
-    * The return value's type  of the function is object, where the key of the first element is x, and the value is the calculated x coordinate,
+    * To keep the values of the coordinates symmetric with respect to x-axis and y-axis, 
+    * we increment the value of x/y coordinate if it's positive,and row/column count is even
+    * The return value's type  of the function is object, where the key of the first element is x, 
+    * and the value is the calculated x coordinate,
     * and the second element's key is y, and the value is the calculated y coordinate
     */
     let grid = document.getElementById("grid");
@@ -153,12 +160,17 @@ function get2DCoordinates(currentCell) {
     }
 }
 
+/**
+* This function calculates the greatest distance possible for a cell in the grid, 
+* when it's coordinates is mapped to 2D coordinates
+* This cell is naturaly  found in the upper right corner of the grid
+*/
 function getMaxDistancePossible() {
-    /**
-    * This function calculates the greatest distance possible for a cell in the grid, when it's coordinates is mapped to 2D coordinates
-    * This cell is naturaly  found in the upper right corner of the grid
-    * The distance is calculated from the origin (0,0), according to the wellknown distance formula
-    * The function assumes that the number of cells in each row is equal, and the number of cells in each column is equal also
+    /** 
+    * The function calculates distance of a given cell from the origin (0,0), 
+    * according to the wellknown distance formula
+    * The function assumes that the number of cells in each row is equal,
+    *  and the number of cells in each column is equal also
     */
     let grid = document.getElementById("grid");
     let cellWithMaxCoordinates = grid.firstChild.lastChild;
