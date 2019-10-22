@@ -136,19 +136,19 @@ function get2DCoordinates(currentCell) {
     let grid = document.getElementById("grid");
     let columnCount = grid.firstChild.childNodes.length;
     let columnNumber = currentCell.getAttribute("col");
-    // To keep the value of the x coordinate  symmetric with respect to  y-axis, 
-    // we increment the value of x coordinate if it's positive,and column count is even
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
-    if ((columnCount % 2 == 0) && (xCoordinate >= 0)) {
-        xCoordinate++;
+    // To keep the value of the x coordinate  symmetric with respect to  y-axis, 
+    // we increment the value of x coordinate by 0.5 if it's positive,and column count is even
+    if (columnCount % 2 == 0) {
+        xCoordinate += 0.5;
     }
     let rowCount = grid.childNodes.length;
     let rowNumber = currentCell.getAttribute("row");
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
-    // Keep y coordinate sytmetric with respect to x-axis by increnenting the value
+    // Keep y coordinate sytmetric with respect to x-axis by increnenting the value by 0.5
     // as explained before for x coordinate
-    if ((rowCount % 2 == 0) && (yCoordinate >= 0)) {
-        yCoordinate++;
+    if (rowCount % 2 == 0) {
+        yCoordinate += 0.5;
     }
     // We negate the value of y because we want uper cells to have positive values of y
     // and lower cells with negative values
