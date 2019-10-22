@@ -6,7 +6,7 @@ let oscillator = null;
 let source = null;
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
-let currentCellUnderTouchPoint = null;
+let selectedCell = null;
 let timeOut = null;
 
 function processData() {
@@ -124,27 +124,20 @@ function navigateGrid(event) {
 * This function maps the row and col attributes for each cell in the grid 
 * to 2D coordinates (x,y)
 * Row index is mapped to y coordinate, and col index is mapped to x coordinate
-* The row and col attributes is zero based indexes. 
+* The row and col attributes are zero based indexes
 * For example, the values of row and col attributes for a cell found in 
 * the second row, and in the third column is:
 * Row is 1, and col is 2
+* The return value's type  of the function is object, where the key of the first element is x, 
+* and the value is the calculated x coordinate,
+* and the second element's key is y, and the value is the calculated y coordinate
 */
 function get2DCoordinates(currentCell) {
-    /**
-    * This function does the mapping from indexes to 2D coordinates as follows:
-    * We subtract row/column count divided in to 2,
-    * rounded downwards to it's nearest integer, from the cell's row/col index:
-    * Let's assume we want to map the row index to y coordinate, then we will do the following: 
-    * Row index - floor(row count / 2)
-    * To keep the values of the coordinates symmetric with respect to x-axis and y-axis, 
-    * we increment the value of x/y coordinate if it's positive,and row/column count is even
-    * The return value's type  of the function is object, where the key of the first element is x, 
-    * and the value is the calculated x coordinate,
-    * and the second element's key is y, and the value is the calculated y coordinate
-    */
     let grid = document.getElementById("grid");
     let columnCount = grid.firstChild.childNodes.length;
     let columnNumber = currentCell.getAttribute("col");
+    // To keep the value of the x coordinate  symmetric with respect to  y-axis, 
+    // we increment the value of x coordinate if it's positive,and column count is even
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
     if ((columnCount % 2 == 0) && (xCoordinate >= 0)) {
         xCoordinate++;
@@ -152,9 +145,13 @@ function get2DCoordinates(currentCell) {
     let rowCount = grid.childNodes.length;
     let rowNumber = currentCell.getAttribute("row");
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
+    // Keep y coordinate sytmetric with respect to x-axis by increnenting the value
+    // as explained before for x coordinate
     if ((rowCount % 2 == 0) && (yCoordinate >= 0)) {
         yCoordinate++;
     }
+    // We negate the value of y because we want uper cells to have positive values of y
+    // and lower cells with negative values
     yCoordinate = -yCoordinate;
     return {
         x: xCoordinate,
@@ -163,20 +160,18 @@ function get2DCoordinates(currentCell) {
 }
 
 /**
-* This function calculates the greatest distance possible for a cell in the grid, 
+* This function calculates the greatest Euclidean distance possible for a cell in the grid, 
 * when it's coordinates is mapped to 2D coordinates
-* This cell is naturaly  found in the upper right corner of the grid
+* The function assumes that the number of cells in each row is equal,
+*  and the number of cells in each column is equal also
 */
 function getMaxDistancePossible() {
-    /** 
-    * The function calculates distance of a given cell from the origin (0,0), 
-    * according to the wellknown distance formula
-    * The function assumes that the number of cells in each row is equal,
-    *  and the number of cells in each column is equal also
-    */
     let grid = document.getElementById("grid");
+    // The cell with max coordinates is naturaly found in the upper right corner of the grid
+    // so get it
     let cellWithMaxCoordinates = grid.firstChild.lastChild;
     let maxCoordinates = get2DCoordinates(cellWithMaxCoordinates);
+    // Calculate the Euclidean distance of this cell from the origin (0,0)
     let maxDistance = 0;
     maxDistance += Math.pow(maxCoordinates.x, 2);
     maxDistance += Math.pow(maxCoordinates.y, 2);
@@ -217,7 +212,7 @@ function createAndSetOscillator(currentCell) {
 }
 
 function startSoundPlayback(event) {
-    currentCellUnderTouchPoint = event.currentTarget;
+    selectedCell = event.currentTarget;
     event.preventDefault();
     stopSoundPlayback(event);
     playSound(event);
@@ -227,7 +222,9 @@ function playSound(event) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
-    let currentCell = currentCellUnderTouchPoint;
+    let currentCell = selectedCell;
+    // Create oscillator and panner nodes and connect them each time we want to play audio
+    // because those nodes are singel use intities
     createAndSetOscillator(currentCell);
     let panner = createAndSetPanner(currentCell);
     oscillator.connect(panner);
@@ -285,13 +282,13 @@ function onCellChange(event) {
     // Get the first changed touch point. We surely have one because we are listening to touchmove event, and surely a touch point have changed since the last event.
     let changedTouch = event.changedTouches[0];
     let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-    if (elementUnderTouch == currentCellUnderTouchPoint) {
+    if (elementUnderTouch == selectedCell) {
         return;
     }
     if (elementUnderTouch == null || elementUnderTouch.getAttribute("role") != "gridcell") {
         return;
     }
-    currentCellUnderTouchPoint = elementUnderTouch;
+    selectedCell = elementUnderTouch;
     stopSoundPlayback(event);
     playSound(event);
     event.stopPropagation();
