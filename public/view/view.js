@@ -220,7 +220,7 @@ function playSound(event) {
     }
     let currentCell = selectedCell;
     // Create oscillator and panner nodes and connect them each time we want to play audio
-    // because those nodes are singel use intities
+    // because those nodes are singel use entities
     createAndSetOscillator(currentCell);
     let panner = createAndSetPanner(currentCell);
     oscillator.connect(panner);
