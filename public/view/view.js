@@ -4,34 +4,39 @@ let audioContext = new AudioContext();
 let oscillator = null;
 // This variable is not used currently.
 let source = null;
-let currentCellUnderTouchPoint = null;
+// This variable stores the current cell under touch point in case touch is available.
+// In case touch is not available, it stores the current focused cell.
+let selectedCell = null;
 let timeOut = null;
 
 function processData() {
     let grid = createGrid();
-    let oldGrid = document.getElementById("tableContainer").firstChild;
+    let oldGrid = document.getElementById("gridContainer").firstChild;
     if (oldGrid != null) {
-        document.getElementById("tableContainer").removeChild(oldGrid);
+        document.getElementById("gridContainer").removeChild(oldGrid);
     }
-    document.getElementById("tableContainer").appendChild(grid);
+    document.getElementById("gridContainer").appendChild(grid);
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
 }
 
 function createGrid() {
-    let input = getDataFromURL("data");
-    let lines = input.split("\n");
     let grid = document.createElement("div");
     grid.setAttribute("role", "grid");
+    grid.setAttribute("id", "grid");
     grid.setAttribute("aria-readonly", "true");
     grid.style.width = "100%";
     grid.style.height = "70%";
     grid.className = "table";
+    let input = getDataFromURL("data");
+    let lines = input.split("\n");
     let line;
+    let rowIndex = 0;
     for (line of lines) {
         let gridRow = document.createElement("div");
         gridRow.setAttribute("role", "row");
         gridRow.className = "row";
+        let columnIndex = 0;
         let values = line.split("\t");
         let value;
         for (value of values) {
@@ -40,9 +45,13 @@ function createGrid() {
             gridCell.className = "cell";
             gridCell.appendChild(document.createTextNode(value));
             gridCell.setAttribute("aria-readonly", "true");
+            gridCell.setAttribute("row", rowIndex);
+            gridCell.setAttribute("col", columnIndex);
             gridRow.appendChild(gridCell);
+            columnIndex++;
         }
         grid.appendChild(gridRow);
+        rowIndex++;
     }
     return grid;
 }
@@ -80,16 +89,16 @@ function navigateGrid(event) {
     switch (keyName) {
         case "ArrowDown":
             if (currentCell.parentNode.nextSibling != null) {
-                let index = getChildIndex(currentCell);
+                let index = currentCell.getAttribute("col");
                 newFocussedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case "ArrowUp":
             if (currentCell.parentNode.previousSibling != null) {
-                let index = getChildIndex(currentCell);
+                let index = currentCell.getAttribute("col");
                 newFocussedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
-        break;
+            break;
         case "ArrowLeft":
             newFocussedCell = currentCell.previousSibling;
             break;
@@ -111,44 +120,111 @@ function navigateGrid(event) {
     }
 }
 
-function getChildIndex(currentChild) {
-    let index = 0;
-    while (currentChild.previousSibling) {
-        index++;
-        currentChild = currentChild.previousSibling;
+/**
+* Maps each cell's row and col to a 2D coordinate. 
+* Returns a map with the x and y coordinates (e.g {x:1, y:0}).
+* Examples:
+* Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
+* Cells in a 2X2 grid will be positioned between -1.5 and 1.5 in both x and y.
+*/
+function get2DCoordinates(currentCell) {
+    let grid = document.getElementById("grid");
+    let columnCount = grid.firstChild.childNodes.length;
+    // The col attribute is zero based indexe
+    // For example, the value of  col attribute for a cell found in the third column is 2
+    let columnNumber = currentCell.getAttribute("col");
+    let xCoordinate = columnNumber - Math.floor(columnCount / 2);
+    // Align xCoordinate to be symmetric with respect to y-axis
+    if (columnCount % 2 == 0) {
+        xCoordinate += 0.5;
     }
-    return index;
+    let rowCount = grid.childNodes.length;
+    // The same applies for row attribute as col one
+    let rowNumber = currentCell.getAttribute("row");
+    let yCoordinate = rowNumber - Math.floor(rowCount / 2);
+    // Align yCoordinate similar to xCoordinate:
+    if (rowCount % 2 == 0) {
+        yCoordinate += 0.5;
+    }
+    // Negate yCoordinate so upper cells have positive values, 
+    // and lower cells have negative values
+    yCoordinate = -yCoordinate;
+    return {
+        x: xCoordinate,
+        y: yCoordinate,
+    }
 }
 
-function startSoundPlayback(event) {
-    currentCellUnderTouchPoint = event.currentTarget;
-    event.preventDefault();
-    stopSoundPlayback(event);
-    let selectedValue = event.currentTarget.firstChild.data;
-    playSound(selectedValue);
+/**
+* Calculates the greatest Euclidean distance possible for a cell in the grid, 
+* when it's coordinates is mapped to 2D coordinates
+* Assumes that the number of cells in each row is equal,
+*  and the number of cells in each column is equal also
+*/
+function getMaxDistancePossible() {
+    let grid = document.getElementById("grid");
+    // The cell with max coordinates is naturaly found in the upper right corner of the grid
+    // so get it
+    let cellWithMaxCoordinates = grid.firstChild.lastChild;
+    let maxCoordinates = get2DCoordinates(cellWithMaxCoordinates);
+    // Calculate the Euclidean distance of this cell from the origin (0,0)
+    let maxDistance = 0;
+    maxDistance += Math.pow(maxCoordinates.x, 2);
+    maxDistance += Math.pow(maxCoordinates.y, 2);
+    maxDistance = Math.sqrt(maxDistance);
+    return maxDistance;
 }
 
-function playSound(selectedValue) {
-    if (audioContext.state == "suspended") {
-        audioContext.resume();
-    }
+function createAndSetPanner(currentCell) {
+    let panner = audioContext.createPanner();
+    panner.panningModel = "HRTF";
+    panner.distanceModel = "linear";
+    panner.refDistance = 0;
+    panner.rolloffFactor = (panner.maxDistance * 99) / (getMaxDistancePossible() * 100);
+    let coordinates = get2DCoordinates(currentCell);
+    panner.setPosition(coordinates.x, coordinates.y, 0);
+    return panner;
+}
+
+function createAndSetOscillator(currentCell) {
     oscillator = audioContext.createOscillator();
+    let selectedValue = currentCell.firstChild.data;
     const MAX_FREQUENCY = 1000;
     const MIN_FREQUENCY = 100;
     let minValue = getDataFromURL("minValue");
     let maxValue = getDataFromURL("maxValue");
-    maxValue = parseFloat(maxValue);
-    minValue = parseFloat(minValue);
     selectedValue = parseFloat(selectedValue);
-    if (selectedValue > maxValue) {
-        selectedValue = maxValue;
-    }
+    minValue = parseFloat(minValue);
+    maxValue = parseFloat(maxValue);
     if (selectedValue < minValue) {
         selectedValue = minValue;
     }
+    if (selectedValue > maxValue) {
+        selectedValue = maxValue;
+    }
     let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
     oscillator.frequency.value = frequency;
-    oscillator.connect(audioContext.destination);
+    oscillator.channelCount = 1;
+}
+
+function startSoundPlayback(event) {
+    selectedCell = event.currentTarget;
+    event.preventDefault();
+    stopSoundPlayback(event);
+    playSound(event);
+}
+
+function playSound(event) {
+    if (audioContext.state == "suspended") {
+        audioContext.resume();
+    }
+    let currentCell = selectedCell;
+    // Create oscillator and panner nodes and connect them each time we want to play audio
+    // because those nodes are singel use entities
+    createAndSetOscillator(currentCell);
+    let panner = createAndSetPanner(currentCell);
+    oscillator.connect(panner);
+    panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
     timeOut = setTimeout(() => {
         stopSoundPlayback(event);
@@ -202,16 +278,15 @@ function onCellChange(event) {
     // Get the first changed touch point. We surely have one because we are listening to touchmove event, and surely a touch point have changed since the last event.
     let changedTouch = event.changedTouches[0];
     let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-    if (elementUnderTouch == currentCellUnderTouchPoint) {
+    if (elementUnderTouch == selectedCell) {
         return;
     }
     if (elementUnderTouch == null || elementUnderTouch.getAttribute("role") != "gridcell") {
         return;
     }
-    currentCellUnderTouchPoint = elementUnderTouch;
+    selectedCell = elementUnderTouch;
     stopSoundPlayback(event);
-    let selectedValue = elementUnderTouch.firstChild.data;
-    playSound(selectedValue);
+    playSound(event);
     event.stopPropagation();
 }
 
@@ -219,7 +294,7 @@ function getDataFromURL(variableName) {
     let url = new URL(window.location.href);
     let params = url.searchParams;
     if (params.has(variableName) == false) {
-        return"";
+        return "";
     }
     return params.get(variableName);
 }
