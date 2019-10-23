@@ -121,14 +121,14 @@ function navigateGrid(event) {
 }
 
 /**
-* This function maps the row and col attributes for each cell in the grid 
+* Maps the row and col attributes for each cell in the grid 
 * to 2D coordinates (x,y)
 * Row index is mapped to y coordinate, and col index is mapped to x coordinate
 * The row and col attributes are zero based indexes
 * For example, the values of row and col attributes for a cell found in 
 * the second row, and in the third column is:
 * Row is 1, and col is 2
-* The return value's type  of the function is object, where the key of the first element is x, 
+* Returns a value of type object, where the key of the first element is x, 
 * and the value is the calculated x coordinate,
 * and the second element's key is y, and the value is the calculated y coordinate
 */
@@ -137,21 +137,19 @@ function get2DCoordinates(currentCell) {
     let columnCount = grid.firstChild.childNodes.length;
     let columnNumber = currentCell.getAttribute("col");
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
-    // To keep the value of the x coordinate  symmetric with respect to  y-axis, 
-    // we increment the value of x coordinate by 0.5 if it's positive,and column count is even
+    // Aline xCoordinate to be symmetric with respect to y-axis
     if (columnCount % 2 == 0) {
         xCoordinate += 0.5;
     }
     let rowCount = grid.childNodes.length;
     let rowNumber = currentCell.getAttribute("row");
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
-    // Keep y coordinate sytmetric with respect to x-axis by increnenting the value by 0.5
-    // as explained before for x coordinate
+    // Aline yCoordinate similar to xCoordinate:
     if (rowCount % 2 == 0) {
         yCoordinate += 0.5;
     }
-    // We negate the value of y because we want uper cells to have positive values of y
-    // and lower cells with negative values
+    // Negate yCoordinate so uper cells to have positive values, 
+    // and lower cells have negative values
     yCoordinate = -yCoordinate;
     return {
         x: xCoordinate,
@@ -160,9 +158,9 @@ function get2DCoordinates(currentCell) {
 }
 
 /**
-* This function calculates the greatest Euclidean distance possible for a cell in the grid, 
+* Calculates the greatest Euclidean distance possible for a cell in the grid, 
 * when it's coordinates is mapped to 2D coordinates
-* The function assumes that the number of cells in each row is equal,
+* Assumes that the number of cells in each row is equal,
 *  and the number of cells in each column is equal also
 */
 function getMaxDistancePossible() {
