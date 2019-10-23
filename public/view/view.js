@@ -121,34 +121,32 @@ function navigateGrid(event) {
 }
 
 /**
-* Maps the row and col attributes for each cell in the grid 
-* to 2D coordinates (x,y)
-* Row index is mapped to y coordinate, and col index is mapped to x coordinate
-* The row and col attributes are zero based indexes
-* For example, the values of row and col attributes for a cell found in 
-* the second row, and in the third column is:
-* Row is 1, and col is 2
-* Returns a value of type object, where the key of the first element is x, 
-* and the value is the calculated x coordinate,
-* and the second element's key is y, and the value is the calculated y coordinate
+* Maps each cell's row and col to a 2D coordinate. 
+* Returns a map with the x and y coordinates (e.g {x:1, y:0}).
+* Examples:
+* Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
+* Cells in a 2X2 grid will be positioned between -1.5 and 1.5 in both x and y.
 */
 function get2DCoordinates(currentCell) {
     let grid = document.getElementById("grid");
     let columnCount = grid.firstChild.childNodes.length;
+    // The col attribute is zero based indexe
+    // For example, the value of  col attribute for a cell found in the third column is 2
     let columnNumber = currentCell.getAttribute("col");
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
-    // Aline xCoordinate to be symmetric with respect to y-axis
+    // Align xCoordinate to be symmetric with respect to y-axis
     if (columnCount % 2 == 0) {
         xCoordinate += 0.5;
     }
     let rowCount = grid.childNodes.length;
+    // The same applies for row attribute as col one
     let rowNumber = currentCell.getAttribute("row");
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
-    // Aline yCoordinate similar to xCoordinate:
+    // Align yCoordinate similar to xCoordinate:
     if (rowCount % 2 == 0) {
         yCoordinate += 0.5;
     }
-    // Negate yCoordinate so uper cells to have positive values, 
+    // Negate yCoordinate so upper cells have positive values, 
     // and lower cells have negative values
     yCoordinate = -yCoordinate;
     return {
