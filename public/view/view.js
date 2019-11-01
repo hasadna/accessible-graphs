@@ -179,7 +179,7 @@ function createAndSetPanner(currentCell) {
     panner.panningModel = "HRTF";
     panner.distanceModel = "linear";
     panner.refDistance = 0;
-    panner.rolloffFactor = (panner.maxDistance * 99) / (getMaxDistancePossible() * 100);
+    panner.rolloffFactor = panner.maxDistance / (getMaxDistancePossible() * 2);
     let coordinates = get2DCoordinates(currentCell);
     panner.setPosition(coordinates.x, coordinates.y, 0);
     return panner;
@@ -217,19 +217,18 @@ function playSound(event) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
-    let currentCell = selectedCell;
     if (getDataFromURL("instrumentType") == "synthesizer") {
-        playSoundWithOscillator(currentCell);
+        playSoundWithOscillator();
     } else {
-        playSoundFromAudioFile(currentCell);
+        playSoundFromAudioFile();
     }
 }
 
-function playSoundWithOscillator(currentCell) {
+function playSoundWithOscillator() {
     // Create oscillator and panner nodes and connect them each time we want to play audio
     // because those nodes are singel use entities
-    createAndSetOscillator(currentCell);
-    let panner = createAndSetPanner(currentCell);
+    createAndSetOscillator(selectedCell);
+    let panner = createAndSetPanner(selectedCell);
     oscillator.connect(panner);
     panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
@@ -238,8 +237,8 @@ function playSoundWithOscillator(currentCell) {
     }, 1000);
 }
 
-function playSoundFromAudioFile(currentCell) {
-    let fileName = getFileToPlay(currentCell);
+function playSoundFromAudioFile() {
+    let fileName = getFileToPlay(selectedCell);
     let request = new XMLHttpRequest();
     request.open("get", fileName, true);
     request.responseType = "arraybuffer";
@@ -253,7 +252,9 @@ function playSoundFromAudioFile(currentCell) {
 function playAudioFile(buffer) {
     source = audioContext.createBufferSource();
     source.buffer = buffer;
-    source.connect(audioContext.destination);
+    let panner = createAndSetPanner(selectedCell);
+    source.connect(panner);
+    panner.connect(audioContext.destination);
     source.start(audioContext.currentTime);
 }
 
