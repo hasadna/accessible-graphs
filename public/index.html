@@ -6,7 +6,7 @@
     <title> Sensory interface </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="app.js"></script>
+    <script type="text/javascript" src="app.js"></script>
 </head>
 
 <body onload="setFocusToInputField()">
@@ -48,6 +48,11 @@
                     <input type="number" name="Maximum value" id="maxValue" value="" disabled>
                 </div>
             </fieldset>
+            <label for="instrumentType"> Select instrument type </label>
+            <select id="instrumentType">
+                <option value="synthesizer"> Synthesizer </option>
+                <option value="piano"> Piano </option>
+            </select>
             <br>
         </div>
         <div style="display: none;" aria-hidden="true">

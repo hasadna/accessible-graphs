@@ -7,17 +7,21 @@ function updateURL() {
     input = encodeURIComponent(input);
     let minValue = document.getElementById("minValue").value;
     let maxValue = document.getElementById("maxValue").value;
+    let instrumentType = document.getElementById("instrumentType").value;
     let currentUrl = new URL(window.location.href);
-    let newUrl = currentUrl.origin;
-    if (newUrl == "null") {
-        // For local host only
+    let newUrl;
+    if (location.hostname == "localhost" || location.hostname == "127.0.0.1" ||
+        location.hostname == "") {
         newUrl = window.location.pathname;
         newUrl = newUrl.substring(0, newUrl.lastIndexOf("/"));
+    } else {
+        newUrl = currentUrl.origin;
     }
     newUrl += "/view/index.html?";
     newUrl += "data=" + input;
     newUrl += "&minValue=" + minValue;
     newUrl += "&maxValue=" + maxValue;
+    newUrl += "&instrumentType=" + instrumentType;
     window.location.href = newUrl;
 }
 
