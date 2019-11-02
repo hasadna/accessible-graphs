@@ -2,7 +2,6 @@
 let AudioContext = window.webkitAudioContext || window.AudioContext;
 let audioContext = new AudioContext();
 let oscillator = null;
-// This variable is not used currently.
 let source = null;
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
@@ -180,7 +179,7 @@ function createAndSetPanner(currentCell) {
     panner.panningModel = "HRTF";
     panner.distanceModel = "linear";
     panner.refDistance = 0;
-    panner.rolloffFactor = (panner.maxDistance * 99) / (getMaxDistancePossible() * 100);
+    panner.rolloffFactor = panner.maxDistance / (getMaxDistancePossible() * 2);
     let coordinates = get2DCoordinates(currentCell);
     panner.setPosition(coordinates.x, coordinates.y, 0);
     return panner;
@@ -218,11 +217,18 @@ function playSound(event) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
-    let currentCell = selectedCell;
+    if (getDataFromURL("instrumentType") == "synthesizer") {
+        playSoundWithOscillator();
+    } else {
+        playSoundFromAudioFile();
+    }
+}
+
+function playSoundWithOscillator() {
     // Create oscillator and panner nodes and connect them each time we want to play audio
     // because those nodes are singel use entities
-    createAndSetOscillator(currentCell);
-    let panner = createAndSetPanner(currentCell);
+    createAndSetOscillator(selectedCell);
+    let panner = createAndSetPanner(selectedCell);
     oscillator.connect(panner);
     panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
@@ -231,37 +237,53 @@ function playSound(event) {
     }, 1000);
 }
 
-// This function is not used currently.
-function playAudioFile() {
+function playSoundFromAudioFile() {
+    let fileName = getFileToPlay(selectedCell);
     let request = new XMLHttpRequest();
-    request.open("get", "assets/beep_digital.mp3", true);
+    request.open("get", fileName, true);
     request.responseType = "arraybuffer";
     request.onload = function () {
         let data = request.response;
-        playSoundFromData(data);
+        audioContext.decodeAudioData(data, playAudioFile);
     };
     request.send();
 }
 
-// This function is not used currently.
-function playSoundFromData(data) {
+function playAudioFile(buffer) {
     source = audioContext.createBufferSource();
-    audioContext.decodeAudioData(data, function (buffer) {
-        source.buffer = buffer;
-        source.connect(audioContext.destination);
-        playSoundFromBufferSource();
-    });
+    source.buffer = buffer;
+    let panner = createAndSetPanner(selectedCell);
+    source.connect(panner);
+    panner.connect(audioContext.destination);
+    source.start(audioContext.currentTime);
 }
 
-// This function is not used currently.
-function playSoundFromBufferSource() {
-    source.start(audioContext.currentTime);
+function getFileToPlay(currentCell) {
+    let minValue = getDataFromURL("minValue");
+    let maxValue = getDataFromURL("maxValue");
+    let selectedValue = currentCell.firstChild.data;
+    minValue = parseFloat(minValue);
+    maxValue = parseFloat(maxValue);
+    selectedValue = parseFloat(selectedValue);
+    const NUMBER_OF_TRACKS = 22;
+    let trackNumber = (selectedValue - minValue) / (maxValue - minValue) * NUMBER_OF_TRACKS;
+    trackNumber = Math.ceil(trackNumber);
+    if (trackNumber == 0) {
+        trackNumber++;
+    }
+    let instrumentType = getDataFromURL("instrumentType");
+    let fileName = "/assets/" + instrumentType;
+    fileName += "/track" + trackNumber + ".mp3";
+    return fileName;
 }
 
 function stopSoundPlayback(event) {
     try {
         if (oscillator != null) {
             oscillator.stop(audioContext.currentTime);
+        }
+        if (source != null) {
+            source.stop(audioContext.currentTime);
         }
         if (timeOut != null) {
             window.clearTimeout(timeOut);
