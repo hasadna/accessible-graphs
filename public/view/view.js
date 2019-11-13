@@ -9,14 +9,12 @@ let selectedCell = null;
 let timeOut = null;
 
 function processData() {
-    let grid = createGrid();
-    let oldGrid = document.getElementById("gridContainer").firstChild;
-    if (oldGrid != null) {
-        document.getElementById("gridContainer").removeChild(oldGrid);
-    }
-    document.getElementById("gridContainer").appendChild(grid);
-    addOnClickAndOnTouchSoundToGrid();
-    addNavigationToGrid();
+    let container = document.getElementById("container");
+    let brailleController = new BrailleController(container);
+    brailleController.create();
+    //createGrid();
+    //addOnClickAndOnTouchSoundToGrid();
+    //addNavigationToGrid();
 }
 
 function createGrid() {
@@ -52,7 +50,12 @@ function createGrid() {
         grid.appendChild(gridRow);
         rowIndex++;
     }
-    return grid;
+    let container = document.getElementById("container");
+    let oldGrid = container.firstChild;
+    if (oldGrid != null) {
+        container.removeChild(oldGrid);
+    }
+    container.appendChild(grid);
 }
 
 function addOnClickAndOnTouchSoundToGrid() {
@@ -84,38 +87,38 @@ function addNavigationToGrid() {
 function navigateGrid(event) {
     const keyName = event.key;
     let currentCell = event.currentTarget;
-    let newFocussedCell = null;
+    let newFocusedCell = null;
     switch (keyName) {
         case "ArrowDown":
             if (currentCell.parentNode.nextSibling != null) {
                 let index = currentCell.getAttribute("col");
-                newFocussedCell = currentCell.parentNode.nextSibling.childNodes[index];
+                newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case "ArrowUp":
             if (currentCell.parentNode.previousSibling != null) {
                 let index = currentCell.getAttribute("col");
-                newFocussedCell = currentCell.parentNode.previousSibling.childNodes[index];
+                newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
             break;
         case "ArrowLeft":
-            newFocussedCell = currentCell.previousSibling;
+            newFocusedCell = currentCell.previousSibling;
             break;
         case "ArrowRight":
-            newFocussedCell = currentCell.nextSibling;
+            newFocusedCell = currentCell.nextSibling;
             break;
         case "Home":
-            newFocussedCell = currentCell.parentNode.firstChild;
+            newFocusedCell = currentCell.parentNode.firstChild;
             break;
         case "End":
-            newFocussedCell = currentCell.parentNode.lastChild;
+            newFocusedCell = currentCell.parentNode.lastChild;
             break;
         // TODO: add PageUp/Down keys
         default:
             return;
     }
-    if (newFocussedCell != null) {
-        newFocussedCell.focus();
+    if (newFocusedCell != null) {
+        newFocusedCell.focus();
     }
 }
 
