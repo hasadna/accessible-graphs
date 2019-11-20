@@ -7,14 +7,27 @@ let source = null;
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
 let timeOut = null;
+let brailleController = null;
+
+function tempListener(position) {
+    alert(position.cursorPosition + position.character);
+}
 
 function processData() {
     let container = document.getElementById("container");
-    let brailleController = new BrailleController(container);
-    brailleController.create();
-    //createGrid();
-    //addOnClickAndOnTouchSoundToGrid();
-    //addNavigationToGrid();
+    brailleController = new BrailleController(cursorEventsHandler, container);
+    brailleController.setRoutingKeyPressListener(tempListener);
+    createGrid();
+    addOnClickAndOnTouchSoundToGrid();
+    addNavigationToGrid();
+}
+
+function cursorEventsHandler(event) {
+    if (brailleController == null) {
+        return false;
+    }
+    brailleController.onRoutingKeyPress(event);
+    return true;
 }
 
 function createGrid() {
@@ -51,10 +64,6 @@ function createGrid() {
         rowIndex++;
     }
     let container = document.getElementById("container");
-    let oldGrid = container.firstChild;
-    if (oldGrid != null) {
-        container.removeChild(oldGrid);
-    }
     container.appendChild(grid);
 }
 
