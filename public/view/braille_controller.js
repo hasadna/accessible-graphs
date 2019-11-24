@@ -22,6 +22,7 @@ class BrailleController {
     this.textarea = textarea;
     this.listener = null;
     this.lastEvent = null;
+    // TODO: check if we still need the following line
     document.addEventListener('selectionchange',
       this.onRoutingKeyPress);
     document.addEventListener('selectionchange', function () {
@@ -68,6 +69,8 @@ class BrailleController {
       return;
     }
     let cursorPosition = event.baseOffset;
+    // TODO: maybe we should pass to slice start index of cursorPosition,
+    // and end index of cursorPosition + 1
     let currrentChar = brailleController.textarea.value.slice(cursorPosition - 1, cursorPosition);
     let newEvent = {
       cursorPosition: cursorPosition,
