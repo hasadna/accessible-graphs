@@ -8,13 +8,13 @@ let source = null;
 let selectedCell = null;
 let timeOut = null;
 
-function routingKeyPressListener(event) {
-  console.log('routingKeyPressListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
+function brailleControllerPositionChangedListener(event) {
+  console.log('brailleControllerPositionChangedListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
   brailleController = new BrailleController(document.getElementById('container'));
-  brailleController.setRoutingKeyPressListener(routingKeyPressListener);
+  brailleController.setPositionChangedListener(brailleControllerPositionChangedListener);
 });
 
 function processData() {
@@ -278,7 +278,7 @@ function getFileToPlay(currentCell) {
   }
   let instrumentType = getDataFromURL('instrumentType');
   let fileName = '/assets/' + instrumentType;
-  fileName += '/track' + trackNumber + ''.mp3';
+  fileName += '/track' + trackNumber + '.mp3';
   return fileName;
 }
 
