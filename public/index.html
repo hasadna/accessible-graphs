@@ -2,80 +2,78 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title> Sensory interface </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script type="text/javascript" src="app.js"></script>
+  <meta charset="utf-8">
+  <title> Sensory interface </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script type="text/javascript" src="app.js"></script>
 </head>
 
 <body onload="setFocusToInputField()">
-    <div class="container-fluid">
-        <h2>Sensory interface</h2>
+  <div class="container-fluid">
+    <h2>Sensory interface</h2>
 
-        <h3>Data</h3>
-        <label for="dataInput">Data in tab-delimited CSV format:</label><br>
-        <textarea id="dataInput" onblur="findMinAndMaxValues()">1	2	3
+    <h3>Data</h3>
+    <label for="dataInput">Data in tab-delimited CSV format:</label><br>
+    <textarea id="dataInput" onblur="findMinAndMaxValues()">1	2	3
 4	5	6</textarea>
-        <br>
-        <h3>Options</h3>
+    <br>
+    <h3>Options</h3>
 
-        Value range:<br>
-        <div class="container-fluid">
-            Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
-            10.<br>
-            <fieldset>
-                <legend>Mode</legend>
-                <div>
-                    <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)"
-                        checked>
-                    <label for="autoOption">Auto</label>
-                </div>
-                <div>
-                    <input type="radio" id="manualOption" name="value_range" value="manual"
-                        onclick="onRadioChange(this)">
-                    <label for="manualOption">Manual</label>
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Value range</legend>
-                <div>
-                    <label for="minValue">Min value:</label>
-                    <input type="number" name="Minimum value" id="minValue" value="" disabled>
-                </div>
-                <div>
-                    <label for="maxValue">Max value:</label>
-                    <input type="number" name="Maximum value" id="maxValue" value="" disabled>
-                </div>
-            </fieldset>
-            <label for="instrumentType">Select instrument type</label>
-            <select id="instrumentType">
-                <option value="synthesizer">Synthesizer</option>
-                <option value="piano">Piano</option>
-            </select>
-            <br>
+    Value range:<br>
+    <div class="container-fluid">
+      Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
+      10.<br>
+      <fieldset>
+        <legend>Mode</legend>
+        <div>
+          <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)" checked>
+          <label for="autoOption">Auto</label>
         </div>
-        <div style="display: none;" aria-hidden="true">
-            Sounds:
-            <select>
-                <option value="synthetic">Synthetic sound waves</option>
-                <option value="piano">Piano</option>
-                <option value="opera">Opera singer</option>
-                <option value="lalala">Lalala</option>
-                <option value="motorcycle">Motorcycle</option>
-                <option value="laughter">People laughing</option>
-                <option value="farts">Farts</option>
-                <option value="arnold">Arnold</option>
-            </select>
-            <br>
+        <div>
+          <input type="radio" id="manualOption" name="value_range" value="manual" onclick="onRadioChange(this)">
+          <label for="manualOption">Manual</label>
         </div>
-        <br>
-        <button id="viewButton" onclick="updateURL()">View</button>
-        <br>
-        <br>
-        <a href="about.html">About</a>
-
+      </fieldset>
+      <fieldset>
+        <legend>Value range</legend>
+        <div>
+          <label for="minValue">Min value:</label>
+          <input type="number" name="Minimum value" id="minValue" value="" disabled>
+        </div>
+        <div>
+          <label for="maxValue">Max value:</label>
+          <input type="number" name="Maximum value" id="maxValue" value="" disabled>
+        </div>
+      </fieldset>
+      <label for="instrumentType">Select instrument type</label>
+      <select id="instrumentType">
+        <option value="synthesizer">Synthesizer</option>
+        <option value="piano">Piano</option>
+      </select>
+      <br>
     </div>
+    <div style="display: none;" aria-hidden="true">
+      Sounds:
+      <select>
+        <option value="synthetic">Synthetic sound waves</option>
+        <option value="piano">Piano</option>
+        <option value="opera">Opera singer</option>
+        <option value="lalala">Lalala</option>
+        <option value="motorcycle">Motorcycle</option>
+        <option value="laughter">People laughing</option>
+        <option value="farts">Farts</option>
+        <option value="arnold">Arnold</option>
+      </select>
+      <br>
+    </div>
+    <br>
+    <button id="viewButton" onclick="updateURL()">View</button>
+    <br>
+    <br>
+    <a href="about.html">About</a>
+
+  </div>
 </body>
 
 </html>
