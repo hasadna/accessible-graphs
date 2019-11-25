@@ -23,13 +23,14 @@ class BrailleController {
     this.listener = null;
     this.lastEvent = null;
 
+    // Note: We initially tried document.addEventListener('selectionchange', func)
+    //       but that didn't work in Firefox.
     setInterval(this.checkPosition, 50);
     this.currentPosition = -1;
   }
 
   checkPosition() {
     if (brailleController.currentPosition != brailleController.textarea.selectionStart) {
-      console.log('Position: ' + brailleController.textarea.selectionStart);
       brailleController.currentPosition = brailleController.textarea.selectionStart;
       brailleController.onPositionChanged();
     }
