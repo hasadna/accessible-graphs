@@ -30,17 +30,17 @@ function onRadioChange(radio) {
   let minValuePicker = $('#minValue');
   let maxValuePicker = $('#maxValue');
   if (radio.value == 'auto') {
-    minValuePicker.prop("disabled", true);
-    maxValuePicker.prop("disabled", true);
+    minValuePicker.prop('disabled', true);
+    maxValuePicker.prop('disabled', true);
   } else {
-    minValuePicker.prop("disabled", false);
-    maxValuePicker.prop("disabled", false);
-    $('#updateButton').prop("disabled", false);
+    minValuePicker.prop('disabled', false);
+    maxValuePicker.prop('disabled', false);
+    $('#updateButton').prop('disabled', false);
   }
 }
 
 function findMinAndMaxValues() {
-  if ($('#autoOption').prop("checked") == false) {
+  if ($('#autoOption').prop('checked') == false) {
     return;
   }
   let input = $('#dataInput').text();
