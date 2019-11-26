@@ -6,7 +6,7 @@ function updateURL() {
     input = encodeURIComponent(input);
     let minValue = $('#minValue').text();
     let maxValue = $('#maxValue').text();
-    let instrumentType = $('#instrumentType').text();
+    let instrumentType = $('#instrumentType').val();
     let currentUrl = new URL(window.location.href);
     let newUrl;
     // Check if we are running on a localhost
