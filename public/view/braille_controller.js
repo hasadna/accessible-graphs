@@ -21,7 +21,6 @@ class BrailleController {
 
     this.textarea = textarea;
     this.listener = null;
-    this.lastEvent = null;
 
     // Note: We initially tried document.addEventListener('selectionchange', func)
     //       but that didn't work in Firefox.
@@ -66,7 +65,6 @@ class BrailleController {
       character: currrentChar,
       text: brailleController.textarea.value
     };
-    this.lastEvent = newEvent;
 
     brailleController.listener(newEvent);
   }

@@ -12,12 +12,9 @@ function brailleControllerPositionChangeListener(event) {
   console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
+function processData() {
   brailleController = new BrailleController(document.getElementById('container'));
   brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
-});
-
-function processData() {
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
