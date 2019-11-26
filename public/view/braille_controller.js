@@ -8,76 +8,63 @@ class BrailleController {
     }
     let textarea = document.createElement('textarea');
     textarea.setAttribute('id', 'braille_controller_text');
+
     textarea.value = '⠊⠉⠑⢄⣀⡠⠊⠉⠑⢄⣀⡠⠊';
-    //textarea.className = 'hidden';
-    textarea.addEventListener('keydown', this.eventCatcher);
-    textarea.addEventListener('keyup', this.eventCatcher);
-    textarea.addEventListener('keypress', this.eventCatcher);
-    textarea.addEventListener('click', this.eventCatcher);
-    textarea.addEventListener('mousedown', this.eventCatcher);
-    textarea.addEventListener('mouseup', this.eventCatcher);
+    textarea.addEventListener('keydown', this.onKeyDown);
+    textarea.addEventListener('keyup', this.noopEventCatcher);
+    textarea.addEventListener('keypress', this.noopEventCatcher);
+    textarea.addEventListener('click', this.noopEventCatcher);
+    textarea.addEventListener('mousedown', this.noopEventCatcher);
+    textarea.addEventListener('mouseup', this.noopEventCatcher);
     parent.appendChild(textarea);
     textarea.focus();
 
     this.textarea = textarea;
     this.listener = null;
-    this.lastEvent = null;
-    // TODO: check if we still need the following line
-    document.addEventListener('selectionchange',
-      this.onRoutingKeyPress);
-    document.addEventListener('selectionchange', function () {
-      brailleController.onRoutingKeyPress();
-    });
+
+    // Note: We initially tried document.addEventListener('selectionchange', func)
+    //       but that didn't work in Firefox.
+    setInterval(this.checkPosition, 50);
+    this.currentPosition = -1;
   }
 
-  eventCatcher(event) {
-    // Second rooting key press in the same position is received as a mousedown event
-    if (event.target.id == 'braille_controller_text') {
-      // We ignore other events since we assume they belong to the same rooting key press
-      if (event.type == 'mousedown') {
-        if (brailleController.lastEvent != null) {
-          brailleController.listener(brailleController.lastEvent);
-        } else {
-          console.error('BrailleController.lastEvent is null on supposedly second rooting key press');
-        }
-      }
-    } else {
-      debugger;
-      console.log('Event caught: ' + event);
+  checkPosition() {
+    if (brailleController.currentPosition != brailleController.textarea.selectionStart) {
+      brailleController.currentPosition = brailleController.textarea.selectionStart;
+      brailleController.onPositionChange();
     }
+  }
+
+  noopEventCatcher(event) {
+    event.preventDefault();
+  }
+
+  onKeyDown(event) {
+    if (event.key.includes('Arrow') || event.key.includes('Home') || event.key.includes('End')) {
+      return; // OK
+    }
+    event.preventDefault();
   }
 
   setBraille(text) {
     this.textarea.value = text;
   }
 
-  setRoutingKeyPressListener(listener) {
+  setPositionChangeListener(listener) {
     this.listener = listener;
   }
 
-  onRoutingKeyPress() {
-    let event = document.getSelection();
-
-    if (event.baseNode == null ||
-      event.baseNode.parentElement == null ||
-      event.baseNode.parentElement.offsetParent == null ||
-      event.baseNode.parentElement.offsetParent.id != 'braille_controller_text') {
-      console.log('Selection not on braille_controller_text');
-    }
-
+  onPositionChange() {
     if (brailleController.listener == null) {
       return;
     }
-    let cursorPosition = event.baseOffset;
-    // TODO: maybe we should pass to slice start index of cursorPosition,
-    // and end index of cursorPosition + 1
+    let cursorPosition = brailleController.currentPosition;
     let currrentChar = brailleController.textarea.value.slice(cursorPosition - 1, cursorPosition);
     let newEvent = {
       cursorPosition: cursorPosition,
       character: currrentChar,
       text: brailleController.textarea.value
     };
-    this.lastEvent = newEvent;
 
     brailleController.listener(newEvent);
   }

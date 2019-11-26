@@ -8,16 +8,13 @@ let source = null;
 let selectedCell = null;
 let timeOut = null;
 
-function routingKeyPressListener(event) {
-  console.log('routingKeyPressListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
+function brailleControllerPositionChangeListener(event) {
+  console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-  brailleController = new BrailleController(document.getElementById('container'));
-  brailleController.setRoutingKeyPressListener(routingKeyPressListener);
-});
-
 function processData() {
+  brailleController = new BrailleController(document.getElementById('container'));
+  brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
@@ -278,7 +275,7 @@ function getFileToPlay(currentCell) {
   }
   let instrumentType = getDataFromURL('instrumentType');
   let fileName = '/assets/' + instrumentType;
-  fileName += '/track' + trackNumber + ''.mp3';
+  fileName += '/track' + trackNumber + '.mp3';
   return fileName;
 }
 
