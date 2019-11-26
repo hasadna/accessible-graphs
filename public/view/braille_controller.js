@@ -32,7 +32,7 @@ class BrailleController {
   checkPosition() {
     if (brailleController.currentPosition != brailleController.textarea.selectionStart) {
       brailleController.currentPosition = brailleController.textarea.selectionStart;
-      brailleController.onPositionChanged();
+      brailleController.onPositionChange();
     }
   }
 
@@ -51,11 +51,11 @@ class BrailleController {
     this.textarea.value = text;
   }
 
-  setPositionChangedListener(listener) {
+  setPositionChangeListener(listener) {
     this.listener = listener;
   }
 
-  onPositionChanged() {
+  onPositionChange() {
     if (brailleController.listener == null) {
       return;
     }

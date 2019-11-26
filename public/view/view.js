@@ -8,13 +8,13 @@ let source = null;
 let selectedCell = null;
 let timeOut = null;
 
-function brailleControllerPositionChangedListener(event) {
-  console.log('brailleControllerPositionChangedListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
+function brailleControllerPositionChangeListener(event) {
+  console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
   brailleController = new BrailleController(document.getElementById('container'));
-  brailleController.setPositionChangedListener(brailleControllerPositionChangedListener);
+  brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
 });
 
 function processData() {
