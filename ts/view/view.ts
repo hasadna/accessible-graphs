@@ -8,17 +8,26 @@ let source = null;
 let selectedCell = null;
 let timeOut = null;
 let data: number[][] = null;
+let brailleData: string[] = null;
 let focusedRowIndex: number = 0;
 let focusedColIndex: number = 0;
 
-function brailleControllerPositionChangeListener(event) {
-  console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
+function brailleControllerSelectionListener(event) {
+  console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
+  // First 2 characters and last character are not data
+  const position = event.position - 2;
+  if (position >= 0 && position < data[0].length) {
+    // We subtract 2 because of the 2 left non-data characters
+    updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0])
+  }
 }
 
 function processData() {
   brailleController = new BrailleController(document.getElementById('container'));
-  brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
+  brailleController.setSelectionListener(brailleControllerSelectionListener);
   data = parseData(getUrlParam('data'));
+  brailleData = BrailleController.numbersToBraille(data[0]);
+  brailleController.setBraille(brailleData[0]);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
@@ -168,7 +177,6 @@ function updateSelectedCell(cell) {
   selectedCell = cell;
   $(selectedCell).css('background-color', '#ffff4d');
   $(selectedCell).css('border', '1px solid #0099ff');
-  selectedCell.focus();
   startSoundPlayback();
 }
 
