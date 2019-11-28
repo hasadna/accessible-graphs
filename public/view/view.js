@@ -7,12 +7,14 @@ let source = null;
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
 let timeOut = null;
+let data = null;
 function brailleControllerPositionChangeListener(event) {
     console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
 }
 function processData() {
     brailleController = new BrailleController(document.getElementById('container'));
     brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
+    data = getDataFromUrl();
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
@@ -25,30 +27,21 @@ function createGrid() {
     grid.width('100%');
     grid.height('70%');
     grid.prop('className', 'table');
-    let input = getDataFromURL('data');
-    let lines = input.split('\n');
-    let line;
-    let rowIndex = 0;
-    for (line of lines) {
+    for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let gridRow = $(document.createElement('div'));
         gridRow.prop('role', 'row');
         gridRow.prop('className', 'row');
-        let columnIndex = 0;
-        let values = line.split('\t');
-        let value;
-        for (value of values) {
+        for (let columnIndex = 0; columnIndex < data[0].length; columnIndex++) {
             let gridCell = $(document.createElement('div'));
             gridCell.attr('role', 'gridcell');
             gridCell.prop('className', 'cell');
-            gridCell.append(document.createTextNode(value));
+            gridCell.append(document.createTextNode(data[rowIndex][columnIndex].toString()));
             gridCell.prop('aria-readonly', 'true');
             gridCell.prop('row', rowIndex);
             gridCell.prop('col', columnIndex);
             gridRow.append(gridCell);
-            columnIndex++;
         }
         grid.append(gridRow);
-        rowIndex++;
     }
     let container = $('#container');
     container.append(grid);
@@ -64,11 +57,9 @@ function addOnClickAndOnTouchSoundToGrid() {
     });
 }
 function addNavigationToGrid() {
-    let firstElement = true;
     $('div[role="gridcell"]').each(function (index, gridCell) {
-        if (firstElement == true) {
+        if (index == 0) {
             $(gridCell).prop('tabindex', '0');
-            firstElement = false;
         }
         else {
             $(gridCell).prop('tabindex', '-1');
@@ -120,20 +111,17 @@ function navigateGrid(event) {
 * Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
 * Cells in a 2X2 grid will be positioned between -1.5 and 1.5 in both x and y.
 */
-function get2DCoordinates(currentCell) {
-    let grid = document.getElementById('grid');
-    let columnCount = grid.firstChild.childNodes.length;
+function get2DCoordinates(rowNumber, columnNumber) {
+    let columnCount = data[0].length;
     // The col attribute is zero based indexe
     // For example, the value of  col attribute for a cell found in the third column is 2
-    let columnNumber = currentCell.getAttribute('col');
     let xCoordinate = columnNumber - Math.floor(columnCount / 2);
     // Align xCoordinate to be symmetric with respect to y-axis
     if (columnCount % 2 == 0) {
         xCoordinate += 0.5;
     }
-    let rowCount = grid.childNodes.length;
+    let rowCount = data.length;
     // The same applies for row attribute as col one
-    let rowNumber = currentCell.getAttribute('row');
     let yCoordinate = rowNumber - Math.floor(rowCount / 2);
     // Align yCoordinate similar to xCoordinate:
     if (rowCount % 2 == 0) {
@@ -147,32 +135,19 @@ function get2DCoordinates(currentCell) {
         y: yCoordinate,
     };
 }
-/**
-* Calculates the greatest Euclidean distance possible for a cell in the grid,
-* when it's coordinates is mapped to 2D coordinates
-* Assumes that the number of cells in each row is equal,
-*  and the number of cells in each column is equal also
-*/
-function getMaxDistancePossible() {
-    let grid = $('#grid')[0];
-    // The cell with max coordinates is naturaly found in the upper right corner of the grid
-    // so get it
-    let cellWithMaxCoordinates = grid.firstChild.lastChild;
-    let maxCoordinates = get2DCoordinates(cellWithMaxCoordinates);
-    // Calculate the Euclidean distance of this cell from the origin (0,0)
-    let maxDistance = 0;
-    maxDistance += Math.pow(maxCoordinates.x, 2);
-    maxDistance += Math.pow(maxCoordinates.y, 2);
-    maxDistance = Math.sqrt(maxDistance);
-    return maxDistance;
+/** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
+function getCellMaxDistance() {
+    let maxCoords = get2DCoordinates(data.length, data[0].length);
+    // Calculate Euclidean distance of cell from origin (0,0)
+    return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
 function createAndSetPanner(currentCell) {
     let panner = audioContext.createPanner();
     panner.panningModel = 'HRTF';
     panner.distanceModel = 'linear';
     panner.refDistance = 0;
-    panner.rolloffFactor = panner.maxDistance / (getMaxDistancePossible() * 2);
-    let coordinates = get2DCoordinates(currentCell);
+    panner.rolloffFactor = panner.maxDistance / (getCellMaxDistance() * 2);
+    let coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
     panner.setPosition(coordinates.x, coordinates.y, 0);
     return panner;
 }
@@ -181,8 +156,8 @@ function createAndSetOscillator(currentCell) {
     let selectedValue = currentCell.firstChild.data;
     const MAX_FREQUENCY = 1000;
     const MIN_FREQUENCY = 100;
-    let minValue = parseFloat(getDataFromURL('minValue'));
-    let maxValue = parseFloat(getDataFromURL('maxValue'));
+    let minValue = parseFloat(getUrlParam('minValue'));
+    let maxValue = parseFloat(getUrlParam('maxValue'));
     selectedValue = parseFloat(selectedValue);
     if (selectedValue < minValue) {
         selectedValue = minValue;
@@ -204,7 +179,7 @@ function playSound(event) {
     if (audioContext.state == 'suspended') {
         audioContext.resume();
     }
-    if (getDataFromURL('instrumentType') == 'synthesizer') {
+    if (getUrlParam('instrumentType') == 'synthesizer') {
         playSoundWithOscillator();
     }
     else {
@@ -243,8 +218,8 @@ function playAudioFile(buffer) {
     source.start(audioContext.currentTime);
 }
 function getFileToPlay(currentCell) {
-    let minValue = parseFloat(getDataFromURL('minValue'));
-    let maxValue = parseFloat(getDataFromURL('maxValue'));
+    let minValue = parseFloat(getUrlParam('minValue'));
+    let maxValue = parseFloat(getUrlParam('maxValue'));
     let selectedValue = currentCell.firstChild.data;
     selectedValue = parseFloat(selectedValue);
     const NUMBER_OF_TRACKS = 22;
@@ -253,7 +228,7 @@ function getFileToPlay(currentCell) {
     if (trackNumber == 0) {
         trackNumber++;
     }
-    let instrumentType = getDataFromURL('instrumentType');
+    let instrumentType = getUrlParam('instrumentType');
     let fileName = '/assets/' + instrumentType;
     fileName += '/track' + trackNumber + '.mp3';
     return fileName;
@@ -292,12 +267,31 @@ function onCellChange(event) {
     playSound(event);
     event.stopPropagation();
 }
-function getDataFromURL(variableName) {
+function getUrlParam(variableName) {
     let url = new URL(window.location.href);
     let params = url.searchParams;
     if (params.has(variableName) == false) {
         return '';
     }
     return params.get(variableName);
+}
+function getDataFromUrl() {
+    let result = Array();
+    const dataString = getUrlParam('data');
+    let lines = dataString.split('\n');
+    let line;
+    let rowIndex = 0;
+    for (line of lines) {
+        result[rowIndex] = Array();
+        let columnIndex = 0;
+        let values = line.split('\t');
+        let value;
+        for (value of values) {
+            result[rowIndex][columnIndex] = value;
+            columnIndex++;
+        }
+        rowIndex++;
+    }
+    return result;
 }
 //# sourceMappingURL=view.js.map
