@@ -8,6 +8,8 @@ let source = null;
 let selectedCell = null;
 let timeOut = null;
 let data: number[][] = null;
+let focusedRowIndex: number = 0;
+let focusedColIndex: number = 0;
 
 function brailleControllerPositionChangeListener(event) {
   console.log('brailleControllerPositionChangeListener: cursorPosition=' + event.cursorPosition + ' cursorPosition=' + event.character);
@@ -16,7 +18,7 @@ function brailleControllerPositionChangeListener(event) {
 function processData() {
   brailleController = new BrailleController(document.getElementById('container'));
   brailleController.setPositionChangeListener(brailleControllerPositionChangeListener);
-  data = getDataFromUrl();
+  data = parseData(getUrlParam('data'));
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
@@ -24,24 +26,24 @@ function processData() {
 
 function createGrid() {
   let grid = $(document.createElement('div'));
-  grid.prop('role', 'grid');
+  grid.attr('role', 'grid');
   grid.prop('id', 'grid');
-  grid.prop('aria-readonly', 'true');
+  grid.attr('aria-readonly', 'true');
   grid.width('100%');
-  grid.height('70%');
+  grid.height('90%');
   grid.prop('className', 'table');
   for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
     let gridRow = $(document.createElement('div'));
     gridRow.prop('role', 'row');
     gridRow.prop('className', 'row');
-    for (let columnIndex = 0; columnIndex < data[0].length; columnIndex++) {
+    for (let colIndex = 0; colIndex < data[0].length; colIndex++) {
       let gridCell = $(document.createElement('div'));
       gridCell.attr('role', 'gridcell');
       gridCell.prop('className', 'cell');
-      gridCell.append(document.createTextNode(data[rowIndex][columnIndex].toString()));
-      gridCell.prop('aria-readonly', 'true');
-      gridCell.prop('row', rowIndex);
-      gridCell.prop('col', columnIndex);
+      gridCell.append(document.createTextNode(data[rowIndex][colIndex].toString()));
+      gridCell.attr('aria-readonly', 'true');
+      gridCell.attr('row', rowIndex);
+      gridCell.attr('col', colIndex);
       gridRow.append(gridCell);
     }
     grid.append(gridRow);
@@ -52,13 +54,22 @@ function createGrid() {
 
 function addOnClickAndOnTouchSoundToGrid() {
   $('div[role="gridcell"]').each(function (index, element) {
-    $(element).click(startSoundPlayback);
+    $(element).click(onClick);
     $(element).on('touchstart', startSoundPlayback);
     $(element).on('touchmove', onCellChange);
     $(element).on('touchleave', stopSoundPlayback);
     $(element).on('touchcancel', stopSoundPlayback);
-    $(element).focus(startSoundPlayback);
+    $(element).focus(noopEvent);
   });
+}
+
+function onClick(event) {
+  updateSelectedCell(event.currentTarget);
+  event.preventDefault();
+}
+
+function noopEvent(event) {
+  event.preventDefault();
 }
 
 function addNavigationToGrid() {
@@ -73,72 +84,63 @@ function addNavigationToGrid() {
 }
 
 function navigateGrid(event) {
-  const keyName = event.key;
-  let currentCell = event.currentTarget;
-  let newFocusedCell = null;
-  switch (keyName) {
-    case 'ArrowDown':
-      if (currentCell.parentNode.nextSibling != null) {
-        let index = currentCell.getAttribute('col');
-        newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
-      }
-      break;
+  let row: number = focusedRowIndex;
+  let col: number = focusedColIndex;
+  switch (event.key) {
     case 'ArrowUp':
-      if (currentCell.parentNode.previousSibling != null) {
-        let index = currentCell.getAttribute('col');
-        newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
-      }
+      row -= 1;
+      break;
+    case 'ArrowDown':
+      row += 1;
       break;
     case 'ArrowLeft':
-      newFocusedCell = currentCell.previousSibling;
+      col -= 1;
       break;
     case 'ArrowRight':
-      newFocusedCell = currentCell.nextSibling;
+      col += 1;
       break;
     case 'Home':
-      newFocusedCell = currentCell.parentNode.firstChild;
+      col = 0;
       break;
     case 'End':
-      newFocusedCell = currentCell.parentNode.lastChild;
+      col = data[0].length - 1;
       break;
     // TODO: add PageUp/Down keys
     default:
       return;
   }
-  if (newFocusedCell != null) {
-    newFocusedCell.focus();
+  if (0 <= row && row < data.length && 0 <= col && col < data[0].length) {
+    updateSelectedCell($(`[row=${row}][col=${col}]`)[0]);
   }
 }
 
 /**
-* Maps each cell's row and col to a 2D coordinate. 
+* Maps (row, col) to a 2D coordinate. row and col are 0-based indices.
 * Returns a map with the x and y coordinates (e.g {x:1, y:0}).
 * Examples:
+* Cells in a 2X2 grid will be positioned between -0.5 and 0.5 in both x and y.
 * Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
-* Cells in a 2X2 grid will be positioned between -1.5 and 1.5 in both x and y.
 */
-function get2DCoordinates(rowNumber, columnNumber) {
-  let columnCount = data[0].length;
-  // The col attribute is zero based indexe
-  // For example, the value of  col attribute for a cell found in the third column is 2
-  let xCoordinate = columnNumber - Math.floor(columnCount / 2);
-  // Align xCoordinate to be symmetric with respect to y-axis
-  if (columnCount % 2 == 0) {
-    xCoordinate += 0.5;
+function get2DCoordinates(row, col) {
+  let colCount = data[0].length;
+  let xCoord = col - Math.floor(colCount / 2);
+  // Align xCoord to be symmetric with respect to y-axis
+  if (colCount % 2 == 0) {
+    xCoord += 0.5;
   }
   let rowCount = data.length;
   // The same applies for row attribute as col one
-  let yCoordinate = rowNumber - Math.floor(rowCount / 2);
-  // Align yCoordinate similar to xCoordinate:
+  let yCoord = row - Math.floor(rowCount / 2);
+  // Align yCoord similar to xCoord:
   if (rowCount % 2 == 0) {
-    yCoordinate += 0.5;
+    yCoord += 0.5;
   }
-  // Negate yCoordinate so upper cells have positive values, 
+  // Negate yCoord so upper cells have positive values, 
   // and lower cells have negative values
-  yCoordinate = -yCoordinate;
+  yCoord = -yCoord;
   return {
-    x: xCoordinate,
-    y: yCoordinate,
+    x: xCoord,
+    y: yCoord,
   }
 }
 
@@ -152,10 +154,22 @@ function onCellChange(event) {
   if (elementUnderTouch == null || elementUnderTouch.getAttribute('role') != 'gridcell') {
     return;
   }
-  selectedCell = elementUnderTouch;
-  stopSoundPlayback(event);
-  playSound(event);
+  updateSelectedCell(elementUnderTouch);
+  stopSoundPlayback();
+  playSound();
   event.stopPropagation();
+}
+
+function updateSelectedCell(cell) {
+  focusedRowIndex = parseInt(cell.getAttribute('row'));
+  focusedColIndex = parseInt(cell.getAttribute('col'));
+  $(selectedCell).css('background-color', '');
+  $(selectedCell).css('border', '');
+  selectedCell = cell;
+  $(selectedCell).css('background-color', '#ffff4d');
+  $(selectedCell).css('border', '1px solid #0099ff');
+  selectedCell.focus();
+  startSoundPlayback();
 }
 
 function getUrlParam(variableName) {
@@ -167,20 +181,19 @@ function getUrlParam(variableName) {
   return params.get(variableName);
 }
 
-function getDataFromUrl() {
+function parseData(dataString) {
   let result: number[][] = Array();
-  const dataString: string = getUrlParam('data');
   let lines = dataString.split('\n');
   let line;
   let rowIndex = 0;
   for (line of lines) {
     result[rowIndex] = Array();
-    let columnIndex = 0;
+    let colIndex = 0;
     let values = line.split('\t');
     let value;
     for (value of values) {
-      result[rowIndex][columnIndex] = value;
-      columnIndex++;
+      result[rowIndex][colIndex] = value;
+      colIndex++;
     }
     rowIndex++;
   }

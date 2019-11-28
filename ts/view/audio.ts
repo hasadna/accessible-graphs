@@ -36,14 +36,12 @@ function createAndSetOscillator(currentCell) {
     oscillator.channelCount = 1;
 }
 
-function startSoundPlayback(event) {
-    selectedCell = event.currentTarget;
-    event.preventDefault();
-    stopSoundPlayback(event);
-    playSound(event);
+function startSoundPlayback() {
+    stopSoundPlayback();
+    playSound();
 }
 
-function playSound(event) {
+function playSound() {
     if (audioContext.state == 'suspended') {
         audioContext.resume();
     }
@@ -63,7 +61,7 @@ function playSoundWithOscillator() {
     panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
     timeOut = setTimeout(() => {
-        stopSoundPlayback(event);
+        stopSoundPlayback();
     }, 1000);
 }
 
@@ -105,7 +103,7 @@ function getFileToPlay(currentCell) {
     return fileName;
 }
 
-function stopSoundPlayback(event) {
+function stopSoundPlayback() {
     try {
         if (oscillator != null) {
             oscillator.stop(audioContext.currentTime);
@@ -115,9 +113,6 @@ function stopSoundPlayback(event) {
         }
         if (timeOut != null) {
             window.clearTimeout(timeOut);
-        }
-        if (event != undefined) {
-            event.preventDefault();
         }
     } catch (e) {
         console.log(e);

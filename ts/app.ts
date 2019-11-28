@@ -3,10 +3,10 @@ function setFocusToInputField() {
 }
 
 function updateURL() {
-  let input = $('#dataInput').text();
+  let input: string = <string>$('#dataInput').val();
   input = encodeURIComponent(input);
-  let minValue = $('#minValue').text();
-  let maxValue = $('#maxValue').text();
+  let minValue = $('#minValue').val();
+  let maxValue = $('#maxValue').val();
   let instrumentType = $('#instrumentType').val();
   let currentUrl = new URL(window.location.href);
   let newUrl;
@@ -62,6 +62,6 @@ function findMinAndMaxValues() {
       }
     }
   }
-  $('#maxValue').text(maxValue);
-  $('#minValue').text(minValue);
+  $('#maxValue').val(maxValue);
+  $('#minValue').val(minValue);
 }
