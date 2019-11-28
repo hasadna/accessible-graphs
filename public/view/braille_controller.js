@@ -1,11 +1,11 @@
 let brailleController = null;
 class BrailleController {
     constructor(parent) {
-        if (document.getElementById('braille_controller_text')) {
+        if (document.getElementById('brailleControllerText')) {
             throw 'Braille controller already created';
         }
         let textarea = $(document.createElement('textarea'));
-        textarea.prop('id', 'braille_controller_text');
+        textarea.prop('id', 'brailleControllerText');
         textarea.text('⠊⠉⠑⢄⣀⡠⠊⠉⠑⢄⣀⡠⠊');
         textarea.keydown(this.onKeyDown);
         textarea.keyup(this.noopEventCatcher);
