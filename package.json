@@ -1,0 +1,8 @@
+{
+  "name": "sensory-interface",
+  "version": "1.0.0",
+  "license": "AGPL",
+  "devDependencies": {
+    "@types/jquery": "^3.3.31"
+  }
+}
