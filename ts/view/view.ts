@@ -17,7 +17,6 @@ function brailleControllerSelectionListener(event) {
   // First 2 characters and last character are not data
   const position = event.position - 2;
   if (position >= 0 && position < data[0].length) {
-    // We subtract 2 because of the 2 left non-data characters
     updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0])
   }
 }
