@@ -6,7 +6,6 @@ class BrailleController {
         }
         let textarea = $(document.createElement('textarea'));
         textarea.prop('id', 'brailleControllerText');
-        textarea.text('⠊⠉⠑⢄⣀⡠⠊⠉⠑⢄⣀⡠⠊');
         textarea.keydown(this.onKeyDown);
         textarea.keyup(this.noopEventCatcher);
         textarea.keypress(this.noopEventCatcher);
@@ -16,16 +15,70 @@ class BrailleController {
         parent.appendChild(textarea[0]);
         textarea.focus();
         this.textarea = textarea;
-        this.listener = null;
         // Note: We initially tried document.addEventListener('selectionchange', func)
         //       but that didn't work in Firefox.
-        setInterval(this.checkPosition, 50);
+        setInterval(this.checkSelection, 50);
         this.currentPosition = -1;
     }
-    checkPosition() {
+    static normalizeData(data) {
+        let result = Array();
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        for (let i = 0; i < data.length; i++) {
+            result[i] = (data[i] - min) / max * 16;
+        }
+        return result;
+    }
+
+    static numbersToBraille(data) {
+        data = BrailleController.normalizeData(data);
+        return [
+            "⣿⣿" + BrailleController.getBraille(data, 1, 0) + "⣿",
+            "⠛⣿" + BrailleController.getBraille(data, 2, 1) + "⣿",
+            "⣤⣿" + BrailleController.getBraille(data, 2, 0) + "⣿",
+            "⠉⣿" + BrailleController.getBraille(data, 4, 3) + "⣿",
+            "⠒⣿" + BrailleController.getBraille(data, 4, 2) + "⣿",
+            "⠤⣿" + BrailleController.getBraille(data, 4, 1) + "⣿",
+            "⣀⣿" + BrailleController.getBraille(data, 4, 0) + "⣿"
+        ];
+    }
+    static getBraille(data, totalSegments, segmentNumber) {
+        let brailleData = '';
+        let i;
+        for (i = 0; i < data.length; i += 1) {
+            const d = data[i];
+            const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
+            brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
+        }
+        return brailleData;
+    }
+    static getBraille2(data, totalSegments, segmentNumber) {
+        let brailleData = '';
+        let i;
+        for (i = 0; i < data.length; i += 2) {
+            const d1 = data[i];
+            const d2 = data[i + 1];
+            const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
+            const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
+            brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b1 * 5 + b2);
+        }
+        return brailleData;
+    }
+
+    static getBrailleValue(totalSegments, segmentNumber, value) {
+        const segmentSize = 16 / totalSegments;
+        value = value - segmentSize * (segmentNumber);
+        if (value < 0 || value >= segmentSize) {
+            return 0;
+        }
+        const brailleDotMultiples = segmentSize / 4;
+        return Math.floor(value / brailleDotMultiples) + 1;
+    }
+
+    checkSelection() {
         if (brailleController.currentPosition != brailleController.textarea.prop('selectionStart')) {
             brailleController.currentPosition = brailleController.textarea.prop('selectionStart');
-            brailleController.onPositionChange();
+            brailleController.onSelection();
         }
     }
     noopEventCatcher(event) {
@@ -40,21 +93,25 @@ class BrailleController {
     setBraille(text) {
         this.textarea.text(text);
     }
-    setPositionChangeListener(listener) {
-        this.listener = listener;
+    setSelectionListener(listener) {
+        this.selectionListener = listener;
     }
-    onPositionChange() {
-        if (brailleController.listener == null) {
+    onSelection() {
+        if (brailleController.selectionListener == null) {
             return;
         }
         let cursorPosition = brailleController.currentPosition;
-        let currrentChar = brailleController.textarea.text().slice(cursorPosition - 1, cursorPosition);
+        let currrentChar = brailleController.textarea.text().slice(cursorPosition, cursorPosition + 1);
         let newEvent = {
-            cursorPosition: cursorPosition,
+            position: cursorPosition,
             character: currrentChar,
             text: brailleController.textarea.text()
         };
-        brailleController.listener(newEvent);
+        brailleController.selectionListener(newEvent);
     }
 }
+// These symbols map 1:1 to numbers.
+BrailleController.BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
+// These symbols map 1:2 to numbers. Each symbol maps to 2 numbers.
+BrailleController.BRAILLE_SYMBOLS2 = '⠀⢀⠠⠐⠈⡀⣀⡠⡐⡈⠄⢄⠤⠔⠌⠂⢂⠢⠒⠊⠁⢁⠡⠑⠉';
 //# sourceMappingURL=braille_controller.js.map

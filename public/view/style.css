@@ -18,7 +18,7 @@ div.row {
 div.cell {
   display: table-cell;
   border: 1px solid #ccc;
-  font-size: 10vmax;
+  font-size: 1vmax;
   text-align: center;
   vertical-align: middle;
 }
@@ -42,7 +42,7 @@ div.cell {
   display: block;
   width:95%;
   max-height:65px;
-  font-size: 4em;
+  font-size: 2em;
   text-align-last: center;
   border: none;
   resize: none;
