@@ -38,7 +38,7 @@ class BrailleController {
     const min = Math.min(...data);
     const max = Math.max(...data);
     for (let i = 0; i < data.length; i++) {
-      result[i] = (data[i] - min) / max * 16;
+      result[i] = (data[i] - min) / (max - min) * 15.99;
     }
     console.log('data=' + data);
     console.log('normalizedData=' + result);
