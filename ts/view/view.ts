@@ -171,7 +171,7 @@ function updateSelectedCell(cell) {
   $(selectedCell).css('background-color', '#ffff4d');
   $(selectedCell).css('border', '1px solid #0099ff');
   startSoundPlayback();
-  speekSelectedCell();
+  speakSelectedCell();
 }
 
 function getUrlParam(variableName) {

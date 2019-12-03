@@ -116,7 +116,7 @@ function stopSoundPlayback() {
         console.log(e);
     }
 }
-function speekSelectedCell() {
+function speakSelectedCell() {
     let synth = window.speechSynthesis;
     synth.cancel();
     let rowIndex = $(selectedCell).attr('row');
