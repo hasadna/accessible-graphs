@@ -1,12 +1,6 @@
-// initialize Audio context on page load.
-let AudioContextClass = (<any>window).webkitAudioContext || window.AudioContext;
-let audioContext = new AudioContextClass();
-let oscillator = null;
-let source = null;
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
-let timeOut = null;
 let data: number[][] = null;
 let brailleData: string[] = null;
 let focusedRowIndex: number = 0;
@@ -177,6 +171,7 @@ function updateSelectedCell(cell) {
   $(selectedCell).css('background-color', '#ffff4d');
   $(selectedCell).css('border', '1px solid #0099ff');
   startSoundPlayback();
+  speakSelectedCell();
 }
 
 function getUrlParam(variableName) {

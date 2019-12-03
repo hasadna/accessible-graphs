@@ -1,12 +1,6 @@
-// initialize Audio context on page load.
-let AudioContextClass = window.webkitAudioContext || window.AudioContext;
-let audioContext = new AudioContextClass();
-let oscillator = null;
-let source = null;
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
-let timeOut = null;
 let data = null;
 let brailleData = null;
 let focusedRowIndex = 0;
@@ -16,7 +10,6 @@ function brailleControllerSelectionListener(event) {
     // First 2 characters and last character are not data
     const position = event.position - 2;
     if (position >= 0 && position < data[0].length) {
-        // We subtract 2 because of the 2 left non-data characters
         updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0]);
     }
 }
@@ -168,6 +161,7 @@ function updateSelectedCell(cell) {
     $(selectedCell).css('background-color', '#ffff4d');
     $(selectedCell).css('border', '1px solid #0099ff');
     startSoundPlayback();
+    speakSelectedCell();
 }
 function getUrlParam(variableName) {
     let url = new URL(window.location.href);
