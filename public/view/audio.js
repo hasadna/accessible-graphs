@@ -1,3 +1,9 @@
+// initialize Audio context on page load.
+let AudioContextClass = window.webkitAudioContext || window.AudioContext;
+let audioContext = new AudioContextClass();
+let oscillator = null;
+let source = null;
+let timeOut = null;
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
     let maxCoords = get2DCoordinates(data.length, data[0].length);
@@ -109,5 +115,18 @@ function stopSoundPlayback() {
     catch (e) {
         console.log(e);
     }
+}
+function speekSelectedCell() {
+    let synth = window.speechSynthesis;
+    synth.cancel();
+    let rowIndex = $(selectedCell).attr('row');
+    rowIndex = String(parseInt(rowIndex) + 1);
+    let colIndex = $(selectedCell).attr('col');
+    colIndex = String(parseInt(colIndex) + 1);
+    let textToSpeek = $(selectedCell).first().text() + ',' +
+        'row' + rowIndex + ',' +
+        'column' + colIndex + '.';
+    let utterance = new SpeechSynthesisUtterance(textToSpeek);
+    synth.speak(utterance);
 }
 //# sourceMappingURL=audio.js.map

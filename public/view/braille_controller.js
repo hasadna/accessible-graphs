@@ -27,9 +27,10 @@ class BrailleController {
         for (let i = 0; i < data.length; i++) {
             result[i] = (data[i] - min) / max * 16;
         }
+        console.log('data=' + data);
+        console.log('normalizedData=' + result);
         return result;
     }
-
     static numbersToBraille(data) {
         data = BrailleController.normalizeData(data);
         return [
@@ -52,6 +53,7 @@ class BrailleController {
         }
         return brailleData;
     }
+    /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
     static getBraille2(data, totalSegments, segmentNumber) {
         let brailleData = '';
         let i;
@@ -60,11 +62,10 @@ class BrailleController {
             const d2 = data[i + 1];
             const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
             const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
-            brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b1 * 5 + b2);
+            brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
         }
         return brailleData;
     }
-
     static getBrailleValue(totalSegments, segmentNumber, value) {
         const segmentSize = 16 / totalSegments;
         value = value - segmentSize * (segmentNumber);
@@ -74,7 +75,6 @@ class BrailleController {
         const brailleDotMultiples = segmentSize / 4;
         return Math.floor(value / brailleDotMultiples) + 1;
     }
-
     checkSelection() {
         if (brailleController.currentPosition != brailleController.textarea.prop('selectionStart')) {
             brailleController.currentPosition = brailleController.textarea.prop('selectionStart');
