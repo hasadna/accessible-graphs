@@ -119,14 +119,20 @@ function stopSoundPlayback() {
 function speakSelectedCell() {
     let synth = window.speechSynthesis;
     synth.cancel();
+    let value = $(selectedCell).first().text();
+    let intValue = parseInt(value);
+    if (intValue < 0) {
+        intValue = Math.abs(intValue);
+        value = 'Minus ' + intValue;
+    }
     let rowIndex = $(selectedCell).attr('row');
     rowIndex = String(parseInt(rowIndex) + 1);
     let colIndex = $(selectedCell).attr('col');
     colIndex = String(parseInt(colIndex) + 1);
-    let textToSpeek = $(selectedCell).first().text() + ',' +
+    let textToSpeak = value + ',' +
         'row' + rowIndex + ',' +
         'column' + colIndex + '.';
-    let utterance = new SpeechSynthesisUtterance(textToSpeek);
+    let utterance = new SpeechSynthesisUtterance(textToSpeak);
     synth.speak(utterance);
 }
 //# sourceMappingURL=audio.js.map
