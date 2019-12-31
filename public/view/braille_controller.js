@@ -34,13 +34,13 @@ class BrailleController {
     static numbersToBraille(data) {
         data = BrailleController.normalizeData(data);
         return [
-            "⣿⣿" + BrailleController.getBraille(data, 1, 0) + "⣿",
-            "⠛⣿" + BrailleController.getBraille(data, 2, 1) + "⣿",
-            "⣤⣿" + BrailleController.getBraille(data, 2, 0) + "⣿",
-            "⠉⣿" + BrailleController.getBraille(data, 4, 3) + "⣿",
-            "⠒⣿" + BrailleController.getBraille(data, 4, 2) + "⣿",
-            "⠤⣿" + BrailleController.getBraille(data, 4, 1) + "⣿",
-            "⣀⣿" + BrailleController.getBraille(data, 4, 0) + "⣿"
+            '⣿⣿' + BrailleController.getBraille(data, 1, 0) + '⣿',
+            '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
+            '⣤⣿' + BrailleController.getBraille(data, 2, 0) + '⣿',
+            '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿',
+            '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
+            '⠤⣿' + BrailleController.getBraille(data, 4, 1) + '⣿',
+            '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿'
         ];
     }
     static getBraille(data, totalSegments, segmentNumber) {

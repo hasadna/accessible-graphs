@@ -42,7 +42,7 @@ function findMinAndMaxValues() {
     if ($('#autoOption').prop('checked') == false) {
         return;
     }
-    let input = $('#dataInput').text();
+    let input = $('#dataInput').val();
     let maxValue = -Infinity;
     let minValue = Infinity;
     // TODO: Add a method to parse the input data to a array of arrays for example, so it can be used here and in processData().
