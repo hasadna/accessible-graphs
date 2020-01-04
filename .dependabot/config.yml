@@ -1,0 +1,13 @@
+# See documentation,
+#  https://dependabot.com/docs/config-file/
+# Add or modify Organization settings via,
+#  https://github.com/marketplace/dependabot-preview
+
+version: 1
+
+update_configs:
+  # Update package.json and lock files when available
+  - package_manager: "javascript"
+    directory: "/"
+    update_schedule: "live"
+    target_branch: "master"
