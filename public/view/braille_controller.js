@@ -4,7 +4,7 @@ class BrailleController {
         if (document.getElementById('brailleControllerText')) {
             throw 'Braille controller already created';
         }
-        let textarea = $(document.createElement('textarea'));
+        const textarea = $(document.createElement('textarea'));
         textarea.prop('id', 'brailleControllerText');
         textarea.keydown(this.onKeyDown);
         textarea.keyup(this.noopEventCatcher);
@@ -21,14 +21,14 @@ class BrailleController {
         this.currentPosition = -1;
     }
     static normalizeData(data) {
-        let result = Array();
+        const result = Array();
         const min = Math.min(...data);
         const max = Math.max(...data);
         for (let i = 0; i < data.length; i++) {
             result[i] = (data[i] - min) / (max - min) * 15.99;
         }
-        console.log('data=' + data);
-        console.log('normalizedData=' + result);
+        console.log(`data=${data}`);
+        console.log(`normalizedData=${result}`);
         return result;
     }
     static numbersToBraille(data) {
@@ -45,8 +45,7 @@ class BrailleController {
     }
     static getBraille(data, totalSegments, segmentNumber) {
         let brailleData = '';
-        let i;
-        for (i = 0; i < data.length; i += 1) {
+        for (let i = 0; i < data.length; i += 1) {
             const d = data[i];
             const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
             brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
@@ -56,8 +55,7 @@ class BrailleController {
     /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
     static getBraille2(data, totalSegments, segmentNumber) {
         let brailleData = '';
-        let i;
-        for (i = 0; i < data.length; i += 2) {
+        for (let i = 0; i < data.length; i += 2) {
             const d1 = data[i];
             const d2 = data[i + 1];
             const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
@@ -76,7 +74,7 @@ class BrailleController {
         return Math.floor(value / brailleDotMultiples) + 1;
     }
     checkSelection() {
-        if (brailleController.currentPosition != brailleController.textarea.prop('selectionStart')) {
+        if (brailleController.currentPosition !== brailleController.textarea.prop('selectionStart')) {
             brailleController.currentPosition = brailleController.textarea.prop('selectionStart');
             brailleController.onSelection();
         }
@@ -100,9 +98,9 @@ class BrailleController {
         if (brailleController.selectionListener == null) {
             return;
         }
-        let cursorPosition = brailleController.currentPosition;
-        let currrentChar = brailleController.textarea.text().slice(cursorPosition, cursorPosition + 1);
-        let newEvent = {
+        const cursorPosition = brailleController.currentPosition;
+        const currrentChar = brailleController.textarea.text().slice(cursorPosition, cursorPosition + 1);
+        const newEvent = {
             position: cursorPosition,
             character: currrentChar,
             text: brailleController.textarea.text()

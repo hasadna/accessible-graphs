@@ -1,6 +1,5 @@
 // initialize Audio context on page load.
-let AudioContextClass = window.webkitAudioContext || window.AudioContext;
-let audioContext = new AudioContextClass();
+const audioContext = new (window['webkitAudioContext'] || window['AudioContext'])();
 let oscillator = null;
 let source = null;
 let timeOut = null;
@@ -11,30 +10,33 @@ function getCellMaxDistance() {
     return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
 function createAndSetPanner(currentCell) {
-    let panner = audioContext.createPanner();
+    const panner = audioContext.createPanner();
     panner.panningModel = 'HRTF';
     panner.distanceModel = 'linear';
     panner.refDistance = 0;
     panner.rolloffFactor = panner.maxDistance / (getCellMaxDistance() * 2);
-    let coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
+    const coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
     panner.setPosition(coordinates.x, coordinates.y, 0);
     return panner;
 }
 function createAndSetOscillator(currentCell) {
     oscillator = audioContext.createOscillator();
-    let selectedValue = currentCell.firstChild.data;
     const MAX_FREQUENCY = 1000;
     const MIN_FREQUENCY = 100;
-    let minValue = parseFloat(getUrlParam('minValue'));
-    let maxValue = parseFloat(getUrlParam('maxValue'));
-    selectedValue = parseFloat(selectedValue);
+    const minValue = parseFloat(getUrlParam('minValue'));
+    const maxValue = parseFloat(getUrlParam('maxValue'));
+    let selectedValue = parseFloat(currentCell.firstChild.data);
+    /**
+     * Notice, when `selectedValue` is `NaN` the following `if` checks are `false`
+     *         and when `selectedValue` is `NaN` then so too is `frequency`
+     */
     if (selectedValue < minValue) {
         selectedValue = minValue;
     }
     if (selectedValue > maxValue) {
         selectedValue = maxValue;
     }
-    let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+    const frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
     oscillator.frequency.value = frequency;
     oscillator.channelCount = 1;
 }
@@ -55,9 +57,9 @@ function playSound() {
 }
 function playSoundWithOscillator() {
     // Create oscillator and panner nodes and connect them each time we want to play audio
-    // because those nodes are singel use entities
+    // because those nodes are single use entities
     createAndSetOscillator(selectedCell);
-    let panner = createAndSetPanner(selectedCell);
+    const panner = createAndSetPanner(selectedCell);
     oscillator.connect(panner);
     panner.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
@@ -66,12 +68,12 @@ function playSoundWithOscillator() {
     }, 1000);
 }
 function playSoundFromAudioFile() {
-    let fileName = getFileToPlay(selectedCell);
-    let request = new XMLHttpRequest();
+    const fileName = getFileToPlay(selectedCell);
+    const request = new XMLHttpRequest();
     request.open('get', fileName, true);
     request.responseType = 'arraybuffer';
     request.onload = function () {
-        let data = request.response;
+        const data = request.response;
         audioContext.decodeAudioData(data, playAudioFile);
     };
     request.send();
@@ -79,25 +81,23 @@ function playSoundFromAudioFile() {
 function playAudioFile(buffer) {
     source = audioContext.createBufferSource();
     source.buffer = buffer;
-    let panner = createAndSetPanner(selectedCell);
+    const panner = createAndSetPanner(selectedCell);
     source.connect(panner);
     panner.connect(audioContext.destination);
     source.start(audioContext.currentTime);
 }
 function getFileToPlay(currentCell) {
-    let minValue = parseFloat(getUrlParam('minValue'));
-    let maxValue = parseFloat(getUrlParam('maxValue'));
-    let selectedValue = currentCell.firstChild.data;
-    selectedValue = parseFloat(selectedValue);
+    const minValue = parseFloat(getUrlParam('minValue'));
+    const maxValue = parseFloat(getUrlParam('maxValue'));
+    const selectedValue = parseFloat(currentCell.firstChild.data);
     const NUMBER_OF_TRACKS = 22;
     let trackNumber = (selectedValue - minValue) / (maxValue - minValue) * NUMBER_OF_TRACKS;
     trackNumber = Math.ceil(trackNumber);
     if (trackNumber == 0) {
         trackNumber++;
     }
-    let instrumentType = getUrlParam('instrumentType');
-    let fileName = '/assets/' + instrumentType;
-    fileName += '/track' + trackNumber + '.mp3';
+    const instrumentType = getUrlParam('instrumentType');
+    const fileName = `/assets/${instrumentType}/track${trackNumber}.mp3`;
     return fileName;
 }
 function stopSoundPlayback() {
@@ -117,22 +117,20 @@ function stopSoundPlayback() {
     }
 }
 function speakSelectedCell() {
-    let synth = window.speechSynthesis;
+    const synth = window.speechSynthesis;
     synth.cancel();
     let value = $(selectedCell).first().text();
     let intValue = parseInt(value);
     if (intValue < 0) {
         intValue = Math.abs(intValue);
-        value = 'Minus ' + intValue;
+        value = `Minus ${intValue}`;
     }
     let rowIndex = $(selectedCell).attr('row');
     rowIndex = String(parseInt(rowIndex) + 1);
     let colIndex = $(selectedCell).attr('col');
     colIndex = String(parseInt(colIndex) + 1);
-    let textToSpeak = value + ',' +
-        'row' + rowIndex + ',' +
-        'column' + colIndex + '.';
-    let utterance = new SpeechSynthesisUtterance(textToSpeak);
+    const textToSpeek = `${value},row${rowIndex},column${colIndex}.`;
+    const utterance = new SpeechSynthesisUtterance(textToSpeek);
     synth.speak(utterance);
 }
 //# sourceMappingURL=audio.js.map
