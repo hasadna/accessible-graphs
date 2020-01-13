@@ -1,8 +1,16 @@
 {
   "name": "sensory-interface",
   "version": "1.0.0",
-  "license": "AGPL",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hasadna/sensory-interface.git"
+  },
   "devDependencies": {
-    "@types/jquery": "^3.3.31"
+    "@types/jquery": "^3.3.31",
+    "typescript": "^3.7.4"
   }
 }

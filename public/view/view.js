@@ -24,7 +24,7 @@ function processData() {
     addNavigationToGrid();
 }
 function createGrid() {
-    let grid = $(document.createElement('div'));
+    const grid = $(document.createElement('div'));
     grid.attr('role', 'grid');
     grid.prop('id', 'grid');
     grid.attr('aria-readonly', 'true');
@@ -69,7 +69,7 @@ function noopEvent(event) {
 }
 function addNavigationToGrid() {
     $('div[role="gridcell"]').each(function (index, gridCell) {
-        if (index == 0) {
+        if (index === 0) {
             $(gridCell).prop('tabindex', '0');
         }
         else {
@@ -116,20 +116,20 @@ function navigateGrid(event) {
 * Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
 */
 function get2DCoordinates(row, col) {
-    let colCount = data[0].length;
+    const colCount = data[0].length;
     let xCoord = col - Math.floor(colCount / 2);
     // Align xCoord to be symmetric with respect to y-axis
-    if (colCount % 2 == 0) {
+    if (colCount % 2 === 0) {
         xCoord += 0.5;
     }
-    let rowCount = data.length;
+    const rowCount = data.length;
     // The same applies for row attribute as col one
     let yCoord = row - Math.floor(rowCount / 2);
     // Align yCoord similar to xCoord:
-    if (rowCount % 2 == 0) {
+    if (rowCount % 2 === 0) {
         yCoord += 0.5;
     }
-    // Negate yCoord so upper cells have positive values, 
+    // Negate yCoord so upper cells have positive values,
     // and lower cells have negative values
     yCoord = -yCoord;
     return {
@@ -139,12 +139,12 @@ function get2DCoordinates(row, col) {
 }
 function onCellChange(event) {
     // Get the first changed touch point. We surely have one because we are listening to touchmove event, and surely a touch point have changed since the last event.
-    let changedTouch = event.changedTouches[0];
-    let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-    if (elementUnderTouch == selectedCell) {
+    const changedTouch = event.changedTouches[0];
+    const elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+    if (elementUnderTouch === selectedCell) {
         return;
     }
-    if (elementUnderTouch == null || elementUnderTouch.getAttribute('role') != 'gridcell') {
+    if (elementUnderTouch === null || elementUnderTouch.getAttribute('role') !== 'gridcell') {
         return;
     }
     updateSelectedCell(elementUnderTouch);
@@ -164,29 +164,27 @@ function updateSelectedCell(cell) {
     speakSelectedCell();
 }
 function getUrlParam(variableName) {
-    let url = new URL(window.location.href);
-    let params = url.searchParams;
-    if (params.has(variableName) == false) {
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    if (params.has(variableName) === false) {
         return '';
     }
     return params.get(variableName);
 }
 function parseData(dataString) {
-    let result = Array();
-    let lines = dataString.split('\n');
-    let line;
+    const result = Array();
     let rowIndex = 0;
-    for (line of lines) {
+    const lines = dataString.split('\n');
+    lines.forEach((line) => {
         result[rowIndex] = Array();
         let colIndex = 0;
-        let values = line.split('\t');
-        let value;
-        for (value of values) {
+        const values = line.split('\t');
+        values.forEach((value) => {
             result[rowIndex][colIndex] = value;
             colIndex++;
-        }
+        });
         rowIndex++;
-    }
+    });
     return result;
 }
 //# sourceMappingURL=view.js.map
