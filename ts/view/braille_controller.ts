@@ -22,7 +22,12 @@ class BrailleController {
     textarea.click(this.noopEventCatcher);
     textarea.mousedown(this.noopEventCatcher);
     textarea.mouseup(this.noopEventCatcher);
+    textarea.attr('aria-describedby', 'speechOffNote');
     parent.appendChild(textarea[0]);
+    const speechOffNote = $(document.createElement('p'));
+    speechOffNote.prop('id', 'speechOffNote');
+    speechOffNote.text('Please turn off your screen reader\'s speech. The system includes its own speech output.');
+    parent.appendChild(speechOffNote[0]);
     textarea.focus();
 
     this.textarea = textarea;
@@ -60,7 +65,7 @@ class BrailleController {
 
   static getBraille(data, totalSegments, segmentNumber) {
     let brailleData = '';
-    for (let i = 0; i < data.length; i+=1) {
+    for (let i = 0; i < data.length; i += 1) {
       const d = data[i];
       const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
       brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
@@ -71,12 +76,12 @@ class BrailleController {
   /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
   static getBraille2(data, totalSegments, segmentNumber) {
     let brailleData = '';
-    for (let i = 0; i < data.length; i+=2) {
+    for (let i = 0; i < data.length; i += 2) {
       const d1 = data[i];
       const d2 = data[i + 1];
       const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
       const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
-      brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1*5 + b2);
+      brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
     }
     return brailleData;
   }

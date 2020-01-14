@@ -12,7 +12,12 @@ class BrailleController {
         textarea.click(this.noopEventCatcher);
         textarea.mousedown(this.noopEventCatcher);
         textarea.mouseup(this.noopEventCatcher);
+        textarea.attr('aria-describedby', 'speechOffNote');
         parent.appendChild(textarea[0]);
+        const speechOffNote = $(document.createElement('p'));
+        speechOffNote.prop('id', 'speechOffNote');
+        speechOffNote.text('Please turn off your screen reader\'s speech. The system includes its own speech output.');
+        parent.appendChild(speechOffNote[0]);
         textarea.focus();
         this.textarea = textarea;
         // Note: We initially tried document.addEventListener('selectionchange', func)
