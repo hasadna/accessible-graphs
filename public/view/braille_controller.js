@@ -17,6 +17,7 @@ class BrailleController {
         const speechOffNote = $(document.createElement('p'));
         speechOffNote.prop('id', 'speechOffNote');
         speechOffNote.text('Please turn off your screen reader\'s speech. The system includes its own speech output.');
+        speechOffNote.prop('style', 'display:none');
         parent.appendChild(speechOffNote[0]);
         textarea.focus();
         this.textarea = textarea;
