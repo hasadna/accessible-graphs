@@ -1,6 +1,13 @@
-function setFocusToInputField() {
+jQuery(window).on('load', function () {
   $('#dataInput').focus();
-}
+  populateTtsList();
+  // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
+  //https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
+  // for more details 
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = populateTtsList;
+  }
+});
 
 function updateURL() {
   let input: string = <string>$('#dataInput').val();
@@ -8,6 +15,7 @@ function updateURL() {
   let minValue = $('#minValue').val();
   let maxValue = $('#maxValue').val();
   let instrumentType = $('#instrumentType').val();
+  let ttsVoiceIndex = $('#ttsVoice').prop('selectedIndex');
   let currentUrl = new URL(window.location.href);
   let newUrl;
   // Check if we are running on a localhost
@@ -23,6 +31,7 @@ function updateURL() {
   newUrl += '&minValue=' + minValue;
   newUrl += '&maxValue=' + maxValue;
   newUrl += '&instrumentType=' + instrumentType;
+  newUrl += '&ttsIndex=' + ttsVoiceIndex;
   window.location.href = newUrl;
 }
 
@@ -64,4 +73,21 @@ function findMinAndMaxValues() {
   }
   $('#maxValue').val(maxValue);
   $('#minValue').val(minValue);
+}
+
+function populateTtsList() {
+  let ttsVoiceSelect = $('#ttsVoice');
+  let synth = window.speechSynthesis;
+  let voices = synth.getVoices();
+  ttsVoiceSelect.html('');
+  for (let i = 0; i < voices.length; i++) {
+    let option = $('<option>');
+    let optionValueAndText = voices[i].name + ' (' + voices[i].lang + ')';
+    if (voices[i].default == true) {
+      optionValueAndText += ' -- DEFAULT';
+    }
+    option.val(optionValueAndText);
+    option.text(optionValueAndText);
+    ttsVoiceSelect.append(option);
+  }
 }
