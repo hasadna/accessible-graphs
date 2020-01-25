@@ -1,4 +1,4 @@
-jQuery(window).on('load', function () {
+function initializeAppScript() {
     $('#dataInput').focus();
     populateTtsList();
     // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
@@ -7,7 +7,7 @@ jQuery(window).on('load', function () {
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = populateTtsList;
     }
-});
+}
 function updateURL() {
     let input = $('#dataInput').val();
     input = encodeURIComponent(input);

@@ -136,11 +136,4 @@ function speakSelectedCell() {
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);
 }
-// In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
-//https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
-// for more details 
-let synth = window.speechSynthesis;
-if (synth.onvoiceschanged !== undefined) {
-    synth.onvoiceschanged = speakSelectedCell;
-}
 //# sourceMappingURL=audio.js.map

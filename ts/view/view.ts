@@ -6,6 +6,15 @@ let brailleData: string[] = null;
 let focusedRowIndex: number = 0;
 let focusedColIndex: number = 0;
 
+function initializeViewScript() {
+  // Initialize speech synthesis
+  // If we don't do that, Chrome will speak the first utterance with the default TTS voice
+  let synth = window.speechSynthesis;
+  let utterance = new SpeechSynthesisUtterance('');
+  synth.speak(utterance);
+  processData();
+}
+
 function brailleControllerSelectionListener(event) {
   console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
   // First 2 characters and last character are not data
