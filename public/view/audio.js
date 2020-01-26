@@ -125,12 +125,18 @@ function speakSelectedCell() {
         intValue = Math.abs(intValue);
         value = `Minus ${intValue}`;
     }
+    const utterance = new SpeechSynthesisUtterance(value);
+    synth.speak(utterance);
+}
+function speakSelectedCellPositionInfo() {
+    const synth = window.speechSynthesis;
+    synth.cancel();
     let rowIndex = $(selectedCell).attr('row');
     rowIndex = String(parseInt(rowIndex) + 1);
     let colIndex = $(selectedCell).attr('col');
     colIndex = String(parseInt(colIndex) + 1);
-    const textToSpeek = `${value},row${rowIndex},column${colIndex}.`;
-    const utterance = new SpeechSynthesisUtterance(textToSpeek);
+    const textToSpeak = `row${rowIndex},column${colIndex}.`;
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
     synth.speak(utterance);
 }
 //# sourceMappingURL=audio.js.map
