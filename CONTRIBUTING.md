@@ -86,6 +86,18 @@ npm run py-server
 firefox "http://localhost 8080"
 ```
 
+> Note, if Python version 3 is not available it is possible, at this time, to instead preview via...
+
+
+```Bash
+firefox file:///<path_to_repo>/public/index.html
+```
+
+
+> ... however, this is **not** recommended as some web-browsers do not take kindly to loading JavaScript from `file:///` paths, and some web-browsers really do not like loading JavaScript this way when there are remote JavaScript files involved, eg. JQuery.
+>
+> In short, if problems occur with `file:///` based paths, please try utilizing a development web-server before opening an Issue.
+
 
 ### Very important point about simplicity
 [Very important point about simplicity]:
