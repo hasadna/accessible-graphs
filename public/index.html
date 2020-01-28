@@ -10,7 +10,7 @@
   <script type="text/javascript" src="app.js"></script>
 </head>
 
-<body onload="setFocusToInputField()">
+<body onload="initializeAppScript()">
   <div class="container-fluid">
     <h2>Sensory interface</h2>
 
@@ -51,6 +51,10 @@
       <select id="instrumentType">
         <option value="synthesizer">Synthesizer</option>
         <option value="piano">Piano</option>
+      </select>
+      <br>
+      <label for="ttsVoice">Select preferred TTS to be used in the system</label>
+      <select id="ttsVoice">
       </select>
       <br>
     </div>
