@@ -4,14 +4,20 @@
   "license": "AGPL-3.0",
   "scripts": {
     "build": "tsc --build",
+    "postbuild": "copyfiles --flat node_modules/jquery/dist/jquery.min.js public/jquery",
     "py-server": "python3 -m http.server --bind 127.0.0.1 8080"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:hasadna/sensory-interface.git"
   },
+  "bugs": {
+    "url": "https://github.com/hasadna/sensory-interface/issues"
+  },
   "devDependencies": {
     "@types/jquery": "^3.3.31",
+    "copyfiles": "^2.2.0",
+    "jquery": "^3.4.1",
     "typescript": "^3.7.5"
   }
 }
