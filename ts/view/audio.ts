@@ -143,5 +143,8 @@ function speakSelectedCell() {
   colIndex = String(parseInt(colIndex) + 1);
   const textToSpeek = `${value},row${rowIndex},column${colIndex}.`;
   const utterance = new SpeechSynthesisUtterance(textToSpeek);
+  let ttsIndex = getUrlParam('ttsIndex');
+  let selectedTtsVoice = synth.getVoices()[ttsIndex];
+  utterance.voice = selectedTtsVoice;
   synth.speak(utterance);
 }
