@@ -9,6 +9,9 @@ class BrailleController {
   textarea: JQuery<HTMLElement>;
   selectionListener: (this: void, e: Event) => void;
   currentPosition: number;
+  data: number[];
+  currentZoomLevel: number;
+  currentSegmentNumber: number;
 
   constructor(parent) {
     if (document.getElementById('brailleControllerText')) {
@@ -37,6 +40,9 @@ class BrailleController {
     //       but that didn't work in Firefox.
     setInterval(this.checkSelection, 50);
     this.currentPosition = -1;
+    this.data = null;
+    this.currentZoomLevel = 0;
+    this.currentSegmentNumber = 0;
   }
 
   static normalizeData(data: number[]): number[] {
@@ -51,17 +57,20 @@ class BrailleController {
     return result;
   }
 
+  setData(data: number[]) {
+    this.data = data;
+  }
+
   static numbersToBraille(data: number[]): string[] {
     data = BrailleController.normalizeData(data);
     return [
       '⣿⣿' + BrailleController.getBraille(data, 1, 0) + '⣿',
-      '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
       '⣤⣿' + BrailleController.getBraille(data, 2, 0) + '⣿',
-      '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿',
-      '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
+      '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
+      '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿',
       '⠤⣿' + BrailleController.getBraille(data, 4, 1) + '⣿',
-      '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿'
-    ];
+      '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
+      '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿'];
   }
 
   static getBraille(data, totalSegments, segmentNumber) {
@@ -112,7 +121,32 @@ class BrailleController {
     if (event.key.includes('Arrow') || event.key.includes('Home') || event.key.includes('End')) {
       return; // OK
     }
+    if (event.key == 'j') {
+      brailleController.currentZoomLevel != 2 ? brailleController.currentZoomLevel++ : brailleController.currentZoomLevel = 2;
+      brailleController.currentSegmentNumber = 0;
+      brailleController.updateDisplaidBraille();
+    }
+    if (event.key == 'u') {
+      brailleController.currentZoomLevel != 0 ? brailleController.currentZoomLevel-- : brailleController.currentZoomLevel = 0;
+      brailleController.currentSegmentNumber = 0;
+      brailleController.updateDisplaidBraille();
+    }
+    if (event.key == 'i') {
+      let maxSegmentNumber = Math.pow(2, brailleController.currentZoomLevel) - 1;
+      brailleController.currentSegmentNumber != maxSegmentNumber ? brailleController.currentSegmentNumber++ : brailleController.currentSegmentNumber = maxSegmentNumber;
+      brailleController.updateDisplaidBraille();
+    }
+    if (event.key == 'k') {
+      brailleController.currentSegmentNumber != 0 ? brailleController.currentSegmentNumber-- : brailleController.currentSegmentNumber = 0;
+      brailleController.updateDisplaidBraille();
+    }
     event.preventDefault();
+  }
+
+  updateDisplaidBraille() {
+    let allBrailleData = BrailleController.numbersToBraille(brailleController.data);
+    let index = Math.pow(2, brailleController.currentZoomLevel) - 1 + brailleController.currentSegmentNumber;
+    brailleController.setBraille(allBrailleData[index]);
   }
 
   setBraille(text) {
@@ -137,4 +171,4 @@ class BrailleController {
 
     brailleController.selectionListener(newEvent);
   }
-}
+} 

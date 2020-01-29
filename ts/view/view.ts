@@ -28,6 +28,7 @@ function processData() {
   brailleController = new BrailleController(document.getElementById('container'));
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   data = parseData(getUrlParam('data'));
+  brailleController.setData(data[0]);
   brailleData = BrailleController.numbersToBraille(data[0]);
   brailleController.setBraille(brailleData[0]);
   createGrid();
