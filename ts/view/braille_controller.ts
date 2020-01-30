@@ -11,7 +11,7 @@ class BrailleController {
   currentPosition: number;
   data: number[];
   currentZoomLevel: number;
-  currentSegmentNumber: number;
+  currentPanningStep: number;
 
   constructor(parent) {
     if (document.getElementById('brailleControllerText')) {
@@ -42,7 +42,7 @@ class BrailleController {
     this.currentPosition = -1;
     this.data = null;
     this.currentZoomLevel = 0;
-    this.currentSegmentNumber = 0;
+    this.currentPanningStep = 0;
   }
 
   static normalizeData(data: number[]): number[] {
@@ -63,21 +63,31 @@ class BrailleController {
 
   static numbersToBraille(data: number[]): string[] {
     data = BrailleController.normalizeData(data);
-    return [
-      '⣿⣿' + BrailleController.getBraille(data, 1, 0) + '⣿',
-      '⣤⣿' + BrailleController.getBraille(data, 2, 0) + '⣿',
-      '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
-      '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿',
-      '⠤⣿' + BrailleController.getBraille(data, 4, 1) + '⣿',
-      '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
-      '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿'];
+    let result = [];
+    result.push('⣿⣿' + BrailleController.getBraille(data, 0, 0) + '⣿');
+    result.push('⣤⣿' + BrailleController.getBraille(data, 1, 0) + '⣿');
+    result.push('⠤⣿' + BrailleController.getBraille(data, 1, 1) + '⣿');
+    result.push('⠶⣿' + BrailleController.getBraille(data, 1, 2) + '⣿');
+    result.push('⠒⣿' + BrailleController.getBraille(data, 1, 3) + '⣿');
+    result.push('⠛⣿' + BrailleController.getBraille(data, 1, 4) + '⣿');
+    for (let i = 0; i < 4; i++) {
+      result.push('⣀⣿' + BrailleController.getBraille(data, 2, i) + '⣿');
+    }
+    for (let i = 4; i < 8; i++) {
+      result.push('⠤⣿' + BrailleController.getBraille(data, 2, i) + '⣿');
+    }
+    for (let i = 8; i < 12; i++) {
+      result.push('⠒⣿' + BrailleController.getBraille(data, 2, i) + '⣿');
+    }
+    result.push('⠉⣿' + BrailleController.getBraille(data, 2, 12) + '⣿')
+    return result;
   }
 
-  static getBraille(data, totalSegments, segmentNumber) {
+  static getBraille(data, currentZoomLevel, currentPanningStep) {
     let brailleData = '';
     for (let i = 0; i < data.length; i += 1) {
       const d = data[i];
-      const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
+      const b = BrailleController.getBrailleValue(currentZoomLevel, currentPanningStep, d);
       brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
     }
     return brailleData;
@@ -96,13 +106,13 @@ class BrailleController {
     return brailleData;
   }
 
-  static getBrailleValue(totalSegments, segmentNumber, value) {
-    const segmentSize = 16 / totalSegments;
-    value = value - segmentSize * (segmentNumber);
-    if (value < 0 || value >= segmentSize) {
+  static getBrailleValue(currentZoomLevel, currentPanningStep, value) {
+    const windowSize = 16 / Math.pow(2, currentZoomLevel);
+    value = value - currentPanningStep * (windowSize / 4);
+    if (value < 0 || value >= windowSize) {
       return 0;
     }
-    const brailleDotMultiples = segmentSize / 4;
+    const brailleDotMultiples = windowSize / 4;
     return Math.floor(value / brailleDotMultiples) + 1;
   }
 
@@ -123,21 +133,21 @@ class BrailleController {
     }
     if (event.key == 'j') {
       brailleController.currentZoomLevel != 2 ? brailleController.currentZoomLevel++ : brailleController.currentZoomLevel = 2;
-      brailleController.currentSegmentNumber = 0;
+      brailleController.currentPanningStep = 0;
       brailleController.updateDisplaidBraille();
     }
     if (event.key == 'u') {
       brailleController.currentZoomLevel != 0 ? brailleController.currentZoomLevel-- : brailleController.currentZoomLevel = 0;
-      brailleController.currentSegmentNumber = 0;
+      brailleController.currentPanningStep = 0;
       brailleController.updateDisplaidBraille();
     }
     if (event.key == 'i') {
-      let maxSegmentNumber = Math.pow(2, brailleController.currentZoomLevel) - 1;
-      brailleController.currentSegmentNumber != maxSegmentNumber ? brailleController.currentSegmentNumber++ : brailleController.currentSegmentNumber = maxSegmentNumber;
+      let maxPanningStep = brailleController.getMaxPanningStep();
+      brailleController.currentPanningStep != maxPanningStep ? brailleController.currentPanningStep++ : brailleController.currentPanningStep = maxPanningStep;
       brailleController.updateDisplaidBraille();
     }
     if (event.key == 'k') {
-      brailleController.currentSegmentNumber != 0 ? brailleController.currentSegmentNumber-- : brailleController.currentSegmentNumber = 0;
+      brailleController.currentPanningStep != 0 ? brailleController.currentPanningStep-- : brailleController.currentPanningStep = 0;
       brailleController.updateDisplaidBraille();
     }
     event.preventDefault();
@@ -145,8 +155,23 @@ class BrailleController {
 
   updateDisplaidBraille() {
     let allBrailleData = BrailleController.numbersToBraille(brailleController.data);
-    let index = Math.pow(2, brailleController.currentZoomLevel) - 1 + brailleController.currentSegmentNumber;
+    let index = 0;
+    if (brailleController.currentZoomLevel == 1) {
+      index += 1;
+    } else if (brailleController.currentZoomLevel == 2) {
+      index += 6;
+    }
+    index += brailleController.currentPanningStep;
     brailleController.setBraille(allBrailleData[index]);
+  }
+
+  getMaxPanningStep() {
+    // The relation between currentZoomLevel and maxPanningStep is discribed by the following expression:
+    // y = 2x^2 + 2x
+    // when x is currentZoomLevel, and y is the MaxPanningStep
+    let x = brailleController.currentZoomLevel;
+    let y = 2 * Math.pow(x, 2) + 2 * x;
+    return y;
   }
 
   setBraille(text) {
