@@ -1,93 +1,141 @@
+/**
+ * Set `dataInput` element focus, and adds `populateTtsList()` callback to `window.speechSynthesis.onvoiceschanged`
+ */
 function initializeAppScript() {
-  $('#dataInput').focus();
+  (<HTMLInputElement> document.getElementById('dataInput')).focus();
   populateTtsList();
   // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
   //https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
-  // for more details 
+  // for more details
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
     window.speechSynthesis.onvoiceschanged = populateTtsList;
   }
 }
 
+/**
+ * Sets `window.location.href` with search paramater data to be parsed by `view.js`
+ */
 function updateURL() {
-  let input: string = <string>$('#dataInput').val();
-  input = encodeURIComponent(input);
-  let minValue = $('#minValue').val();
-  let maxValue = $('#maxValue').val();
-  let instrumentType = $('#instrumentType').val();
-  let ttsVoiceIndex = $('#ttsVoice').prop('selectedIndex');
-  let currentUrl = new URL(window.location.href);
-  let newUrl;
+  const input: string = encodeURIComponent((<HTMLInputElement> document.getElementById('dataInput')).value);
+  const minValue: string = (<HTMLInputElement> document.getElementById('minValue')).value;
+  const maxValue: string = (<HTMLInputElement> document.getElementById('maxValue')).value;
+  const instrumentType: string = (<HTMLInputElement> document.getElementById('instrumentType')).value;
+
+  // const ttsVoice: HTMLSelectElement = (<HTMLSelectElement> document.getElementById('ttsVoice'));
+  // const ttsVoiceIndex: string = ttsVoice.options[ttsVoice.selectedIndex].value;
+  /**
+   * @note: if selected value is needed, then consider using above two lines in-place of bellow
+   */
+  const ttsVoiceIndex: number = (<HTMLSelectElement> document.getElementById('ttsVoice')).selectedIndex;
+
+  let newUrl: string = '';
   // Check if we are running on a localhost
-  if (location.hostname == 'localhost' || location.hostname == '127.0.0.1' ||
-    location.hostname == '') {
-    newUrl = window.location.pathname;
-    newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'));
+  if (['localhost', '127.0.0.1', ''].includes(location.hostname)) {
+    newUrl = window.location.pathname.split('/').slice(0, -1).join('/');
   } else {
-    newUrl = currentUrl.origin;
+    newUrl = new URL(window.location.href).origin;
   }
   newUrl += '/view/index.html?';
-  newUrl += 'data=' + input;
-  newUrl += '&minValue=' + minValue;
-  newUrl += '&maxValue=' + maxValue;
-  newUrl += '&instrumentType=' + instrumentType;
-  newUrl += '&ttsIndex=' + ttsVoiceIndex;
+  newUrl += `data=${input}`;
+  newUrl += `&minValue=${minValue}`;
+  newUrl += `&maxValue=${maxValue}`;
+  newUrl += `&instrumentType=${instrumentType}`;
+  newUrl += `&ttsIndex=${ttsVoiceIndex}`;
   window.location.href = newUrl;
 }
 
-function onRadioChange(radio) {
-  let minValuePicker = $('#minValue');
-  let maxValuePicker = $('#maxValue');
-  if (radio.value == 'auto') {
-    minValuePicker.prop('disabled', true);
-    maxValuePicker.prop('disabled', true);
+
+/**
+ * Callback for radio input `autoOption` and `manualOption` elements
+ */
+function onRadioChange(radio: HTMLInputElement) {
+  const minValuePicker: HTMLInputElement = (<HTMLInputElement> document.getElementById('minValue'));
+  const maxValuePicker: HTMLInputElement = (<HTMLInputElement> document.getElementById('maxValue'));
+  if (radio.value === 'auto') {
+    minValuePicker.disabled = true;
+    maxValuePicker.disabled = true;
   } else {
-    minValuePicker.prop('disabled', false);
-    maxValuePicker.prop('disabled', false);
-    $('#updateButton').prop('disabled', false);
+    minValuePicker.disabled = false;
+    maxValuePicker.disabled = false;
+    /**
+     * @note: the following element does **not** seem to exist
+     */
+    (<HTMLInputElement> document.getElementById('updateButton')).disabled = false;
   }
 }
 
-function findMinAndMaxValues() {
-  if ($('#autoOption').prop('checked') == false) {
+
+/**
+ *
+ * @param {string} input -
+ * @note: StackOverflow discussions may be worth review on why `forEach`
+ * @question: find-the-min-max-element-of-an-array-in-javascript
+ * @link: https://stackoverflow.com/questions/1669190/#8986992
+ */
+function getMinMaxValuesFrom(input: string) {
+  // TODO: Add a method to parse the input data to a array of arrays for example,
+  //       so it can be used here and in processData().
+  //
+  // Note: Parsing input into a matrix of values may be better
+  //       via a promising iterator or generator.
+  let maxValue: number = -Infinity;
+  let minValue: number = Infinity;
+  input.split(/\r\n|\n/).forEach((line: string) => {
+    line.split(/\t| +/).forEach((value: string) => {
+      const value_as_float: number = parseFloat(value);
+      if (value_as_float > maxValue) {
+        maxValue = value_as_float;
+      }
+      if (value_as_float < minValue) {
+        minValue = value_as_float;
+      }
+    });
+  });
+  return {maxValue, minValue};
+}
+
+
+/**
+ * Sets values of min and max HTML IDs from values within values HTML ID
+ * @param {string} values_html_id - HTML ID to read `.value` from
+ * @param {string} min_html_id - HTML ID to set `.value` to min value
+ * @param {string} max_html_id - HTML ID to set `.value` to max value
+ */
+function setMinAndMaxValuesFrom(
+  values_html_id: string = 'dataInput',
+  min_html_id: string = 'minValue',
+  max_html_id: string = 'maxValue'
+) {
+  if ((<HTMLInputElement> document.getElementById('autoOption')).checked === false) {
     return;
   }
-  let input = <string>$('#dataInput').val();
-  let maxValue = -Infinity;
-  let minValue = Infinity;
-  // TODO: Add a method to parse the input data to a array of arrays for example, so it can be used here and in processData().
-  let lines = input.split('\n');
-  let line;
-  for (line of lines) {
-    let values = line.split('\t');
-    let value;
-    for (value of values) {
-      value = parseFloat(value);
-      if (value > maxValue) {
-        maxValue = value;
-      }
-      if (value < minValue) {
-        minValue = value;
-      }
-    }
-  }
-  $('#maxValue').val(maxValue);
-  $('#minValue').val(minValue);
+
+  const input = (<HTMLInputElement> document.getElementById(values_html_id)).value;
+  const {maxValue, minValue} = getMinMaxValuesFrom(input);
+
+  (<HTMLInputElement> document.getElementById(min_html_id)).value = maxValue.toString();
+  (<HTMLInputElement> document.getElementById(max_html_id)).value = minValue.toString();
 }
 
+
+/**
+ * Populates `select` element ID "ttsVoice"
+ */
 function populateTtsList() {
-  let ttsVoiceSelect = $('#ttsVoice');
-  let synth = window.speechSynthesis;
-  let voices = synth.getVoices();
-  ttsVoiceSelect.html('');
-  for (let i = 0; i < voices.length; i++) {
-    let option = $('<option>');
-    let optionValueAndText = voices[i].name + ' (' + voices[i].lang + ')';
-    if (voices[i].default == true) {
+  const ttsVoiceSelect: HTMLElement = document.getElementById('ttsVoice');
+  ttsVoiceSelect.innerHTML = '';
+
+  const voices: Array<SpeechSynthesisVoice> = window.speechSynthesis.getVoices();
+  voices.forEach((voice) => {
+    const option = document.createElement('option');
+    let optionValueAndText: string = `${voice.name}(${voice.lang})`;
+
+    if (voice.default === true) {
       optionValueAndText += ' -- DEFAULT';
     }
-    option.val(optionValueAndText);
-    option.text(optionValueAndText);
-    ttsVoiceSelect.append(option);
-  }
+
+    option.value = optionValueAndText;
+    option.innerText = optionValueAndText;
+    ttsVoiceSelect.appendChild(option);
+  });
 }
