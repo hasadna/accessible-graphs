@@ -35,12 +35,12 @@ class BrailleController {
         setInterval(this.checkSelection, 50);
         this.currentPosition = -1;
     }
-    static normalizeData(data) {
+    static normalizeData(data, maxValue) {
         const result = Array();
         const min = Math.min(...data);
         const max = Math.max(...data);
         for (let i = 0; i < data.length; i++) {
-            result[i] = (data[i] - min) / (max - min) * 15.99;
+            result[i] = (data[i] - min) / (max - min) * (maxValue - 0.01);
         }
         console.log(`data=${data}`);
         console.log(`normalizedData=${result}`);
@@ -59,46 +59,46 @@ class BrailleController {
         console.debug(event.type);
     }
     static numbersToBraille(data) {
-        data = BrailleController.normalizeData(data);
-        return [
-            '⣿⣿' + BrailleController.getBraille(data, 1, 0) + '⣿',
-            '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
-            '⣤⣿' + BrailleController.getBraille(data, 2, 0) + '⣿',
-            '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿',
-            '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
-            '⠤⣿' + BrailleController.getBraille(data, 4, 1) + '⣿',
-            '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿'
-        ];
+        let leftSideData = BrailleController.normalizeData(data, 16);
+        let rightSideData = BrailleController.normalizeData(data, 12);
+        let rightSideDataElement = rightSideData[brailleController.currentPosition];
+        return BrailleController.getBrailleForLeftSide(leftSideData) + '⡇' +
+            BrailleController.getBrailleForRightSide(rightSideDataElement);
     }
-    static getBraille(data, totalSegments, segmentNumber) {
+    static getBrailleForLeftSide(data) {
         let brailleData = '';
         for (let i = 0; i < data.length; i += 1) {
             const d = data[i];
-            const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
+            const b = BrailleController.getBrailleValue(d);
             brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
         }
         return brailleData;
     }
-    /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
-    static getBraille2(data, totalSegments, segmentNumber) {
-        let brailleData = '';
-        for (let i = 0; i < data.length; i += 2) {
-            const d1 = data[i];
-            const d2 = data[i + 1];
-            const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
-            const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
-            brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
+    static getBrailleForRightSide(dataElement) {
+        let result = '';
+        let count = Math.round(dataElement);
+        while (count > 0) {
+            result += '⠒';
+            count--;
         }
-        return brailleData;
+        return result;
     }
-    static getBrailleValue(totalSegments, segmentNumber, value) {
-        const segmentSize = 16 / totalSegments;
-        value = value - segmentSize * (segmentNumber);
-        if (value < 0 || value >= segmentSize) {
-            return 0;
-        }
-        const brailleDotMultiples = segmentSize / 4;
-        return Math.floor(value / brailleDotMultiples) + 1;
+    /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
+    /*
+    static getBraille2(data, totalSegments, segmentNumber) {
+      let brailleData = '';
+      for (let i = 0; i < data.length; i += 2) {
+        const d1 = data[i];
+        const d2 = data[i + 1];
+        const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
+        const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
+        brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
+      }
+      return brailleData;
+    }
+    */
+    static getBrailleValue(value) {
+        return Math.floor(value / 4) + 1;
     }
     checkSelection() {
         if (brailleController.currentPosition !== brailleController.textarea.prop('selectionStart')) {

@@ -15,10 +15,15 @@ function initializeViewScript() {
 }
 function brailleControllerSelectionListener(event) {
     console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
-    // First 2 characters and last character are not data
-    const position = event.position - 2;
+    const position = event.position;
     if (position >= 0 && position < data[0].length) {
         updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0]);
+        brailleData = BrailleController.numbersToBraille(data[0]);
+        brailleController.setBraille(brailleData);
+        // The cursor will leave it's original position when setting a new braille text to the textarea
+        // so return it to the previous position before setting the braille text
+        brailleController.textarea.prop('selectionEnd', position);
+        brailleController.textarea.prop('selectionStart', position);
     }
 }
 function processData() {
@@ -26,7 +31,7 @@ function processData() {
     brailleController.setSelectionListener(brailleControllerSelectionListener);
     data = parseData(getUrlParam('data'));
     brailleData = BrailleController.numbersToBraille(data[0]);
-    brailleController.setBraille(brailleData[0]);
+    brailleController.setBraille(brailleData);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
