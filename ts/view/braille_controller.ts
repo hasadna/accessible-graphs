@@ -1,4 +1,7 @@
 let brailleController = null;
+// A flag for debugging
+// Reset it to true to have the BrailleController listen for all events of the textarea which contains the braille text
+let listenForAllEvents = false;
 
 class BrailleController {
   // These symbols map 1:1 to numbers.
@@ -25,7 +28,9 @@ class BrailleController {
     textarea.keypress(this.noopEventCatcher);
     textarea.click(this.noopEventCatcher);
     textarea.mouseup(this.noopEventCatcher);
-    textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
+    if (listenForAllEvents == true) {
+      textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
+    }
     textarea.attr('aria-describedby', 'speechOffNote');
     parent.appendChild(textarea[0]);
     const speechOffNote = $(document.createElement('p'));
