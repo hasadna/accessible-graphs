@@ -138,6 +138,9 @@ function speakSelectedCell() {
     value = `Minus ${intValue}`;
   }
   const utterance = new SpeechSynthesisUtterance(value);
+  let ttsIndex = getUrlParam('ttsIndex');
+  let selectedTtsVoice = synth.getVoices()[ttsIndex];
+  utterance.voice = selectedTtsVoice;
   synth.speak(utterance);
 }
 
@@ -150,5 +153,8 @@ function speakSelectedCellPositionInfo() {
   colIndex = String(parseInt(colIndex) + 1);
   const textToSpeak = `row${rowIndex},column${colIndex}.`;
   const utterance = new SpeechSynthesisUtterance(textToSpeak);
+  let ttsIndex = getUrlParam('ttsIndex');
+  let selectedTtsVoice = synth.getVoices()[ttsIndex];
+  utterance.voice = selectedTtsVoice;
   synth.speak(utterance);
 }
