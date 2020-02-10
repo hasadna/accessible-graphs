@@ -1,82 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./style/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <div class="blue-background">
+      <h1 class="blue-background-title">Sensory Interface</h1>
 
-<head>
-  <meta charset="utf-8">
-  <title> Sensory interface </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script type="text/javascript" src="app.js"></script>
-</head>
-
-<body onload="initializeAppScript()">
-  <div class="container-fluid">
-    <h2>Sensory interface</h2>
-
-    <h3>Data</h3>
-    <label for="dataInput">Data in tab-delimited CSV format:</label><br>
-    <textarea id="dataInput"
-      onblur="findMinAndMaxValues()">1272.25	1289.61	1291.44	1291.01	1306.94	1309	1298.28	1297.21	1296.18	1309.15	1333.54	1319.84	1312.59	1301.86	1300.14	1293.67	1305.64	1313	1312.13	1304.09	1288.86</textarea>
-    <br>
-    <h3>Options</h3>
-
-    Value range:<br>
-    <div class="container-fluid">
-      Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
-      10.<br>
-      <fieldset>
-        <legend>Mode</legend>
-        <div>
-          <input type="radio" id="autoOption" name="value_range" value="auto" onclick="onRadioChange(this)" checked>
-          <label for="autoOption">Auto</label>
-        </div>
-        <div>
-          <input type="radio" id="manualOption" name="value_range" value="manual" onclick="onRadioChange(this)">
-          <label for="manualOption">Manual</label>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Value range</legend>
-        <div>
-          <label for="minValue">Min value:</label>
-          <input type="number" name="Minimum value" id="minValue" value="" disabled>
-        </div>
-        <div>
-          <label for="maxValue">Max value:</label>
-          <input type="number" name="Maximum value" id="maxValue" value="" disabled>
-        </div>
-      </fieldset>
-      <label for="instrumentType">Select instrument type</label>
-      <select id="instrumentType">
-        <option value="synthesizer">Synthesizer</option>
-        <option value="piano">Piano</option>
-      </select>
-      <br>
-      <label for="ttsVoice">Select preferred TTS to be used in the system</label>
-      <select id="ttsVoice">
-      </select>
-      <br>
+      <p class="blue-background-paragraph">
+        The Sensory Interface project aims to help people with certain
+        disabilities (visual impairment, dyscalculia, ADHD) understand tabular
+        numerical data such as spreadsheets.
+      </p>
+      <div class="button-container">
+        <button class="btn try">Try it</button>
+        <button class="btn learn">Learn more</button>
+      </div>
+      <img src="./assets/image.svg" class="image" />
     </div>
-    <div style="display: none;" aria-hidden="true">
-      Sounds:
-      <select>
-        <option value="synthetic">Synthetic sound waves</option>
-        <option value="piano">Piano</option>
-        <option value="opera">Opera singer</option>
-        <option value="lalala">Lalala</option>
-        <option value="motorcycle">Motorcycle</option>
-        <option value="laughter">People laughing</option>
-        <option value="farts">Farts</option>
-        <option value="arnold">Arnold</option>
-      </select>
-      <br>
+    <div class="site-intro">
+      <p>
+        In today’s world, where data is ubiquitous, we view data accessibility
+        as a basic human right. The Sensory Interface project aims to provide an
+        interface to numerical data for any purpose, be it Scientific Research,
+        Software Development, Education etc.
+        <br /><br />
+      </p>
+      <p>
+        This data is typically visualized using graphs, charts, heatmaps etc.
+        You could think of these visualizations as the visual interface to the
+        data. We aim to provide a multi-sensory interface to the data. This
+        interface uses sound and touch, in addition to the visual channel, as a
+        means to convey the same underlying data.
+        <br /><br />
+      </p>
+      <p>
+        Our hope is that by doing this, we will make work in fields such as
+        Scientific Research, Data Science and Machine Learning accessible to
+        people with certain disabilities.
+        <br /><br />
+      </p>
     </div>
-    <br>
-    <button id="viewButton" onclick="updateURL()">View</button>
-    <br>
-    <br>
-    <a href="tutorial.html">Tutorial</a>
-    <a href="about.html">About</a>
-  </div>
-</bodyhtml>
+    <div class="about">
+      <div class="about-us">
+        <h1 class="about-title">About us</h1>
+        <br />
+        <div class="about-par-container">
+          <p class="about-par">
+            Developing team: Ofer Bartal, Mohammad Suliman This project is run
+            by The Public Knowledge Workshop (a nonprofit).
+            <br /><br />
+            For more details and collaborations, please send an email to:
+            <a href="mailto:info@sensoryinterface.com"
+              >info@sensoryinterface.com</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
