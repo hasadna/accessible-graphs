@@ -2,7 +2,7 @@ require('../public/app.js');
 
 
 /**
-* Stuff and things
+* @note - Tests what no language support in browser does first
 */
 function test_populateTtsList() {
   document.body.innerHTML = [
