@@ -67,10 +67,7 @@ function onRadioChange(radio: HTMLInputElement) {
 
 /**
  *
- * @param {string} input -
- * @note: StackOverflow discussions may be worth review on why `forEach`
- * @question: find-the-min-max-element-of-an-array-in-javascript
- * @link: https://stackoverflow.com/questions/1669190/#8986992
+ * @param {string} input - String with `\r\n` or `\n` line separators, and either spaces or tabs separating items
  */
 function getMinMaxValuesFrom(input: string) {
   // TODO: Add a method to parse the input data to a array of arrays for example,
