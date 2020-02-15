@@ -20,12 +20,6 @@ function updateURL() {
   const minValue: string = (<HTMLInputElement> document.getElementById('minValue')).value;
   const maxValue: string = (<HTMLInputElement> document.getElementById('maxValue')).value;
   const instrumentType: string = (<HTMLInputElement> document.getElementById('instrumentType')).value;
-
-  // const ttsVoice: HTMLSelectElement = (<HTMLSelectElement> document.getElementById('ttsVoice'));
-  // const ttsVoiceIndex: string = ttsVoice.options[ttsVoice.selectedIndex].value;
-  /**
-   * @note: if selected value is needed, then consider using above two lines in-place of bellow
-   */
   const ttsVoiceIndex: number = (<HTMLSelectElement> document.getElementById('ttsVoice')).selectedIndex;
 
   let newUrl: string = '';
@@ -58,9 +52,9 @@ function onRadioChange(radio: HTMLInputElement) {
     minValuePicker.disabled = false;
     maxValuePicker.disabled = false;
     /**
-     * @note: the following element does **not** seem to exist
+     * @note: `updateButton` element ID does **not** seem to exist within HTML document
      */
-    (<HTMLInputElement> document.getElementById('updateButton')).disabled = false;
+    // (<HTMLInputElement> document.getElementById('updateButton')).disabled = false;
   }
 }
 
