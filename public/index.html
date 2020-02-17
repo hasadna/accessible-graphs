@@ -6,7 +6,6 @@
   <title> Sensory interface </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript" src="app.js"></script>
 </head>
 
@@ -17,7 +16,7 @@
     <h3>Data</h3>
     <label for="dataInput">Data in tab-delimited CSV format:</label><br>
     <textarea id="dataInput"
-      onblur="findMinAndMaxValues()">1272	1289	1291	1291	1306	1309	1298	1297	1296	1309	1333	1319	1312	1301	1300	1293	1305	1313	1312	1304	1288</textarea>
+      onblur="setMinAndMaxValuesFrom(this.id, 'minValue', 'maxValue')">1272	1289	1291	1291	1306	1309	1298	1297	1296	1309	1333	1319	1312	1301	1300	1293	1305	1313	1312	1304	1288</textarea>
     <br>
     <h3>Options</h3>
 
@@ -79,4 +78,6 @@
     <a href="tutorial.html">Tutorial</a>
     <a href="about.html">About</a>
   </div>
-</bodyhtml>
+</body>
+
+</html>
