@@ -1,3 +1,6 @@
+declare let Papa: any;
+let inputToPassToView = '';
+
 function initializeAppScript() {
   $('#dataInput').focus();
   populateTtsList();
@@ -10,8 +13,7 @@ function initializeAppScript() {
 }
 
 function updateURL() {
-  let input: string = <string>$('#dataInput').val();
-  input = encodeURIComponent(input);
+  inputToPassToView = encodeURIComponent(inputToPassToView);
   let minValue = $('#minValue').val();
   let maxValue = $('#maxValue').val();
   let instrumentType = $('#instrumentType').val();
@@ -27,7 +29,7 @@ function updateURL() {
     newUrl = currentUrl.origin;
   }
   newUrl += '/view/index.html?';
-  newUrl += 'data=' + input;
+  newUrl += 'data=' + inputToPassToView;
   newUrl += '&minValue=' + minValue;
   newUrl += '&maxValue=' + maxValue;
   newUrl += '&instrumentType=' + instrumentType;
@@ -44,33 +46,81 @@ function onRadioChange(radio) {
   } else {
     minValuePicker.prop('disabled', false);
     maxValuePicker.prop('disabled', false);
-    $('#updateButton').prop('disabled', false);
   }
 }
 
-function findMinAndMaxValues() {
+function parseInput() {
+  let input = <string>$('#dataInput').val();
+  // Let's try to start to parse without  headers first,
+  // so we can decide whether we have 2 * N grid or N * 2
+  // alternatively, we could also have 1 * N grid or N * 1
+  let results = Papa.parse(input);
+  if (results.errors.length > 0) {
+    displayErrorMessage();
+    return;
+  }
+  if (results.data[0].length == 1 || results.data[0].length == 2) {
+    results.data = transpose(results.data);
+  }
+  if (results.data.length > 2) {
+    displayErrorMessage();
+    return;
+  }
+  if (results.data.length == 2) {
+    // Parsing with headers should be successful
+    // so let's unparse, and try to reparse with headers
+    let parsedData = Papa.unparse(results.data);
+    results = Papa.parse(parsedData, { header: true });
+  }
+  if (results.errors.length > 0 || results.data.length > 1) {
+    displayErrorMessage();
+    return;
+  }
+  let extractedData = extractData(results.data[0]);
+  findMinAndMaxValues(extractedData);
+  displaySuccessMessage();
+  inputToPassToView = Papa.unparse(results.data, { delimiter: '\t' });
+}
+
+function extractData(data) {
+  let result = [];
+  for (let key of Object.keys(data)) {
+    result.push(data[key]);
+  }
+  return result;
+}
+
+function transpose(data) {
+  // Initialize the result Array
+  let result = new Array(data[0].length);
+  for (let i = 0; i < data[0].length; i++) {
+    result[i] = new Array(data.length);
+  }
+  // Store transposed data in result
+  for (let i = 0; i < data[0].length; i++) {
+    for (let j = 0; j < data.length; j++) {
+      result[i][j] = data[j][i];
+    }
+  }
+  return result;
+}
+
+function displayErrorMessage() {
+  $('#dataInputFeedback').html('&cross; In valid input');
+  $('#viewButton').prop('disabled', true);
+}
+
+function displaySuccessMessage() {
+  $('#dataInputFeedback').html('&check; Valid');
+  $('#viewButton').prop('disabled', false);
+}
+
+function findMinAndMaxValues(data) {
   if ($('#autoOption').prop('checked') == false) {
     return;
   }
-  let input = <string>$('#dataInput').val();
-  let maxValue = -Infinity;
-  let minValue = Infinity;
-  // TODO: Add a method to parse the input data to a array of arrays for example, so it can be used here and in processData().
-  let lines = input.split('\n');
-  let line;
-  for (line of lines) {
-    let values = line.split('\t');
-    let value;
-    for (value of values) {
-      value = parseFloat(value);
-      if (value > maxValue) {
-        maxValue = value;
-      }
-      if (value < minValue) {
-        minValue = value;
-      }
-    }
-  }
+  let maxValue = Math.max(...data);
+  let minValue = Math.min(...data);
   $('#maxValue').val(maxValue);
   $('#minValue').val(minValue);
 }

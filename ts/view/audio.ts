@@ -7,7 +7,7 @@ let timeOut = null;
 
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
-  let maxCoords = get2DCoordinates(data.length, data[0].length);
+  let maxCoords = get2DCoordinates(1, actualData.length);
   // Calculate Euclidean distance of cell from origin (0,0)
   return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
@@ -131,13 +131,13 @@ function stopSoundPlayback() {
 function speakSelectedCell() {
   const synth = window.speechSynthesis;
   synth.cancel();
-  let value = $(selectedCell).first().text();
-  let intValue = parseInt(value);
-  if (intValue < 0) {
-    intValue = Math.abs(intValue);
-    value = `Minus ${intValue}`;
+  let value = actualData[focusedColIndex];
+  let valueText = String(value);
+  if (value < 0) {
+    value = Math.abs(value);
+    valueText = `Minus ${value}`;
   }
-  const utterance = new SpeechSynthesisUtterance(value);
+  const utterance = new SpeechSynthesisUtterance(valueText);
   let ttsIndex = getUrlParam('ttsIndex');
   let selectedTtsVoice = synth.getVoices()[ttsIndex];
   utterance.voice = selectedTtsVoice;
@@ -147,11 +147,13 @@ function speakSelectedCell() {
 function speakSelectedCellPositionInfo() {
   const synth = window.speechSynthesis;
   synth.cancel();
-  let rowIndex: string = $(selectedCell).attr('row');
-  rowIndex = String(parseInt(rowIndex) + 1);
-  let colIndex: string = $(selectedCell).attr('col');
-  colIndex = String(parseInt(colIndex) + 1);
-  const textToSpeak = `row${rowIndex},column${colIndex}.`;
+  let textToSpeak = '';
+  if (dataHeaders == null) {
+    textToSpeak = `Column ${focusedColIndex + 1}`;
+  } else {
+    let headerText = dataHeaders[focusedColIndex];
+    textToSpeak = `${headerText}, column ${focusedColIndex + 1}`;
+  }
   const utterance = new SpeechSynthesisUtterance(textToSpeak);
   let ttsIndex = getUrlParam('ttsIndex');
   let selectedTtsVoice = synth.getVoices()[ttsIndex];

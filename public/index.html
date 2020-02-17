@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
   <script type="text/javascript" src="app.js"></script>
 </head>
 
@@ -15,9 +16,14 @@
     <h2>Sensory interface</h2>
 
     <h3>Data</h3>
-    <label for="dataInput">Data in tab-delimited CSV format:</label><br>
-    <textarea id="dataInput"
-      onblur="findMinAndMaxValues()">1272	1289	1291	1291	1306	1309	1298	1297	1296	1309	1333	1319	1312	1301	1300	1293	1305	1313	1312	1304	1288</textarea>
+    <div>
+      <label for="dataInput">Data in CSV format:</label>
+      <a href="https://en.wikipedia.org/wiki/Comma-separated_values">(more info)</a>
+      <br>
+      <textarea id="dataInput" aria-describedby="dataInputFeedback"
+        onblur="parseInput()">1272	1289	1291	1291	1306	1309	1298	1297	1296	1309	1333	1319	1312	1301	1300	1293	1305	1313	1312	1304	1288</textarea>
+    <span id="dataInputFeedback" aria-live="assertive">&check; Valid</span>
+    </div>
     <br>
     <h3>Options</h3>
 
@@ -40,11 +46,11 @@
         <legend>Value range</legend>
         <div>
           <label for="minValue">Min value:</label>
-          <input type="number" name="Minimum value" id="minValue" value="" disabled>
+          <input type="number" name="Minimum value" id="minValue" value="" step="0.01" disabled>
         </div>
         <div>
           <label for="maxValue">Max value:</label>
-          <input type="number" name="Maximum value" id="maxValue" value="" disabled>
+          <input type="number" name="Maximum value" id="maxValue" value="" step="0.01" disabled>
         </div>
       </fieldset>
       <label for="instrumentType">Select instrument type</label>
@@ -79,4 +85,4 @@
     <a href="tutorial.html">Tutorial</a>
     <a href="about.html">About</a>
   </div>
-</bodyhtml>
+  </bodyhtml>
