@@ -1,4 +1,7 @@
 let brailleController = null;
+// A flag for debugging
+// Reset it to true to have the BrailleController listen for all events of the textarea which contains the braille text
+let listenForAllEvents = false;
 
 class BrailleController {
   // These symbols map 1:1 to numbers.
@@ -16,12 +19,18 @@ class BrailleController {
     }
     const textarea = $(document.createElement('textarea'));
     textarea.prop('id', 'brailleControllerText');
+    // In Chrome, readonly textarea doesn't support moving the cursor via the keyboard, or even cursor blinking
+    // therefore, we can't use the readonly property, rather, we have to ignore none navigational key presses. See:
+    //https://stackoverflow.com/questions/19005579/how-to-enable-cursor-move-while-using-readonly-attribute-in-input-field-in-chrom
     textarea.keydown(this.onKeyDown);
+    textarea.mousedown(this.onSecondRoutingKeyPress);
     textarea.keyup(this.noopEventCatcher);
     textarea.keypress(this.noopEventCatcher);
     textarea.click(this.noopEventCatcher);
-    textarea.mousedown(this.noopEventCatcher);
     textarea.mouseup(this.noopEventCatcher);
+    if (listenForAllEvents == true) {
+      textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
+    }
     textarea.attr('aria-describedby', 'speechOffNote');
     parent.appendChild(textarea[0]);
     const speechOffNote = $(document.createElement('p'));
@@ -49,6 +58,20 @@ class BrailleController {
     console.log(`data=${data}`);
     console.log(`normalizedData=${result}`);
     return result;
+  }
+
+  static getAllEvents(element) {
+    let result = [];
+    for (let key in element) {
+      if (key.indexOf('on') === 0) {
+        result.push(key.slice(2));
+      }
+    }
+    return result.join(' ');
+  }
+
+  logEvent(event) {
+    console.debug(event.type);
   }
 
   static numbersToBraille(data: number[]): string[] {
@@ -112,7 +135,14 @@ class BrailleController {
     if (event.key.includes('Arrow') || event.key.includes('Home') || event.key.includes('End')) {
       return; // OK
     }
+    if (event.key == ' ') {
+      speakSelectedCellPositionInfo(); // On space key press
+    }
     event.preventDefault();
+  }
+
+  onSecondRoutingKeyPress(event) {
+    speakSelectedCellPositionInfo();
   }
 
   setBraille(text) {
