@@ -12,3 +12,22 @@ Team: [Ofer Bartal](https://www.linkedin.com/in/ofer-bartal-58a50811), [Mohammad
 This project is run by [The Public Knowledge Workshop](https://www.hasadna.org.il/en) (a nonprofit).
 
 For more details and collaborations, please send an email to: info@sensoryinterface.com
+
+
+## Attribution
+[Attribution]:
+  #attribution
+  "Resources that where helpful in making and/or understanding this project"
+
+
+- [StackOverflow -- How to append data to div using JavaScript](https://stackoverflow.com/questions/5677799)
+
+- [StackOverflow -- Declaring an `HTMLElement` TypeScript](https://stackoverflow.com/questions/14742194)
+
+- [StackOverflow -- TypeScript casting `HTMLElement`](https://stackoverflow.com/questions/12686927)
+
+- [StackOverflow -- Check if any key values are false in an object](https://stackoverflow.com/questions/40612265)
+
+- [How to use object values with TypeScript](https://stackoverflow.com/questions/42966362)
+
+- [StackOverflow -- Get selected value in dropdown list using JavaScript](https://stackoverflow.com/questions/1085801)
