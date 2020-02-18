@@ -66,7 +66,7 @@ function onRadioChange(radio: HTMLInputElement) {
 
 
 /**
- * Parses the input from the user which was inputted to the 'dataInput' `textarea` as a CSV
+ * Parses the input from the user inputted to the 'dataInput' `textarea` as a CSV
  * Uses the 'Papa parse' API to achieve this
  */
 function parseInput() {
@@ -75,7 +75,7 @@ function parseInput() {
   // so we can decide whether we have 2 * N grid or N * 2
   // alternatively, we could also have 1 * N grid or N * 1
   let results: { data: string[][], errors: Object[], meta: object[] } = Papa.parse(input);
-  if (results.errors.length > 0) {
+  if (results.errors.length > 0 || !isRowesEqual(results.data)) {
     displayErrorMessage();
     return;
   }
@@ -89,8 +89,8 @@ function parseInput() {
   if (results.data.length == 2) {
     // Parsing with headers should be successful
     // so let's unparse, and try to reparse with headers
-    let parsedData: string = Papa.unparse(results.data);
-    results = Papa.parse(parsedData, { header: true });
+    let rawData: string = Papa.unparse(results.data);
+    results = Papa.parse(rawData, { header: true });
   }
   if (results.errors.length > 0 || results.data.length > 1) {
     displayErrorMessage();
@@ -103,7 +103,8 @@ function parseInput() {
 }
 
 /**
- * Extracts the numerical data found in the first element of the 'data' array found in the 'results' object which was returned by 'Papa' API
+ * Extracts the numerical data found in the first element of the 'data' array 
+ * This array is found in the 'results' object which was returned by 'Papa' API
  * @param data {Object} data - The object containing the numerical data to extract, it could be an array also
  */
 function extractData(data: Object) {
@@ -133,6 +134,25 @@ function transpose(data: string[][]) {
     }
   }
   return result;
+}
+
+
+/**
+ * Checks whether the rows of the data matrix's lengths are equal
+ *  @param {string[][]} data - The data matrix to check
+ * @returns {boolean} Whether the row's lengths of the matrix were equal or not
+ */
+function isRowesEqual(data: string[][]) {
+  if (data === [[]]) {
+    return true;
+  }
+  let firstRowLength: Number = data[0].length;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].length !== firstRowLength) {
+      return false;
+    }
+  }
+  return true;
 }
 
 
