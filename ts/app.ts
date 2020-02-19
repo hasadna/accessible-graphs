@@ -89,9 +89,9 @@ function parseInput() {
   let rawData: string = Papa.unparse(results.data);
   let data: number[] = [];
   try {
-  let combinedDataAndHeaders: {dataHeaders: string[], data: number[]} = parseInputFinal(rawData);
-  data = combinedDataAndHeaders.data;
-  } catch(error) {
+    let combinedDataAndHeaders: { dataHeaders: string[], data: number[] } = parseInputFinal(rawData);
+    data = combinedDataAndHeaders.data;
+  } catch (error) {
     displayErrorMessage();
     return;
   }
@@ -128,7 +128,7 @@ function parseInputFinal(rawData: string) {
   } else {
     // Parsing with headers was unsuccessfull 
     (<{ data: Object[][], errors: Object[], meta: Object[] }>results) =
-    Papa.parse(rawData, { 'dynamicTyping': true });
+      Papa.parse(rawData, { 'dynamicTyping': true });
   }
   if (results.errors.length > 0) {
     throw 'Parsing error';
