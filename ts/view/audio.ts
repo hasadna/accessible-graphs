@@ -7,7 +7,7 @@ let timeOut = null;
 
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
-  let maxCoords = get2DCoordinates(1, actualData.length);
+  let maxCoords = get2DCoordinates(1, data.length);
   // Calculate Euclidean distance of cell from origin (0,0)
   return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
@@ -131,7 +131,7 @@ function stopSoundPlayback() {
 function speakSelectedCell() {
   const synth = window.speechSynthesis;
   synth.cancel();
-  let value = actualData[focusedColIndex];
+  let value = data[focusedColIndex];
   let valueText = String(value);
   if (value < 0) {
     value = Math.abs(value);
@@ -148,7 +148,7 @@ function speakSelectedCellPositionInfo() {
   const synth = window.speechSynthesis;
   synth.cancel();
   let textToSpeak = '';
-  if (dataHeaders == null) {
+  if (dataHeaders.length == 0) {
     textToSpeak = `Column ${focusedColIndex + 1}`;
   } else {
     let headerText = dataHeaders[focusedColIndex];

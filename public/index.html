@@ -17,9 +17,8 @@
 
     <h3>Data</h3>
     <div>
-      <label for="dataInput">Data in CSV format:</label>
-      <a href="https://en.wikipedia.org/wiki/Comma-separated_values">(more info)</a>
-      <br>
+      <label for="dataInput">Data to display.
+        Copy-paste your data from Excel or Google Spreadsheet etc. Can be a column with numbers, or 2 columns with labels on the left and numbers on the right. Column headers are optional.</label>
       <textarea id="dataInput" aria-describedby="dataInputFeedback"
         onblur="parseInput()">1272	1289	1291	1291	1306	1309	1298	1297	1296	1309	1333	1319	1312	1301	1300	1293	1305	1313	1312	1304	1288</textarea>
       <span id="dataInputFeedback" aria-live="assertive">&check; Valid</span>

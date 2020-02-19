@@ -17,7 +17,7 @@ function initializeAppScript() {
     }
 }
 /**
- * Sets `window.location.href` with search parameter data to be parsed by `view.js`
+ * Sets `window.location.href` with search parameter data to be parsed by `view.ts`
  */
 function updateURL() {
     inputToPassToView = encodeURIComponent(inputToPassToView);
@@ -66,7 +66,7 @@ function parseInput() {
     // so we can decide whether we have 2 * N grid or N * 2
     // alternatively, we could also have 1 * N grid or N * 1
     let results = Papa.parse(input);
-    if (results.errors.length > 0 || !isRowesEqual(results.data)) {
+    if (results.errors.length > 0 || !isRowsEqual(results.data)) {
         displayErrorMessage();
         return;
     }
@@ -77,32 +77,63 @@ function parseInput() {
         displayErrorMessage();
         return;
     }
-    if (results.data.length == 2) {
-        // Parsing with headers should be successful
-        // so let's unparse, and try to reparse with headers
-        let rawData = Papa.unparse(results.data);
-        results = Papa.parse(rawData, { header: true });
+    let rawData = Papa.unparse(results.data);
+    let data = [];
+    try {
+        let combinedDataAndHeaders = parseInputFinal(rawData);
+        data = combinedDataAndHeaders.data;
     }
-    if (results.errors.length > 0 || results.data.length > 1) {
+    catch (error) {
         displayErrorMessage();
         return;
     }
-    let extractedData = extractData(results.data[0]);
-    setMinAndMaxValuesFrom(extractedData);
+    setMinAndMaxValuesFrom(data);
     displaySuccessMessage();
     inputToPassToView = Papa.unparse(results.data, { delimiter: '\t' });
 }
 /**
- * Extracts the numerical data found in the first element of the 'data' array
- * This array is found in the 'results' object which was returned by 'Papa' API
- * @param data {Object} data - The object containing the numerical data to extract, it could be an array also
+ * Performs the final step of parsing the CSV data entered by the user
+ * This step comes after we transposed the data matrix if this was necessary,
+ * insured the row's lengths of the matrix are equal,
+ *  and insured also that the matrix has 2 rows atmost
+ * @param {string} rawData - The raw data to parse in this final step
+ * @throws {string} A 'Parsing error' is thrown if an error occurs while parsing, or the type of the data is not as expected
  */
-function extractData(data) {
-    let result = [];
-    for (let key of Object.keys(data)) {
-        result.push(data[key]);
+function parseInputFinal(rawData) {
+    let dataHeaders = [];
+    let data = [];
+    // Let's try to parse with headers first:
+    let results = Papa.parse(rawData, {
+        'header': true,
+        'dynamicTyping': true
+    });
+    if (results.errors.length > 0) {
+        throw 'Parsing error';
     }
-    return result;
+    if (results.data.length != 0) {
+        for (let key of Object.keys(results.data[0])) {
+            dataHeaders.push(key);
+        }
+    }
+    else {
+        // Parsing with headers was unsuccessfull 
+        results =
+            Papa.parse(rawData, { 'dynamicTyping': true });
+    }
+    if (results.errors.length > 0) {
+        throw 'Parsing error';
+    }
+    for (let key of Object.keys(results.data[0])) {
+        let dataElement = results.data[0][key];
+        if (typeof dataElement !== 'number') {
+            throw 'Parsing error';
+        }
+        data.push(dataElement);
+    }
+    return {
+        dataHeaders,
+        data
+    };
 }
 /**
  * Transposes the data matrix
@@ -128,7 +159,7 @@ function transpose(data) {
  *  @param {string[][]} data - The data matrix to check
  * @returns {boolean} Whether the row's lengths of the matrix were equal or not
  */
-function isRowesEqual(data) {
+function isRowsEqual(data) {
     if (data === [[]]) {
         return true;
     }

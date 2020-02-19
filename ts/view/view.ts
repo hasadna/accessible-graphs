@@ -1,7 +1,7 @@
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
-let actualData: number[] = null;
+let data: number[] = null;
 let dataHeaders: string[] = null;
 let brailleData: string[] = null;
 let focusedRowIndex: number = 0;
@@ -18,10 +18,10 @@ function initializeViewScript() {
 
 function brailleControllerSelectionListener(event) {
   console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
-  focusedRowIndex = dataHeaders == null ? 0 : 1;
+  focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
   // First 2 characters and last character are not data
   const position = event.position - 2;
-  if (position >= 0 && position < actualData.length) {
+  if (position >= 0 && position < data.length) {
     updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0]);
   }
 }
@@ -30,7 +30,7 @@ function processData() {
   brailleController = new BrailleController(document.getElementById('container'));
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   parseData(getUrlParam('data'));
-  brailleData = BrailleController.numbersToBraille(actualData);
+  brailleData = BrailleController.numbersToBraille(data);
   brailleController.setBraille(brailleData[0]);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
@@ -38,7 +38,7 @@ function processData() {
 }
 
 function createGrid() {
-  let combinedData = dataHeaders != null ? [dataHeaders, actualData] : [actualData];
+  let combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
   const grid = $(document.createElement('div'));
   grid.attr('role', 'grid');
   grid.prop('id', 'grid');
@@ -46,15 +46,15 @@ function createGrid() {
   grid.width('100%');
   grid.height('90%');
   grid.prop('className', 'table');
-  for (let rowIndex = 0; rowIndex < combinedData.length; rowIndex++) {
+  for (let rowIndex = 0; rowIndex < combinedDataAndHeaders.length; rowIndex++) {
     let gridRow = $(document.createElement('div'));
     gridRow.prop('role', 'row');
     gridRow.prop('className', 'row');
-    for (let colIndex = 0; colIndex < combinedData[0].length; colIndex++) {
+    for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
       let gridCell = $(document.createElement('div'));
       gridCell.attr('role', 'gridcell');
       gridCell.prop('className', 'cell');
-      gridCell.append(document.createTextNode(combinedData[rowIndex][colIndex].toString()));
+      gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
       gridCell.attr('aria-readonly', 'true');
       gridCell.attr('row', rowIndex);
       gridCell.attr('col', colIndex);
@@ -143,7 +143,7 @@ function navigateGrid(event) {
 * Cells in a 1X3 grid will be positioned between -1 and 1 in x, and y will be also 0
 */
 function get2DCoordinates(row, col) {
-  const colCount = actualData.length;
+  const colCount = data.length;
   let xCoord = col - Math.floor(colCount / 2);
   // Align xCoord to be symmetric with respect to y-axis
   if (colCount % 2 === 0) {
@@ -180,7 +180,7 @@ function updateSelectedCell(cell) {
   selectedCell = cell;
   $(selectedCell).css('background-color', '#ffff4d');
   $(selectedCell).css('border', '1px solid #0099ff');
-  if (dataHeaders != null && focusedRowIndex == 0) {
+  if (dataHeaders.length == 1 && focusedRowIndex == 0) {
     return;
   }
   startSoundPlayback();
@@ -197,19 +197,8 @@ function getUrlParam(variableName) {
 }
 
 function parseData(dataString) {
-  // Let's try to parse with headers first:
-  let results = Papa.parse(dataString, { 'header': true });
-  if (results.data.length != 0) {
-    dataHeaders = [];
-    for (let key of Object.keys(results.data[0])) {
-      dataHeaders.push(key);
-    }
-  } else {
-    // Parsing with headers was unsuccessfull 
-    results = Papa.parse(dataString);
-  }
-  actualData = [];
-  for (let key of Object.keys(results.data[0])) {
-    actualData.push(results.data[0][key]);
-  }
+  // This function is found in app.ts file!
+  let combinedDataAndHeaders = parseInputFinal(dataString);
+  dataHeaders = combinedDataAndHeaders.dataHeaders;
+  data = combinedDataAndHeaders.data;
 }
