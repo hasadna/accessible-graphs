@@ -1,8 +1,8 @@
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
-let data = null;
-let dataHeaders = null;
+let data = [];
+let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
@@ -184,9 +184,14 @@ function getUrlParam(variableName) {
     return params.get(variableName);
 }
 function parseData(dataString) {
-    // This function is found in app.ts file!
-    let combinedDataAndHeaders = parseInputFinal(dataString);
-    dataHeaders = combinedDataAndHeaders.dataHeaders;
-    data = combinedDataAndHeaders.data;
+    try {
+        // parseWithHeaders and parseWithoutHeaders functions are found in app.ts file
+        let combinedDataAndHeaders = parseWithHeaders(dataString);
+        dataHeaders = combinedDataAndHeaders.dataHeaders;
+        data = combinedDataAndHeaders.data;
+    }
+    catch (error) {
+        data = parseWithoutHeaders(dataString);
+    }
 }
 //# sourceMappingURL=view.js.map

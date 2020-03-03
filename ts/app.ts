@@ -66,91 +66,160 @@ function onRadioChange(radio: HTMLInputElement) {
 
 
 /**
- * Parses the input from the user inputted to the 'dataInput' `textarea` as a CSV
+ * Parses the input from the user inputted to the `dataInput` textarea as a CSV
  * Uses the 'Papa parse' API to achieve this
  */
 function parseInput() {
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
-  // Let's try to start to parse without headers first,
-  // so we can decide whether we have 2 * N grid or N * 2
-  // alternatively, we could also have 1 * N grid or N * 1
-  let results: { data: string[][], errors: Object[], meta: object[] } = Papa.parse(input);
-  if (results.errors.length > 0 || !isRowsEqual(results.data)) {
-    displayErrorMessage();
-    return;
-  }
-  if (results.data[0].length == 1 || results.data[0].length == 2) {
-    results.data = transpose(results.data);
-  }
-  if (results.data.length > 2) {
-    displayErrorMessage();
-    return;
-  }
-  let rawData: string = Papa.unparse(results.data);
+  let normalizedData: string[][] = normalizeData(input);
+  let rawData: string = Papa.unparse(normalizedData);
   let data: number[] = [];
   try {
-    let combinedDataAndHeaders: { dataHeaders: string[], data: number[] } = parseInputFinal(rawData);
+    let combinedDataAndHeaders: { dataHeaders: string[], data: number[] } = parseWithHeaders(rawData);
     data = combinedDataAndHeaders.data;
   } catch (error) {
-    displayErrorMessage();
-    return;
+    try {
+      data = parseWithoutHeaders(rawData);
+    } catch (errorMessages) {
+      displayErrorMessage(errorMessages);
+      return;
+    }
   }
   setMinAndMaxValuesFrom(data);
   displaySuccessMessage();
-  inputToPassToView = Papa.unparse(results.data, { delimiter: '\t' });
+  inputToPassToView = Papa.unparse(normalizedData, { delimiter: '\t' });
 }
 
 
 /**
- * Performs the final step of parsing the CSV data entered by the user
- * This step comes after we transposed the data matrix if this was necessary,
- * insured the row's lengths of the matrix are equal,
- *  and insured also that the matrix has 2 rows atmost
- * @param {string} rawData - The raw data to parse in this final step
- * @throws {string} A 'Parsing error' is thrown if an error occurs while parsing, or the type of the data is not as expected
+ * Normalizes the data entered by the user to the `dataInput` textarea by doing the following:
+ * Parses the data using the 'Papa parse' API to parse CSV. Notifies the user in case there are errors
+ * Insures that the data row or column lengths are equal. Notifies the user if not
+ * Transposes the data in case we need to. The aim is to have the headers in the first row (if they are available)
+ * and the data in the second row.
+ * Alternatively, we could also have 1 row of numerical data
+ * In case we have more than 2 rows or columns, the user is notified with a proper error message
+ * @param {string} input - The input data to normalize
+ * @returns {string[][]} The normalized data
  */
-function parseInputFinal(rawData: string) {
-  let dataHeaders: string[] = [];
-  let data: number[] = [];
-  // Let's try to parse with headers first:
+function normalizeData(input: string) {
+  // Let's try to start to parse without headers first,
+  // so we can decide whether we have 2 * N grid or N * 2
+  // alternatively, we could also have 1 * N grid or N * 1
+  let results: { data: string[][], errors: Object[], meta: object[] } = Papa.parse(input);
+  if (results.errors.length > 0) {
+    displayErrorMessage(getErrorMessages(results.errors));
+    return null;
+  }
+  if (!isRowsEqual(results.data)) {
+    displayErrorMessage('Row or colum lengths aren\'t equal');
+    return null;
+  }
+  if (results.data[0].length == 1 || results.data[0].length == 2) {
+    // Transpose the data if we have 1 or 2 columns
+    // in that case, the user is supposed to have entered either 1 column of numbers,
+    // or 2 columns: the first is lables, and the second is numbers
+    results.data = transpose(results.data);
+  }
+  if (results.data.length > 2) {
+    displayErrorMessage('Too many columns or rows');
+    return null;
+  }
+  return results.data;
+}
+
+
+/**
+ * Gets all error messages from the result of the CSV parsing
+ * The messages are concatenated in to a one string
+ * @param {Object[]} errors - An array of errors which may occured while parsing
+ * @returns {string} A concatenation of all error messages
+ */
+function getErrorMessages(errors: Object[]) {
+  let messages: string = '';
+  for (let error of errors) {
+    messages += `${error['message']}. `;
+  }
+  return messages;
+}
+
+
+/**
+ * Tries to parse the normalized data with headers using 'Papa parse'
+ * @param {string} rawData - The raw data, AKA the unparsed version of the normalized data
+ * @returns {dataHeaders: string[], data: number[]} The result of parsing with headers if available
+ * @throws {string} A 'Parsing with headers was unsuccessful' string if this was the case
+ */
+function parseWithHeaders(rawData: string) {
   let results: { data: Object[], errors: Object[], meta: Object[] } = Papa.parse(rawData,
     {
       'header': true,
       'dynamicTyping': true
     });
   if (results.errors.length > 0) {
-    throw 'Parsing error';
+    throw 'Parsing with headers was unsuccessful.';
   }
-  if (results.data.length != 0) {
-    for (let key of Object.keys(results.data[0])) {
-      dataHeaders.push(key);
-    }
-  } else {
-    // Parsing with headers was unsuccessfull 
-    (<{ data: Object[][], errors: Object[], meta: Object[] }>results) =
-      Papa.parse(rawData, { 'dynamicTyping': true });
+  if (results.data.length == 0) {
+    throw 'Parsing with headers was unsuccessful.';
   }
-  if (results.errors.length > 0) {
-    throw 'Parsing error';
-  }
-  for (let key of Object.keys(results.data[0])) {
-    let dataElement: number = results.data[0][key];
-    if (typeof dataElement !== 'number') {
-      throw 'Parsing error';
-    }
-    data.push(dataElement);
-  }
-  return {
-    dataHeaders,
-    data
-  }
+  let dataHeaders: string[] = fillHeadersArray(results.data[0]);
+  let data: number[] = fillDataArray(results.data[0]);
+  return { dataHeaders, data };
 }
 
+
+/**
+ * Tries to parse with out headers in case parsing with headers was unsuccessful
+ * @param {string} rawData - The raw data, AKA the unparsed version of the normalized data
+ * @returns {number[]} The parsed data
+ * @throws {string} The error messages occured while parsing if this was the case
+ */
+function parseWithoutHeaders(rawData: string) {
+  let results: { data: Object[], errors: Object[], meta: Object[] } =
+    Papa.parse(rawData, { 'dynamicTyping': true });
+  let data: number[] = fillDataArray(results.data[0]);
+  if (results.errors.length > 0) {
+    throw getErrorMessages(results.errors);
+  }
+  return data;
+}
+
+
+/**
+ *  Returns the headers array of the parsed data in the final parsing step
+ * @param {Object} data - The data part of the parsing result
+ */
+function fillHeadersArray(data: Object) {
+  let dataHeadersArray: string[] = [];
+  for (let key in data) {
+    dataHeadersArray.push(key);
+  }
+  return dataHeadersArray;
+}
+
+
+/**
+ *  Returns the data array of the parsed data in the final parsing step
+ * @param {Object} data - The data part of the parsing result
+ * @throws {string} A proper error message displayed to the user in case the data isn't numerical
+ */
+function fillDataArray(data: Object) {
+  let dataArray: number[] = [];
+  for (let key in data) {
+    let dataElement: number = data[key];
+    if (typeof dataElement !== 'number') {
+      throw 'You could enter either 1 row of  numerical data, or 2 rows, where the second is numerical.';
+    }
+    data
+    dataArray.push(dataElement);
+  }
+  return dataArray;
+}
 
 /** 
  * Transposes the data matrix
  * @param {string[][]} data - The data matrix to transpose
- * @returns {string[][]} Data matrix transposed
+ * @returns {string[][]} The data matrix transposed
  */
 function transpose(data: string[][]) {
   // Initialize the result Array
@@ -170,7 +239,7 @@ function transpose(data: string[][]) {
 
 /**
  * Checks whether the rows of the data matrix's lengths are equal
- *  @param {string[][]} data - The data matrix to check
+ * @param {string[][]} data - The data matrix to check
  * @returns {boolean} Whether the row's lengths of the matrix were equal or not
  */
 function isRowsEqual(data: string[][]) {
@@ -190,9 +259,10 @@ function isRowsEqual(data: string[][]) {
 /**
  * Displays an error message to the user notifying him that the CSV he entered is in valid
  * The message is also accessible to screen readers using 'aria' techniques
+ * @param {string} message - An error message to display to the user
  */
-function displayErrorMessage() {
-  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = '&cross; In valid input';
+function displayErrorMessage(message: string) {
+  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = `&cross; In valid input! ${message}`;
   (<HTMLInputElement>document.getElementById('viewButton')).disabled = true;
 }
 
@@ -212,7 +282,7 @@ function displaySuccessMessage() {
  * @param {number[]} data - Array of numbers to get the min and max values from
  * @returns {number, number} An object contaning the max and min values
  */
-function getMinMaxValuesFrom(data: number[]) {
+function getMinMaxValues(data: number[]) {
   let maxValue: Number = Math.max(...data);
   let minValue: Number = Math.min(...data);
   return { maxValue, minValue };
@@ -234,7 +304,7 @@ function setMinAndMaxValuesFrom(
     return;
   }
 
-  const { maxValue, minValue } = getMinMaxValuesFrom(data);
+  const { maxValue, minValue } = getMinMaxValues(data);
 
   (<HTMLInputElement>document.getElementById(max_html_id)).value = maxValue.toString();
   (<HTMLInputElement>document.getElementById(min_html_id)).value = minValue.toString();
@@ -261,4 +331,4 @@ function populateTtsList() {
     option.innerText = optionValueAndText;
     ttsVoiceSelect.appendChild(option);
   });
-} 
+}

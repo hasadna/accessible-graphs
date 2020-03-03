@@ -5,7 +5,8 @@ let source = null;
 let timeOut = null;
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
-    let maxCoords = get2DCoordinates(1, data.length);
+    let rowNumber = dataHeaders.length == 0 ? 0 : 1;
+    let maxCoords = get2DCoordinates(rowNumber, data.length);
     // Calculate Euclidean distance of cell from origin (0,0)
     return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
