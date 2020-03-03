@@ -61,6 +61,7 @@ function onRadioChange(radio) {
  * Uses the 'Papa parse' API to achieve this
  */
 function parseInput() {
+    // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
     const input = document.getElementById('dataInput').value;
     let normalizedData = normalizeData(input);
     let rawData = Papa.unparse(normalizedData);
@@ -103,7 +104,7 @@ function normalizeData(input) {
         return null;
     }
     if (!isRowsEqual(results.data)) {
-        displayErrorMessage('Row or colum lengths aren\'t equal');
+        displayErrorMessage('Row or column lengths aren\'t equal');
         return null;
     }
     if (results.data[0].length == 1 || results.data[0].length == 2) {
@@ -120,7 +121,7 @@ function normalizeData(input) {
 }
 /**
  * Gets all error messages from the result of the CSV parsing
- * The messages are concatenated in to a one string
+ * The messages are concatenated in to one string
  * @param {Object[]} errors - An array of errors which may occured while parsing
  * @returns {string} A concatenation of all error messages
  */

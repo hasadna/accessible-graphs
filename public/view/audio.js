@@ -137,11 +137,11 @@ function speakSelectedCellPositionInfo() {
     synth.cancel();
     let textToSpeak = '';
     if (dataHeaders.length == 0) {
-        textToSpeak = `Column ${focusedColIndex + 1}`;
+        textToSpeak = `Position ${focusedColIndex + 1}`;
     }
     else {
         let headerText = dataHeaders[focusedColIndex];
-        textToSpeak = `${headerText}, column ${focusedColIndex + 1}`;
+        textToSpeak = `${headerText}, position ${focusedColIndex + 1}`;
     }
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     let ttsIndex = getUrlParam('ttsIndex');

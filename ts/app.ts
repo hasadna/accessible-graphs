@@ -1,5 +1,5 @@
 declare let Papa: any;
-
+    
 
 /** 
  * A CSV formatted string containing the data input from the user to pass to `view.ts` script
@@ -70,6 +70,7 @@ function onRadioChange(radio: HTMLInputElement) {
  * Uses the 'Papa parse' API to achieve this
  */
 function parseInput() {
+  // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
   let normalizedData: string[][] = normalizeData(input);
   let rawData: string = Papa.unparse(normalizedData);
@@ -112,7 +113,7 @@ function normalizeData(input: string) {
     return null;
   }
   if (!isRowsEqual(results.data)) {
-    displayErrorMessage('Row or colum lengths aren\'t equal');
+    displayErrorMessage('Row or column lengths aren\'t equal');
     return null;
   }
   if (results.data[0].length == 1 || results.data[0].length == 2) {
@@ -131,7 +132,7 @@ function normalizeData(input: string) {
 
 /**
  * Gets all error messages from the result of the CSV parsing
- * The messages are concatenated in to a one string
+ * The messages are concatenated in to one string
  * @param {Object[]} errors - An array of errors which may occured while parsing
  * @returns {string} A concatenation of all error messages
  */

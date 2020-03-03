@@ -169,7 +169,7 @@ function updateSelectedCell(cell) {
     selectedCell = cell;
     $(selectedCell).css('background-color', '#ffff4d');
     $(selectedCell).css('border', '1px solid #0099ff');
-    if (dataHeaders.length == 1 && focusedRowIndex == 0) {
+    if (dataHeaders.length != 0 && focusedRowIndex == 0) {
         return;
     }
     startSoundPlayback();
