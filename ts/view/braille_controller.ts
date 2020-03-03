@@ -136,7 +136,10 @@ class BrailleController {
       return; // OK
     }
     if (event.key == ' ') {
-      speakSelectedCellPositionInfo(); // On space key press
+      const position = brailleController.currentPosition - 2;
+      if (position >= 0 && position < data.length) {
+        speakSelectedCellPositionInfo(); // On space key press
+      }
     }
     event.preventDefault();
   }
