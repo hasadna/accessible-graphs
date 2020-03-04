@@ -3,7 +3,7 @@ let brailleController = null;
 // Reset it to true to have the BrailleController listen for all events of the textarea which contains the braille text
 let listenForAllEvents = false;
 class BrailleController {
-    constructor(parent) {
+    constructor(parent, data) {
         if (document.getElementById('brailleControllerText')) {
             throw 'Braille controller already created';
         }
@@ -21,6 +21,8 @@ class BrailleController {
         if (listenForAllEvents == true) {
             textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
         }
+        // Limit the textarea to one line using css techniques
+        textarea.css({ 'white-space': 'nowrap', 'overflow-x': 'auto' });
         textarea.attr('aria-describedby', 'speechOffNote');
         parent.appendChild(textarea[0]);
         const speechOffNote = $(document.createElement('p'));
@@ -34,17 +36,21 @@ class BrailleController {
         //       but that didn't work in Firefox.
         setInterval(this.checkSelection, 50);
         this.currentPosition = -1;
+        this.data = data;
+        this.initializeBraille();
     }
     static normalizeData(data, maxValue) {
         const result = Array();
+        for (let i = 0; i < data.length; i++) {
+            result[i] = BrailleController.normalizeDataElement(data[i], maxValue);
+        }
+        return result;
+    }
+    static normalizeDataElement(dataElement, maxValue) {
         const min = Math.min(...data);
         const max = Math.max(...data);
-        for (let i = 0; i < data.length; i++) {
-            result[i] = (data[i] - min) / (max - min) * (maxValue - 0.01);
-        }
-        console.log(`data=${data}`);
-        console.log(`normalizedData=${result}`);
-        return result;
+        let normalizedDataElement = (dataElement - min) / (max - min) * (maxValue - 0.01);
+        return normalizedDataElement;
     }
     static getAllEvents(element) {
         let result = [];
@@ -58,16 +64,33 @@ class BrailleController {
     logEvent(event) {
         console.debug(event.type);
     }
-    static numbersToBraille(data) {
-        let leftSideData = BrailleController.normalizeData(data, 16);
-        let rightSideData = BrailleController.normalizeData(data, 12);
-        let rightSideDataElement = rightSideData[brailleController.currentPosition];
-        return BrailleController.getBrailleForLeftSide(leftSideData) + '⡇' +
-            BrailleController.getBrailleForRightSide(rightSideDataElement);
+    initializeBraille() {
+        let leftSideData = BrailleController.normalizeData(this.data, 16);
+        let allBrailleForeLeftSide = BrailleController.getAllBrailleForLeftSide(leftSideData);
+        let initialBraile = '';
+        let dataLength = allBrailleForeLeftSide.length;
+        let iteration = 1;
+        let i = 0;
+        while (i < dataLength) {
+            while (i < 29 * iteration && i < dataLength) {
+                initialBraile += allBrailleForeLeftSide[i];
+                i++;
+            }
+            for (let j = 0; j < 29 * iteration - i; j++) {
+                initialBraile += '⠀';
+            }
+            initialBraile += '⡇';
+            for (let j = 0; j < 10; j++) {
+                initialBraile += '⠀';
+            }
+            iteration++;
+        }
+        this.setBraille(initialBraile);
+        this.updateRightSideBraille(0);
     }
-    static getBrailleForLeftSide(data) {
+    static getAllBrailleForLeftSide(data) {
         let brailleData = '';
-        for (let i = 0; i < data.length; i += 1) {
+        for (let i = 0; i < data.length; i++) {
             const d = data[i];
             const b = BrailleController.getBrailleValue(d);
             brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
@@ -76,27 +99,29 @@ class BrailleController {
     }
     static getBrailleForRightSide(dataElement) {
         let result = '';
-        let count = Math.round(dataElement);
-        while (count > 0) {
+        let onCharscount = Math.round(dataElement);
+        let i = 0;
+        while (i < onCharscount) {
             result += '⠒';
-            count--;
+            i++;
+        }
+        while (i < 10) {
+            result += '⠀';
+            i++;
         }
         return result;
     }
-    /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
-    /*
-    static getBraille2(data, totalSegments, segmentNumber) {
-      let brailleData = '';
-      for (let i = 0; i < data.length; i += 2) {
-        const d1 = data[i];
-        const d2 = data[i + 1];
-        const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
-        const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
-        brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
-      }
-      return brailleData;
+    updateRightSideBraille(position) {
+        let positionInData = position - Math.floor(position / 40) * 11;
+        let rightSideDataElement = BrailleController.normalizeDataElement(this.data[positionInData], 10);
+        console.log(rightSideDataElement);
+        let rightSideBraille = BrailleController.getBrailleForRightSide(rightSideDataElement);
+        let positionToInsertBraille = Math.floor(position / 40) * 40 + 30;
+        let brailleText = this.getBraille();
+        brailleText = BrailleController.splice(brailleText, rightSideBraille, positionToInsertBraille);
+        this.setBraille(brailleText);
+        this.setCursorPosition(position);
     }
-    */
     static getBrailleValue(value) {
         return Math.floor(value / 4) + 1;
     }
@@ -115,20 +140,32 @@ class BrailleController {
         }
         if (event.key == ' ') {
             const position = brailleController.currentPosition;
-            if (position >= 0 && position < data.length) {
+            if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
                 speakSelectedCellPositionInfo(); // On space key press
             }
         }
         event.preventDefault();
     }
     onSecondRoutingKeyPress(event) {
-        speakSelectedCellPositionInfo();
+        const position = brailleController.currentPosition;
+        if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
+            speakSelectedCellPositionInfo();
+        }
     }
     setBraille(text) {
         this.textarea.text(text);
     }
+    getBraille() {
+        return this.textarea.text();
+    }
     setSelectionListener(listener) {
         this.selectionListener = listener;
+    }
+    setCursorPosition(position) {
+        // The cursor will leave it's original position when setting a new braille text to the textarea
+        // so return it to the previous position in which it was before setting the braille text
+        this.textarea.prop('selectionEnd', position);
+        this.textarea.prop('selectionStart', position);
     }
     onSelection() {
         if (brailleController.selectionListener == null) {
@@ -143,9 +180,10 @@ class BrailleController {
         };
         brailleController.selectionListener(newEvent);
     }
+    static splice(string, substring, position) {
+        return string.slice(0, position) + substring + string.slice(position + substring.length);
+    }
 }
 // These symbols map 1:1 to numbers.
 BrailleController.BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
-// These symbols map 1:2 to numbers. Each symbol maps to 2 numbers.
-BrailleController.BRAILLE_SYMBOLS2 = '⠀⢀⠠⠐⠈⡀⣀⡠⡐⡈⠄⢄⠤⠔⠌⠂⢂⠢⠒⠊⠁⢁⠡⠑⠉';
 //# sourceMappingURL=braille_controller.js.map

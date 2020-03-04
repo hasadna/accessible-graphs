@@ -15,25 +15,18 @@ function initializeViewScript() {
     processData();
 }
 function brailleControllerSelectionListener(event) {
-    console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
     focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
     const position = event.position;
-    if (position >= 0 && position < data.length) {
-        updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0]);
-        brailleData = BrailleController.numbersToBraille(data);
-        brailleController.setBraille(brailleData);
-        // The cursor will leave it's original position when setting a new braille text to the textarea
-        // so return it to the previous position before setting the braille text
-        brailleController.textarea.prop('selectionEnd', position);
-        brailleController.textarea.prop('selectionStart', position);
+    let positionInData = position - Math.floor(position / 40) * 11;
+    if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
+        updateSelectedCell($(`[row=${focusedRowIndex}][col=${positionInData}]`)[0]);
+        brailleController.updateRightSideBraille(position);
     }
 }
 function processData() {
-    brailleController = new BrailleController(document.getElementById('container'));
-    brailleController.setSelectionListener(brailleControllerSelectionListener);
     parseData(getUrlParam('data'));
-    brailleData = BrailleController.numbersToBraille(data);
-    brailleController.setBraille(brailleData);
+    brailleController = new BrailleController(document.getElementById('container'), data);
+    brailleController.setSelectionListener(brailleControllerSelectionListener);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
