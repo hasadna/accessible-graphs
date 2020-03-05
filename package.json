@@ -3,14 +3,49 @@
   "version": "1.0.0",
   "license": "AGPL-3.0",
   "scripts": {
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "ci-test": "jest --coverage",
+    "ci-watch": "jest --coverage --watchAll"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:hasadna/sensory-interface.git"
   },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "jsdom",
+    "roots": [
+      ".ci-jest"
+    ],
+    "collectCoverageFrom": [
+      ".ci-jest/**.js",
+      "public/**.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules/",
+      "public/jquery"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      },
+      ".ci-jest/**.js": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    "coverageReporters": [
+      "text"
+    ]
+  },
   "devDependencies": {
     "@types/jquery": "^3.3.31",
+    "jest": "^25.1.0",
     "typescript": "^3.7.4"
   }
 }

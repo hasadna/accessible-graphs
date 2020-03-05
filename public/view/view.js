@@ -1,7 +1,8 @@
 // This variable stores the current cell under touch point in case touch is available.
 // In case touch is not available, it stores the current focused cell.
 let selectedCell = null;
-let data = null;
+let data = [];
+let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
@@ -14,24 +15,24 @@ function initializeViewScript() {
     processData();
 }
 function brailleControllerSelectionListener(event) {
-    console.log('brailleControllerSelectionListener: position=' + event.position + ' character=' + event.character);
-    // First 2 characters and last character are not data
-    const position = event.position - 2;
-    if (position >= 0 && position < data[0].length) {
-        updateSelectedCell($(`[row=${focusedRowIndex}][col=${position}]`)[0]);
+    focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
+    const position = event.position;
+    let positionInData = position - Math.floor(position / 40) * 11;
+    if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
+        updateSelectedCell($(`[row=${focusedRowIndex}][col=${positionInData}]`)[0]);
+        brailleController.updateRightSideBraille(position);
     }
 }
 function processData() {
-    brailleController = new BrailleController(document.getElementById('container'));
+    parseData(getUrlParam('data'));
+    brailleController = new BrailleController(document.getElementById('container'), data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
-    data = parseData(getUrlParam('data'));
-    brailleData = BrailleController.numbersToBraille(data[0]);
-    brailleController.setBraille(brailleData[0]);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
 }
 function createGrid() {
+    let combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
     const grid = $(document.createElement('div'));
     grid.attr('role', 'grid');
     grid.prop('id', 'grid');
@@ -39,15 +40,15 @@ function createGrid() {
     grid.width('100%');
     grid.height('90%');
     grid.prop('className', 'table');
-    for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < combinedDataAndHeaders.length; rowIndex++) {
         let gridRow = $(document.createElement('div'));
         gridRow.prop('role', 'row');
         gridRow.prop('className', 'row');
-        for (let colIndex = 0; colIndex < data[0].length; colIndex++) {
+        for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
             let gridCell = $(document.createElement('div'));
             gridCell.attr('role', 'gridcell');
             gridCell.prop('className', 'cell');
-            gridCell.append(document.createTextNode(data[rowIndex][colIndex].toString()));
+            gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
             gridCell.attr('aria-readonly', 'true');
             gridCell.attr('row', rowIndex);
             gridCell.attr('col', colIndex);
@@ -87,59 +88,57 @@ function addNavigationToGrid() {
     });
 }
 function navigateGrid(event) {
-    let row = focusedRowIndex;
-    let col = focusedColIndex;
+    let currentCell = event.currentTarget;
+    let newFocusedCell = null;
     switch (event.key) {
-        case 'ArrowUp':
-            row -= 1;
-            break;
-        case 'ArrowDown':
-            row += 1;
-            break;
         case 'ArrowLeft':
-            col -= 1;
+            newFocusedCell = currentCell.previousSibling;
             break;
         case 'ArrowRight':
-            col += 1;
+            newFocusedCell = currentCell.nextSibling;
+            break;
+        case 'ArrowDown':
+            if (currentCell.parentNode.nextSibling != null) {
+                let index = currentCell.getAttribute('col');
+                newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
+            }
+            break;
+        case 'ArrowUp':
+            if (currentCell.parentNode.previousSibling != null) {
+                let index = currentCell.getAttribute('col');
+                newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
+            }
             break;
         case 'Home':
-            col = 0;
+            newFocusedCell = currentCell.parentNode.firstChild;
             break;
         case 'End':
-            col = data[0].length - 1;
+            newFocusedCell = currentCell.parentNode.lastChild;
             break;
-        // TODO: add PageUp/Down keys
         default:
             return;
     }
-    if (0 <= row && row < data.length && 0 <= col && col < data[0].length) {
-        updateSelectedCell($(`[row=${row}][col=${col}]`)[0]);
+    if (newFocusedCell != null) {
+        newFocusedCell.focus();
+        updateSelectedCell(newFocusedCell);
     }
 }
 /**
-* Maps (row, col) to a 2D coordinate. row and col are 0-based indices.
-* Returns a map with the x and y coordinates (e.g {x:1, y:0}).
+* Maps (row, col) to a 2D coordinate. row and col are 0-based indices
+* Returns a map with the x and y coordinates (e.g {x:1, y:0})
+* The data part of the grid will be always with only 1 row, therefore, y coordinate will be always 0
 * Examples:
-* Cells in a 2X2 grid will be positioned between -0.5 and 0.5 in both x and y.
-* Cells in a 3X3 grid will be positioned between -1 and 1 in both x and y.
+* Cells in a 1X2 grid will be positioned between -0.5 and 0.5 in x, and y will be 0
+* Cells in a 1X3 grid will be positioned between -1 and 1 in x, and y will be also 0
 */
 function get2DCoordinates(row, col) {
-    const colCount = data[0].length;
+    const colCount = data.length;
     let xCoord = col - Math.floor(colCount / 2);
     // Align xCoord to be symmetric with respect to y-axis
     if (colCount % 2 === 0) {
         xCoord += 0.5;
     }
-    const rowCount = data.length;
-    // The same applies for row attribute as col one
-    let yCoord = row - Math.floor(rowCount / 2);
-    // Align yCoord similar to xCoord:
-    if (rowCount % 2 === 0) {
-        yCoord += 0.5;
-    }
-    // Negate yCoord so upper cells have positive values,
-    // and lower cells have negative values
-    yCoord = -yCoord;
+    let yCoord = 0;
     return {
         x: xCoord,
         y: yCoord,
@@ -168,6 +167,9 @@ function updateSelectedCell(cell) {
     selectedCell = cell;
     $(selectedCell).css('background-color', '#ffff4d');
     $(selectedCell).css('border', '1px solid #0099ff');
+    if (dataHeaders.length != 0 && focusedRowIndex == 0) {
+        return;
+    }
     startSoundPlayback();
     speakSelectedCell();
 }
@@ -180,19 +182,14 @@ function getUrlParam(variableName) {
     return params.get(variableName);
 }
 function parseData(dataString) {
-    const result = Array();
-    let rowIndex = 0;
-    const lines = dataString.split('\n');
-    lines.forEach((line) => {
-        result[rowIndex] = Array();
-        let colIndex = 0;
-        const values = line.split('\t');
-        values.forEach((value) => {
-            result[rowIndex][colIndex] = value;
-            colIndex++;
-        });
-        rowIndex++;
-    });
-    return result;
+    try {
+        // parseWithHeaders and parseWithoutHeaders functions are found in app.ts file
+        let combinedDataAndHeaders = parseWithHeaders(dataString);
+        dataHeaders = combinedDataAndHeaders.dataHeaders;
+        data = combinedDataAndHeaders.data;
+    }
+    catch (error) {
+        data = parseWithoutHeaders(dataString);
+    }
 }
 //# sourceMappingURL=view.js.map
