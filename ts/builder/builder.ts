@@ -35,7 +35,7 @@ function updateURL() {
   let newUrl: string = '';
   // Check if we are running on a localhost
   if (['localhost', '127.0.0.1', ''].includes(location.hostname)) {
-    newUrl = window.location.pathname.split('/').slice(0, -1).join('/');
+    newUrl = window.location.pathname.split('/').slice(0, -2).join('/');
   } else {
     newUrl = new URL(window.location.href).origin;
   }
