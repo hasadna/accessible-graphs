@@ -43,7 +43,10 @@ function createAndSetOscillator(currentCell) {
   if (selectedValue > maxValue) {
     selectedValue = maxValue;
   }
-  const frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+  let frequency = MIN_FREQUENCY;
+  if (maxValue != minValue) {
+    frequency += (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+  }
   oscillator.frequency.value = frequency;
   oscillator.channelCount = 1;
 }
