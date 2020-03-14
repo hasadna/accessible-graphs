@@ -159,7 +159,7 @@ class BrailleController {
   }
 
   onKeyDown(event) {
-    if (event.key == 'ArrowDown' || event.key == 'ArrowUp' || event.key == 'Backspace' || event.key == 'Delete') {
+    if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
       event.preventDefault();
     }
     if (event.key == ' ') {
