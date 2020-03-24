@@ -156,7 +156,7 @@ function onCellChange(event) {
     }
     updateSelectedCell(elementUnderTouch);
     stopSoundPlayback();
-    playSound();
+    startSoundPlayback();
     event.stopPropagation();
 }
 function updateSelectedCell(cell) {
