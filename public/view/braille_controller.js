@@ -37,21 +37,26 @@ class BrailleController {
         this.data = data;
         this.initializeBraille();
     }
-    static normalizeData(data, maxValue) {
+    static normalizeData(data, range) {
         const result = Array();
         for (let i = 0; i < data.length; i++) {
-            result[i] = BrailleController.normalizeDataElement(data[i], maxValue);
+            result[i] = BrailleController.normalizeDataElement(data[i], range);
         }
         return result;
     }
-    static normalizeDataElement(dataElement, maxValue) {
-        const min = Math.min(...data);
-        const max = Math.max(...data);
+    static normalizeDataElement(dataElement, range) {
+        const min = parseFloat(getUrlParam('minValue'));
+        const max = parseFloat(getUrlParam('maxValue'));
         if (min == max) {
             return 0;
         }
-        let normalizedDataElement = (dataElement - min) / (max - min) * (maxValue - 0.01);
-        return normalizedDataElement;
+        let normalizedDataElement = (dataElement - min) / (max - min) * (range - 0.01);
+        if (normalizedDataElement >= 0 && normalizedDataElement <= range) {
+            return normalizedDataElement;
+        }
+        else {
+            return -1;
+        }
     }
     static getAllEvents(element) {
         let result = [];
@@ -66,7 +71,7 @@ class BrailleController {
         console.debug(event.type);
     }
     initializeBraille() {
-        let leftSideData = BrailleController.normalizeData(this.data, 16);
+        let leftSideData = BrailleController.normalizeData(this.data, 4);
         let allBrailleForeLeftSide = BrailleController.getAllBrailleForLeftSide(leftSideData);
         let initialBraile = '';
         let dataLength = allBrailleForeLeftSide.length;
@@ -123,7 +128,7 @@ class BrailleController {
         this.setCursorPosition(position);
     }
     static getBrailleValue(value) {
-        return Math.floor(value / 4) + 1;
+        return Math.floor(value) + 1;
     }
     checkSelection() {
         if (brailleController.currentPosition !== brailleController.textarea.prop('selectionStart')) {

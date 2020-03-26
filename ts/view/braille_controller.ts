@@ -49,22 +49,26 @@ class BrailleController {
     this.initializeBraille();
   }
 
-  static normalizeData(data: number[], maxValue: number): number[] {
+  static normalizeData(data: number[], range: number): number[] {
     const result: number[] = Array();
     for (let i = 0; i < data.length; i++) {
-      result[i] = BrailleController.normalizeDataElement(data[i], maxValue);
+      result[i] = BrailleController.normalizeDataElement(data[i], range);
     }
     return result;
   }
 
-  static normalizeDataElement(dataElement: number, maxValue: number): number {
-    const min: number = Math.min(...data);
-    const max: number = Math.max(...data);
+  static normalizeDataElement(dataElement: number, range: number): number {
+    const min: number = parseFloat(getUrlParam('minValue'));
+    const max: number = parseFloat(getUrlParam('maxValue'));
     if (min == max) {
       return 0;
     }
-    let normalizedDataElement: number = (dataElement - min) / (max - min) * (maxValue - 0.01);
-    return normalizedDataElement;
+    let normalizedDataElement: number = (dataElement - min) / (max - min) * (range - 0.01);
+    if (normalizedDataElement >= 0 && normalizedDataElement <= range) {
+      return normalizedDataElement;
+    } else {
+      return -1;
+    }
   }
 
   static getAllEvents(element) {
@@ -82,7 +86,7 @@ class BrailleController {
   }
 
   initializeBraille() {
-    let leftSideData: number[] = BrailleController.normalizeData(this.data, 16);
+    let leftSideData: number[] = BrailleController.normalizeData(this.data, 4);
     let allBrailleForeLeftSide: string = BrailleController.getAllBrailleForLeftSide(leftSideData);
     let initialBraile: string = '';
     let dataLength: number = allBrailleForeLeftSide.length;
@@ -143,7 +147,7 @@ class BrailleController {
   }
 
   static getBrailleValue(value: number): number {
-    return Math.floor(value / 4) + 1;
+    return Math.floor(value) + 1;
   }
 
   checkSelection() {
