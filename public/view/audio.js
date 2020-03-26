@@ -130,8 +130,8 @@ function speakSelectedCell() {
         valueText = `Minus ${value}`;
     }
     const utterance = new SpeechSynthesisUtterance(valueText);
-    let ttsIndex = getUrlParam('ttsIndex');
-    let selectedTtsVoice = synth.getVoices()[ttsIndex];
+    let ttsName = getUrlParam('ttsName');
+    let selectedTtsVoice = findTtsVoice(ttsName);
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);
 }
@@ -147,9 +147,28 @@ function speakSelectedCellPositionInfo() {
         textToSpeak = `${headerText}, position ${focusedColIndex + 1}`;
     }
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    let ttsIndex = getUrlParam('ttsIndex');
-    let selectedTtsVoice = synth.getVoices()[ttsIndex];
+    let ttsName = getUrlParam('ttsName');
+    let selectedTtsVoice = findTtsVoice(ttsName);
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);
+}
+function findTtsVoice(ttsName) {
+    const synth = window.speechSynthesis;
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.name === ttsName) {
+            return ttsVoice;
+        }
+    }
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.default === true) {
+            return ttsVoice;
+        }
+    }
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.lang.startsWith('en')) {
+            return ttsVoice;
+        }
+    }
+    return synth.getVoices()[0];
 }
 //# sourceMappingURL=audio.js.map

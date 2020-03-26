@@ -24,7 +24,8 @@ function updateURL() {
     const minValue = document.getElementById('minValue').value;
     const maxValue = document.getElementById('maxValue').value;
     const instrumentType = document.getElementById('instrumentType').value;
-    const ttsVoiceIndex = document.getElementById('ttsVoice').selectedIndex;
+    const ttsVoiceSelect = document.getElementById('ttsVoice');
+    const ttsVoiceName = ttsVoiceSelect.options[ttsVoiceSelect.selectedIndex].getAttribute('data-name');
     let newUrl = '';
     // Check if we are running on a localhost
     if (['localhost', '127.0.0.1', ''].includes(location.hostname)) {
@@ -38,7 +39,7 @@ function updateURL() {
     newUrl += `&minValue=${minValue}`;
     newUrl += `&maxValue=${maxValue}`;
     newUrl += `&instrumentType=${instrumentType}`;
-    newUrl += `&ttsIndex=${ttsVoiceIndex}`;
+    newUrl += `&ttsName=${ttsVoiceName}`;
     window.location.href = newUrl;
 }
 /**
@@ -63,7 +64,13 @@ function onRadioChange(radio) {
 function parseInput() {
     // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
     const input = document.getElementById('dataInput').value;
+    if (input === '') {
+        displayErrorMessage('Empty data is in valid');
+    }
     let normalizedData = normalizeData(input);
+    if (normalizeData == null) {
+        return;
+    }
     let rawData = Papa.unparse(normalizedData);
     let data = [];
     try {
@@ -85,11 +92,11 @@ function parseInput() {
 }
 /**
  * Normalizes the data entered by the user to the `dataInput` textarea by doing the following:
- * Parses the data using the 'Papa parse' API to parse CSV. Notifies the user in case there are errors
- * Insures that the data row or column lengths are equal. Notifies the user if not
+ * Parses the data using the 'Papa parse' API to parse CSV, notifies the user in case there are errors.
+ * Insures that the data row or column lengths are equal, notifies the user if not.
  * Transposes the data in case we need to. The aim is to have the headers in the first row (if they are available)
  * and the data in the second row.
- * Alternatively, we could also have 1 row of numerical data
+ * Alternatively, we could also have 1 row or column of numerical data.
  * In case we have more than 2 rows or columns, the user is notified with a proper error message
  * @param {string} input - The input data to normalize
  * @returns {string[][]} The normalized data
@@ -99,7 +106,7 @@ function normalizeData(input) {
     // so we can decide whether we have 2 * N grid or N * 2
     // alternatively, we could also have 1 * N grid or N * 1
     let results = Papa.parse(input);
-    if (results.errors.length > 0) {
+    if (results.meta['aborted'] === true) {
         displayErrorMessage(getErrorMessages(results.errors));
         return null;
     }
@@ -120,8 +127,8 @@ function normalizeData(input) {
     return results.data;
 }
 /**
- * Gets all error messages from the result of the CSV parsing
- * The messages are concatenated in to one string
+ * Gets all error messages from the result of the CSV parsing.
+ * The messages are concatenated in to one string.
  * @param {Object[]} errors - An array of errors which may occured while parsing
  * @returns {string} A concatenation of all error messages
  */
@@ -162,7 +169,7 @@ function parseWithHeaders(rawData) {
 function parseWithoutHeaders(rawData) {
     let results = Papa.parse(rawData, { 'dynamicTyping': true });
     let data = fillDataArray(results.data[0]);
-    if (results.errors.length > 0) {
+    if (results['aborted'] === true) {
         throw getErrorMessages(results.errors);
     }
     return data;
@@ -188,9 +195,8 @@ function fillDataArray(data) {
     for (let key in data) {
         let dataElement = data[key];
         if (typeof dataElement !== 'number') {
-            throw 'You could enter either 1 row of  numerical data, or 2 rows, where the second is numerical.';
+            throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
         }
-        data;
         dataArray.push(dataElement);
     }
     return dataArray;
@@ -287,6 +293,7 @@ function populateTtsList() {
         }
         option.value = optionValueAndText;
         option.innerText = optionValueAndText;
+        option.setAttribute('data-name', voice.name);
         ttsVoiceSelect.appendChild(option);
     });
 }
