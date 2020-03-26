@@ -44,7 +44,10 @@ function getFrequency(currentCell) {
   if (selectedValue > maxValue) {
     selectedValue = maxValue;
   }
-  const frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+  let frequency = MIN_FREQUENCY;
+  if (maxValue != minValue) {
+    frequency += (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+  }
   return frequency;
 }
 

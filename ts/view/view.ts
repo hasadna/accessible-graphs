@@ -71,16 +71,11 @@ function addOnClickAndOnTouchSoundToGrid() {
     $(element).on('touchmove', onCellChange);
     $(element).on('touchleave', stopSoundPlayback);
     $(element).on('touchcancel', stopSoundPlayback);
-    $(element).focus(noopEvent);
   });
 }
 
 function onClick(event) {
   updateSelectedCell(event.currentTarget);
-  event.preventDefault();
-}
-
-function noopEvent(event) {
   event.preventDefault();
 }
 

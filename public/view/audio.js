@@ -1,6 +1,5 @@
 // initialize Audio context on page load.
 const audioContext = new (window['webkitAudioContext'] || window['AudioContext'])();
-// let listener = new Tone.Listener();
 let synth = null;
 let panner = null;
 let source = null;
@@ -20,8 +19,6 @@ function setPanner(currentCell) {
         panner.setPosition(coordinates.x, coordinates.y, 0);
     }
     Tone.Listener.forwardZ = -1;
-    console.log(panner.positionX);
-    console.log(panner.positionY);
     panner.panningModel = 'HRTF';
     panner.distanceModel = 'linear';
 }
@@ -41,7 +38,10 @@ function getFrequency(currentCell) {
     if (selectedValue > maxValue) {
         selectedValue = maxValue;
     }
-    const frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+    let frequency = MIN_FREQUENCY;
+    if (maxValue != minValue) {
+        frequency += (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+    }
     return frequency;
 }
 function startSoundPlayback() {

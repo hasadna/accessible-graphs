@@ -10,14 +10,12 @@ class BrailleController {
         const textarea = $(document.createElement('textarea'));
         textarea.prop('id', 'brailleControllerText');
         // In Chrome, readonly textarea doesn't support moving the cursor via the keyboard, or even cursor blinking
-        // therefore, we can't use the readonly property, rather, we have to ignore none navigational key presses. See:
+        // therefore, we can't use the readonly property, rather, we have to prevent the user from entering characters to the textarea. See:
         //https://stackoverflow.com/questions/19005579/how-to-enable-cursor-move-while-using-readonly-attribute-in-input-field-in-chrom
+        textarea.prop('maxlength', '0');
         textarea.keydown(this.onKeyDown);
+        textarea.bind('cut', this.ignoreEvent);
         textarea.mousedown(this.onSecondRoutingKeyPress);
-        textarea.keyup(this.noopEventCatcher);
-        textarea.keypress(this.noopEventCatcher);
-        textarea.click(this.noopEventCatcher);
-        textarea.mouseup(this.noopEventCatcher);
         if (listenForAllEvents == true) {
             textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
         }
@@ -49,6 +47,9 @@ class BrailleController {
     static normalizeDataElement(dataElement, maxValue) {
         const min = Math.min(...data);
         const max = Math.max(...data);
+        if (min == max) {
+            return 0;
+        }
         let normalizedDataElement = (dataElement - min) / (max - min) * (maxValue - 0.01);
         return normalizedDataElement;
     }
@@ -114,7 +115,6 @@ class BrailleController {
     updateRightSideBraille(position) {
         let positionInData = position - Math.floor(position / 40) * 11;
         let rightSideDataElement = BrailleController.normalizeDataElement(this.data[positionInData], 10);
-        console.log(rightSideDataElement);
         let rightSideBraille = BrailleController.getBrailleForRightSide(rightSideDataElement);
         let positionToInsertBraille = Math.floor(position / 40) * 40 + 30;
         let brailleText = this.getBraille();
@@ -131,20 +131,20 @@ class BrailleController {
             brailleController.onSelection();
         }
     }
-    noopEventCatcher(event) {
+    ignoreEvent(event) {
         event.preventDefault();
     }
     onKeyDown(event) {
-        if (event.key.includes('Arrow') || event.key.includes('Home') || event.key.includes('End')) {
-            return; // OK
+        if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
+            event.preventDefault();
         }
         if (event.key == ' ') {
             const position = brailleController.currentPosition;
             if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
                 speakSelectedCellPositionInfo(); // On space key press
             }
+            event.preventDefault();
         }
-        event.preventDefault();
     }
     onSecondRoutingKeyPress(event) {
         const position = brailleController.currentPosition;
