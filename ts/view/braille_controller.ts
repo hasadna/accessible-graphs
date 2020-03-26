@@ -60,15 +60,17 @@ class BrailleController {
   static normalizeDataElement(dataElement: number, range: number): number {
     const min: number = parseFloat(getUrlParam('minValue'));
     const max: number = parseFloat(getUrlParam('maxValue'));
+    if (dataElement < min) {
+      dataElement = min;
+    }
+    if (dataElement > max) {
+      dataElement = max;
+    }
     if (min == max) {
       return 0;
     }
     let normalizedDataElement: number = (dataElement - min) / (max - min) * (range - 0.01);
-    if (normalizedDataElement >= 0 && normalizedDataElement <= range) {
-      return normalizedDataElement;
-    } else {
-      return -1;
-    }
+    return normalizedDataElement;
   }
 
   static getAllEvents(element) {
