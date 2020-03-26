@@ -1,8 +1,8 @@
 // initialize Audio context on page load.
 const audioContext = new (window['webkitAudioContext'] || window['AudioContext'])();
-let oscillator = null;
+let synth = null;
+let panner = null;
 let source = null;
-let timeOut = null;
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
     let rowNumber = dataHeaders.length == 0 ? 0 : 1;
@@ -10,18 +10,19 @@ function getCellMaxDistance() {
     // Calculate Euclidean distance of cell from origin (0,0)
     return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
-function createAndSetPanner(currentCell) {
-    const panner = audioContext.createPanner();
+function setPanner(currentCell) {
+    const coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
+    if (panner == null) {
+        panner = new Tone.Panner3D(coordinates.x, coordinates.y, 0).toMaster();
+    }
+    else {
+        panner.setPosition(coordinates.x, coordinates.y, 0);
+    }
+    Tone.Listener.forwardZ = -1;
     panner.panningModel = 'HRTF';
     panner.distanceModel = 'linear';
-    panner.refDistance = 0;
-    panner.rolloffFactor = panner.maxDistance / (getCellMaxDistance() * 2);
-    const coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
-    panner.setPosition(coordinates.x, coordinates.y, 0);
-    return panner;
 }
-function createAndSetOscillator(currentCell) {
-    oscillator = audioContext.createOscillator();
+function getFrequency(currentCell) {
     const MAX_FREQUENCY = 1000;
     const MIN_FREQUENCY = 100;
     const minValue = parseFloat(getUrlParam('minValue'));
@@ -41,35 +42,30 @@ function createAndSetOscillator(currentCell) {
     if (maxValue != minValue) {
         frequency += (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
     }
-    oscillator.frequency.value = frequency;
-    oscillator.channelCount = 1;
+    return frequency;
 }
 function startSoundPlayback() {
     stopSoundPlayback();
-    playSound();
-}
-function playSound() {
     if (audioContext.state == 'suspended') {
         audioContext.resume();
     }
     if (getUrlParam('instrumentType') == 'synthesizer') {
-        playSoundWithOscillator();
+        playSoundWithSynthesizer();
     }
     else {
         playSoundFromAudioFile();
     }
 }
-function playSoundWithOscillator() {
-    // Create oscillator and panner nodes and connect them each time we want to play audio
-    // because those nodes are single use entities
-    createAndSetOscillator(selectedCell);
-    const panner = createAndSetPanner(selectedCell);
-    oscillator.connect(panner);
-    panner.connect(audioContext.destination);
-    oscillator.start(audioContext.currentTime);
-    timeOut = setTimeout(() => {
-        stopSoundPlayback();
-    }, 1000);
+function playSoundWithSynthesizer() {
+    setPanner(selectedCell);
+    if (synth == null) {
+        synth = new Tone.Synth();
+    }
+    if (synth.context.state == 'suspended') {
+        synth.context.resume();
+    }
+    synth.connect(panner);
+    synth.triggerAttackRelease(getFrequency(selectedCell), '8n');
 }
 function playSoundFromAudioFile() {
     const fileName = getFileToPlay(selectedCell);
@@ -85,7 +81,7 @@ function playSoundFromAudioFile() {
 function playAudioFile(buffer) {
     source = audioContext.createBufferSource();
     source.buffer = buffer;
-    const panner = createAndSetPanner(selectedCell);
+    setPanner(selectedCell);
     source.connect(panner);
     panner.connect(audioContext.destination);
     source.start(audioContext.currentTime);
@@ -106,14 +102,11 @@ function getFileToPlay(currentCell) {
 }
 function stopSoundPlayback() {
     try {
-        if (oscillator != null) {
-            oscillator.stop(audioContext.currentTime);
+        if (synth != null) {
+            synth.triggerRelease();
         }
         if (source != null) {
             source.stop(audioContext.currentTime);
-        }
-        if (timeOut != null) {
-            window.clearTimeout(timeOut);
         }
     }
     catch (e) {
