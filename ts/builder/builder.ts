@@ -1,5 +1,5 @@
 declare let Papa: any;
-    
+
 
 /** 
  * A CSV formatted string containing the data input from the user to pass to `view.ts` script
@@ -30,7 +30,8 @@ function updateURL() {
   const minValue: string = (<HTMLInputElement>document.getElementById('minValue')).value;
   const maxValue: string = (<HTMLInputElement>document.getElementById('maxValue')).value;
   const instrumentType: string = (<HTMLInputElement>document.getElementById('instrumentType')).value;
-  const ttsVoiceIndex: number = (<HTMLSelectElement>document.getElementById('ttsVoice')).selectedIndex;
+  const ttsVoiceSelect: HTMLSelectElement = (<HTMLSelectElement>document.getElementById('ttsVoice'));
+  const ttsVoiceName: string = ttsVoiceSelect.options[ttsVoiceSelect.selectedIndex].getAttribute('data-name');
 
   let newUrl: string = '';
   // Check if we are running on a localhost
@@ -44,7 +45,7 @@ function updateURL() {
   newUrl += `&minValue=${minValue}`;
   newUrl += `&maxValue=${maxValue}`;
   newUrl += `&instrumentType=${instrumentType}`;
-  newUrl += `&ttsIndex=${ttsVoiceIndex}`;
+  newUrl += `&ttsName=${ttsVoiceName}`;
   window.location.href = newUrl;
 }
 
@@ -72,7 +73,13 @@ function onRadioChange(radio: HTMLInputElement) {
 function parseInput() {
   // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
+  if (input === '') {
+    displayErrorMessage('Empty data is in valid');
+  }
   let normalizedData: string[][] = normalizeData(input);
+  if (normalizeData == null) {
+    return;
+  }
   let rawData: string = Papa.unparse(normalizedData);
   let data: number[] = [];
   try {
@@ -94,11 +101,11 @@ function parseInput() {
 
 /**
  * Normalizes the data entered by the user to the `dataInput` textarea by doing the following:
- * Parses the data using the 'Papa parse' API to parse CSV. Notifies the user in case there are errors
- * Insures that the data row or column lengths are equal. Notifies the user if not
+ * Parses the data using the 'Papa parse' API to parse CSV, notifies the user in case there are errors.
+ * Insures that the data row or column lengths are equal, notifies the user if not.
  * Transposes the data in case we need to. The aim is to have the headers in the first row (if they are available)
  * and the data in the second row.
- * Alternatively, we could also have 1 row of numerical data
+ * Alternatively, we could also have 1 row or column of numerical data.
  * In case we have more than 2 rows or columns, the user is notified with a proper error message
  * @param {string} input - The input data to normalize
  * @returns {string[][]} The normalized data
@@ -107,8 +114,8 @@ function normalizeData(input: string) {
   // Let's try to start to parse without headers first,
   // so we can decide whether we have 2 * N grid or N * 2
   // alternatively, we could also have 1 * N grid or N * 1
-  let results: { data: string[][], errors: Object[], meta: object[] } = Papa.parse(input);
-  if (results.errors.length > 0) {
+  let results: { data: string[][], errors: Object[], meta: object } = Papa.parse(input);
+  if (results.meta['aborted'] === true) {
     displayErrorMessage(getErrorMessages(results.errors));
     return null;
   }
@@ -131,8 +138,8 @@ function normalizeData(input: string) {
 
 
 /**
- * Gets all error messages from the result of the CSV parsing
- * The messages are concatenated in to one string
+ * Gets all error messages from the result of the CSV parsing.
+ * The messages are concatenated in to one string.
  * @param {Object[]} errors - An array of errors which may occured while parsing
  * @returns {string} A concatenation of all error messages
  */
@@ -152,7 +159,7 @@ function getErrorMessages(errors: Object[]) {
  * @throws {string} A 'Parsing with headers was unsuccessful' string if this was the case
  */
 function parseWithHeaders(rawData: string) {
-  let results: { data: Object[], errors: Object[], meta: Object[] } = Papa.parse(rawData,
+  let results: { data: Object[], errors: Object[], meta: Object } = Papa.parse(rawData,
     {
       'header': true,
       'dynamicTyping': true
@@ -176,10 +183,10 @@ function parseWithHeaders(rawData: string) {
  * @throws {string} The error messages occured while parsing if this was the case
  */
 function parseWithoutHeaders(rawData: string) {
-  let results: { data: Object[], errors: Object[], meta: Object[] } =
+  let results: { data: Object[], errors: Object[], meta: Object } =
     Papa.parse(rawData, { 'dynamicTyping': true });
   let data: number[] = fillDataArray(results.data[0]);
-  if (results.errors.length > 0) {
+  if (results['aborted'] === true) {
     throw getErrorMessages(results.errors);
   }
   return data;
@@ -209,9 +216,8 @@ function fillDataArray(data: Object) {
   for (let key in data) {
     let dataElement: number = data[key];
     if (typeof dataElement !== 'number') {
-      throw 'You could enter either 1 row of  numerical data, or 2 rows, where the second is numerical.';
+      throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
     }
-    data
     dataArray.push(dataElement);
   }
   return dataArray;
@@ -330,6 +336,7 @@ function populateTtsList() {
 
     option.value = optionValueAndText;
     option.innerText = optionValueAndText;
+    option.setAttribute('data-name', voice.name);
     ttsVoiceSelect.appendChild(option);
   });
 }
