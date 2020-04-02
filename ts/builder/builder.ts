@@ -9,9 +9,13 @@ let inputToPassToView: string = '';
 
 
 /**
- * Set `dataInput` element focus, and adds `populateTtsList()` callback to `window.speechSynthesis.onvoiceschanged`
+ * Try to get the data param from the URL, and set the retrieved value to `dataInput`
+ * Set `dataInput` element focus
+ * adds `populateTtsList()` callback to `window.speechSynthesis.onvoiceschanged`
  */
-function initializeAppScript() {
+function initializeBuilderScript() {
+  const data = getUrlParam('data');
+  (<HTMLInputElement>document.getElementById('dataInput')).value = data;
   (<HTMLInputElement>document.getElementById('dataInput')).focus();
   populateTtsList();
   // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
@@ -75,6 +79,7 @@ function parseInput() {
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
   if (input === '') {
     displayErrorMessage('Empty data is in valid');
+    return;
   }
   let normalizedData: string[][] = normalizeData(input);
   if (normalizeData == null) {
@@ -250,7 +255,7 @@ function transpose(data: string[][]) {
  * @returns {boolean} Whether the row's lengths of the matrix were equal or not
  */
 function isRowsEqual(data: string[][]) {
-  if (data === [[]]) {
+  if (data.length === 0) {
     return true;
   }
   let firstRowLength: Number = data[0].length;
