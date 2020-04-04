@@ -31,6 +31,7 @@ function initializeBuilderScript() {
  */
 function updateURL() {
   inputToPassToView = encodeURIComponent(inputToPassToView);
+  const description: string = (<HTMLInputElement>document.getElementById('graphDescription')).value;
   const minValue: string = (<HTMLInputElement>document.getElementById('minValue')).value;
   const maxValue: string = (<HTMLInputElement>document.getElementById('maxValue')).value;
   const instrumentType: string = (<HTMLInputElement>document.getElementById('instrumentType')).value;
@@ -46,6 +47,7 @@ function updateURL() {
   }
   newUrl += '/view/index.html?';
   newUrl += `data=${inputToPassToView}`;
+  newUrl += `&description=${description}`;
   newUrl += `&minValue=${minValue}`;
   newUrl += `&maxValue=${maxValue}`;
   newUrl += `&instrumentType=${instrumentType}`;
