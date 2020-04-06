@@ -8,7 +8,7 @@ const en = {
     aboutUs1: 'About us',
     description: 'The Sensory Interface project aims to help people with certain disabilities (visual impairment, dyscalculia, ADHD) understand tabular numerical data such as spreadsheets.',
     getStarted: 'Get started',
-    learn_More: 'Learn more',
+    learnMore: 'Learn more',
     aboutUs2: 'About us',
     aboutP1: 'In today’s world, where data is ubiquitous, we view data accessibility as a basic human right. The Sensory Interface project aims to provide an interface to numerical data for any purpose, be it Scientific Research, Software Development, Education etc.',
     aboutP2: 'This data is typically visualized using graphs, charts, heatmaps etc. You could think of these visualizations as the visual interface to the data. We aim to provide a multi-sensory interface to the data. This interface uses sound and touch, in addition to the visual channel, as a means to convey the same underlying data.' ,
