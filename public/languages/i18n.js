@@ -12,7 +12,7 @@ const getLanguage = () => {
     if (lang) {
         return lang.toLowerCase();
     }
-    return 'he';
+    return 'en';
 };
 
 // Save language in local storage if not already there, update HTML
@@ -27,7 +27,7 @@ const setLanguage = (selectedLang) => {
 
 const setTranslationInHTML = () => {
     // For keys that match element IDs:
-    for (var key in langs[lang]) {
+    for (let key in langs[lang]) {
         setTranslationByID(key, key);
     }
     setTranslationByID('select-language-header', 'selectLanguage');
@@ -45,7 +45,7 @@ const i18n = langKey => {
         return langs[lang][langKey];
     } else {
         console.log(langKey);
-        return langs['he'][langKey];
+        return langs['en'][langKey];
     }
 };
 
