@@ -3,32 +3,32 @@ $(document).ready(function () {
 
   // windows navbar scroll
   $(window).scroll(function () {
-    var scroll = $(window).scrollTop();
+    let scroll = $(window).scrollTop();
     if (scroll > 50) {
-      $(".wonder-nav").addClass("wonder-nav-scroll");
+      $('.wonder-nav').addClass('wonder-nav-scroll');
       $('.top-bar-icon-desk').attr('src', 'assets/images/logo/s-logo-blue.svg');
 
-      $(".nav-link").addClass("nav-link-scroll");
+      $('.nav-link').addClass('nav-link-scroll');
 
-      $(".you-switcher").addClass("you-switcher-scroll");
-      $(".you-switcher-line").addClass("you-switcher-line-scroll");
+      $('.you-switcher').addClass('you-switcher-scroll');
+      $('.you-switcher-line').addClass('you-switcher-line-scroll');
 
     }
     else {
-      $(".wonder-nav").removeClass("wonder-nav-scroll");
+      $('.wonder-nav').removeClass('wonder-nav-scroll');
 
-      $(".nav-link").removeClass("nav-link-scroll");
+      $('.nav-link').removeClass('nav-link-scroll');
       $('.top-bar-icon-desk').attr('src', 'assets/images/logo/s-logo-white.svg');
 
-      $(".you-switcher").removeClass("you-switcher-scroll");
-      $(".you-switcher-line").removeClass("you-switcher-line-scroll");
+      $('.you-switcher').removeClass('you-switcher-scroll');
+      $('.you-switcher-line').removeClass('you-switcher-line-scroll');
     }
   });
 
   // page smooth scroll on link click
   $('a[href^="#"]').on('click', function (event) {
 
-    var target = $(this.getAttribute('href'));
+    let target = $(this.getAttribute('href'));
 
     if (target.length) {
       // event.preventDefault();
@@ -41,14 +41,14 @@ $(document).ready(function () {
 
   // side-bar menu open
   $('.hamburger').click(function () {
-    $(this).toggleClass("is-active");
+    $(this).toggleClass('is-active');
     $('.side-bar').fadeToggle(50);
   });
 
   // side-bar menu close
   $('.side-bar-link').click(function () {
 
-    $('.hamburger').removeClass("is-active");
+    $('.hamburger').removeClass('is-active');
     $('.side-bar').fadeToggle(50);
 
   });
@@ -60,22 +60,22 @@ $(document).ready(function () {
 
 (function (body) {
 
-  var usingMouse;
+  let usingMouse;
 
-  var preFocus = function (event) {
+  let preFocus = function (event) {
     usingMouse = (event.type === 'mousedown');
   };
 
-  var addFocus = function (event) {
+  let addFocus = function (event) {
     if (usingMouse)
       event.target.classList.add('focus--mouse');
   };
 
-  var removeFocus = function (event) {
+  let removeFocus = function (event) {
     event.target.classList.remove('focus--mouse');
   };
 
-  var bindEvents = function () {
+  let bindEvents = function () {
     body.addEventListener('keydown', preFocus);
     body.addEventListener('mousedown', preFocus);
     body.addEventListener('focusin', addFocus);
