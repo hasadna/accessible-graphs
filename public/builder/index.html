@@ -18,9 +18,11 @@
 
     <h3>Data</h3>
     <div>
-      <label for="dataInput">Data to display.
+      <p>Data to display.
         Copy-paste your data from Excel or Google Spreadsheet etc. Can be a column with numbers, or 2 columns with
-        labels on the left and numbers on the right. Column headers are optional.</label>
+        labels on the left and numbers on the right. Column headers are optional.
+      </p>
+      <label for="dataInput">Enter the data to be visualized</label>
       <textarea id="dataInput" aria-required="true" required aria-describedby="dataInputFeedback"
         onblur="parseInput()"></textarea>
       <span id="dataInputFeedback" aria-live="assertive"></span>
