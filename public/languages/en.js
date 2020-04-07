@@ -19,7 +19,7 @@ const en = {
     stage2: '2. Define your graph',
     stage3: '3. Start using it!',
     goTOtu: 'Go to tutorial',
-    tTeam: 'The team',
+    theTeam2: 'The team',
     mohammad: 'Mohammad Suliman',
     ofer: 'Ofer bartal',
     credit: 'This project is run by The Public Knowledge Workshop (a nonprofit). For more details and collaborations, please send an email to: info@sensoryinterface.com',
