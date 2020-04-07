@@ -27,6 +27,7 @@ function brailleControllerSelectionListener(event) {
 }
 
 function processData() {
+  $('#graphDescriptionHeading').html(getUrlParam('description'));
   parseData(getUrlParam('data'));
   brailleController = new BrailleController(document.getElementById('container'), data);
   brailleController.setSelectionListener(brailleControllerSelectionListener);
