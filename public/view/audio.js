@@ -1,26 +1,28 @@
 // initialize Audio context on page load.
 const audioContext = new (window['webkitAudioContext'] || window['AudioContext'])();
-let oscillator = null;
+let synth = null;
+let panner = null;
 let source = null;
-let timeOut = null;
 /** Calculates the maximum Euclidean distance, in 2D, of a cell in the grid. */
 function getCellMaxDistance() {
-    let maxCoords = get2DCoordinates(data.length, data[0].length);
+    let rowNumber = dataHeaders.length == 0 ? 0 : 1;
+    let maxCoords = get2DCoordinates(rowNumber, data.length);
     // Calculate Euclidean distance of cell from origin (0,0)
     return Math.sqrt(Math.pow(maxCoords.x, 2) + Math.pow(maxCoords.y, 2));
 }
-function createAndSetPanner(currentCell) {
-    const panner = audioContext.createPanner();
+function setPanner(currentCell) {
+    const coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
+    if (panner == null) {
+        panner = new Tone.Panner3D(coordinates.x, coordinates.y, 0).toMaster();
+    }
+    else {
+        panner.setPosition(coordinates.x, coordinates.y, 0);
+    }
+    Tone.Listener.forwardZ = -1;
     panner.panningModel = 'HRTF';
     panner.distanceModel = 'linear';
-    panner.refDistance = 0;
-    panner.rolloffFactor = panner.maxDistance / (getCellMaxDistance() * 2);
-    const coordinates = get2DCoordinates(currentCell.getAttribute('row'), currentCell.getAttribute('col'));
-    panner.setPosition(coordinates.x, coordinates.y, 0);
-    return panner;
 }
-function createAndSetOscillator(currentCell) {
-    oscillator = audioContext.createOscillator();
+function getFrequency(currentCell) {
     const MAX_FREQUENCY = 1000;
     const MIN_FREQUENCY = 100;
     const minValue = parseFloat(getUrlParam('minValue'));
@@ -36,36 +38,34 @@ function createAndSetOscillator(currentCell) {
     if (selectedValue > maxValue) {
         selectedValue = maxValue;
     }
-    const frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
-    oscillator.frequency.value = frequency;
-    oscillator.channelCount = 1;
+    let frequency = MIN_FREQUENCY;
+    if (maxValue != minValue) {
+        frequency += (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
+    }
+    return frequency;
 }
 function startSoundPlayback() {
     stopSoundPlayback();
-    playSound();
-}
-function playSound() {
     if (audioContext.state == 'suspended') {
         audioContext.resume();
     }
     if (getUrlParam('instrumentType') == 'synthesizer') {
-        playSoundWithOscillator();
+        playSoundWithSynthesizer();
     }
     else {
         playSoundFromAudioFile();
     }
 }
-function playSoundWithOscillator() {
-    // Create oscillator and panner nodes and connect them each time we want to play audio
-    // because those nodes are single use entities
-    createAndSetOscillator(selectedCell);
-    const panner = createAndSetPanner(selectedCell);
-    oscillator.connect(panner);
-    panner.connect(audioContext.destination);
-    oscillator.start(audioContext.currentTime);
-    timeOut = setTimeout(() => {
-        stopSoundPlayback();
-    }, 1000);
+function playSoundWithSynthesizer() {
+    setPanner(selectedCell);
+    if (synth == null) {
+        synth = new Tone.Synth();
+    }
+    if (synth.context.state == 'suspended') {
+        synth.context.resume();
+    }
+    synth.connect(panner);
+    synth.triggerAttackRelease(getFrequency(selectedCell), '8n');
 }
 function playSoundFromAudioFile() {
     const fileName = getFileToPlay(selectedCell);
@@ -81,7 +81,7 @@ function playSoundFromAudioFile() {
 function playAudioFile(buffer) {
     source = audioContext.createBufferSource();
     source.buffer = buffer;
-    const panner = createAndSetPanner(selectedCell);
+    setPanner(selectedCell);
     source.connect(panner);
     panner.connect(audioContext.destination);
     source.start(audioContext.currentTime);
@@ -102,14 +102,11 @@ function getFileToPlay(currentCell) {
 }
 function stopSoundPlayback() {
     try {
-        if (oscillator != null) {
-            oscillator.stop(audioContext.currentTime);
+        if (synth != null) {
+            synth.triggerRelease();
         }
         if (source != null) {
             source.stop(audioContext.currentTime);
-        }
-        if (timeOut != null) {
-            window.clearTimeout(timeOut);
         }
     }
     catch (e) {
@@ -119,30 +116,52 @@ function stopSoundPlayback() {
 function speakSelectedCell() {
     const synth = window.speechSynthesis;
     synth.cancel();
-    let value = $(selectedCell).first().text();
-    let intValue = parseInt(value);
-    if (intValue < 0) {
-        intValue = Math.abs(intValue);
-        value = `Minus ${intValue}`;
+    let value = data[focusedColIndex];
+    let valueText = String(value);
+    if (value < 0) {
+        value = Math.abs(value);
+        valueText = `Minus ${value}`;
     }
-    const utterance = new SpeechSynthesisUtterance(value);
-    let ttsIndex = getUrlParam('ttsIndex');
-    let selectedTtsVoice = synth.getVoices()[ttsIndex];
+    const utterance = new SpeechSynthesisUtterance(valueText);
+    let ttsName = getUrlParam('ttsName');
+    let selectedTtsVoice = findTtsVoice(ttsName);
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);
 }
 function speakSelectedCellPositionInfo() {
     const synth = window.speechSynthesis;
     synth.cancel();
-    let rowIndex = $(selectedCell).attr('row');
-    rowIndex = String(parseInt(rowIndex) + 1);
-    let colIndex = $(selectedCell).attr('col');
-    colIndex = String(parseInt(colIndex) + 1);
-    const textToSpeak = `row${rowIndex},column${colIndex}.`;
+    let textToSpeak = '';
+    if (dataHeaders.length == 0) {
+        textToSpeak = `Position ${focusedColIndex + 1}`;
+    }
+    else {
+        let headerText = dataHeaders[focusedColIndex];
+        textToSpeak = `${headerText}, position ${focusedColIndex + 1}`;
+    }
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    let ttsIndex = getUrlParam('ttsIndex');
-    let selectedTtsVoice = synth.getVoices()[ttsIndex];
+    let ttsName = getUrlParam('ttsName');
+    let selectedTtsVoice = findTtsVoice(ttsName);
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);
+}
+function findTtsVoice(ttsName) {
+    const synth = window.speechSynthesis;
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.name === ttsName) {
+            return ttsVoice;
+        }
+    }
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.default === true) {
+            return ttsVoice;
+        }
+    }
+    for (let ttsVoice of synth.getVoices()) {
+        if (ttsVoice.lang.startsWith('en')) {
+            return ttsVoice;
+        }
+    }
+    return synth.getVoices()[0];
 }
 //# sourceMappingURL=audio.js.map

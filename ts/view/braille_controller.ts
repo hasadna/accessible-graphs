@@ -6,31 +6,30 @@ let listenForAllEvents = false;
 class BrailleController {
   // These symbols map 1:1 to numbers.
   static BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
-  // These symbols map 1:2 to numbers. Each symbol maps to 2 numbers.
-  static BRAILLE_SYMBOLS2 = '⠀⢀⠠⠐⠈⡀⣀⡠⡐⡈⠄⢄⠤⠔⠌⠂⢂⠢⠒⠊⠁⢁⠡⠑⠉';
 
   textarea: JQuery<HTMLElement>;
   selectionListener: (this: void, e: Event) => void;
   currentPosition: number;
+  data: number[];
 
-  constructor(parent) {
+  constructor(parent, data) {
     if (document.getElementById('brailleControllerText')) {
       throw 'Braille controller already created';
     }
     const textarea = $(document.createElement('textarea'));
     textarea.prop('id', 'brailleControllerText');
     // In Chrome, readonly textarea doesn't support moving the cursor via the keyboard, or even cursor blinking
-    // therefore, we can't use the readonly property, rather, we have to ignore none navigational key presses. See:
+    // therefore, we can't use the readonly property, rather, we have to prevent the user from entering characters to the textarea. See:
     //https://stackoverflow.com/questions/19005579/how-to-enable-cursor-move-while-using-readonly-attribute-in-input-field-in-chrom
+    textarea.prop('maxlength', '0');
     textarea.keydown(this.onKeyDown);
+    textarea.bind('cut', this.ignoreEvent);
     textarea.mousedown(this.onSecondRoutingKeyPress);
-    textarea.keyup(this.noopEventCatcher);
-    textarea.keypress(this.noopEventCatcher);
-    textarea.click(this.noopEventCatcher);
-    textarea.mouseup(this.noopEventCatcher);
     if (listenForAllEvents == true) {
       textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
     }
+    // Limit the textarea to one line using css techniques
+    textarea.css({ 'white-space': 'nowrap', 'overflow-x': 'auto' });
     textarea.attr('aria-describedby', 'speechOffNote');
     parent.appendChild(textarea[0]);
     const speechOffNote = $(document.createElement('p'));
@@ -38,7 +37,6 @@ class BrailleController {
     speechOffNote.text('Please turn off your screen reader\'s speech. The system includes its own speech output.');
     speechOffNote.prop('style', 'display:none');
     parent.appendChild(speechOffNote[0]);
-    textarea.focus();
 
     this.textarea = textarea;
 
@@ -46,18 +44,32 @@ class BrailleController {
     //       but that didn't work in Firefox.
     setInterval(this.checkSelection, 50);
     this.currentPosition = -1;
+    this.data = data;
+    this.initializeBraille();
   }
 
-  static normalizeData(data: number[]): number[] {
+  static normalizeData(data: number[], range: number): number[] {
     const result: number[] = Array();
-    const min = Math.min(...data);
-    const max = Math.max(...data);
     for (let i = 0; i < data.length; i++) {
-      result[i] = (data[i] - min) / (max - min) * 15.99;
+      result[i] = BrailleController.normalizeDataElement(data[i], range);
     }
-    console.log(`data=${data}`);
-    console.log(`normalizedData=${result}`);
     return result;
+  }
+
+  static normalizeDataElement(dataElement: number, range: number): number {
+    const min: number = parseFloat(getUrlParam('minValue'));
+    const max: number = parseFloat(getUrlParam('maxValue'));
+    if (dataElement < min) {
+      dataElement = min;
+    }
+    if (dataElement > max) {
+      dataElement = max;
+    }
+    if (min == max) {
+      return 0;
+    }
+    let normalizedDataElement: number = (dataElement - min) / (max - min) * (range - 0.01);
+    return normalizedDataElement;
   }
 
   static getAllEvents(element) {
@@ -74,50 +86,69 @@ class BrailleController {
     console.debug(event.type);
   }
 
-  static numbersToBraille(data: number[]): string[] {
-    data = BrailleController.normalizeData(data);
-    return [
-      '⣿⣿' + BrailleController.getBraille(data, 1, 0) + '⣿',
-      '⠛⣿' + BrailleController.getBraille(data, 2, 1) + '⣿',
-      '⣤⣿' + BrailleController.getBraille(data, 2, 0) + '⣿',
-      '⠉⣿' + BrailleController.getBraille(data, 4, 3) + '⣿',
-      '⠒⣿' + BrailleController.getBraille(data, 4, 2) + '⣿',
-      '⠤⣿' + BrailleController.getBraille(data, 4, 1) + '⣿',
-      '⣀⣿' + BrailleController.getBraille(data, 4, 0) + '⣿'
-    ];
+  initializeBraille() {
+    let leftSideData: number[] = BrailleController.normalizeData(this.data, 4);
+    let allBrailleForeLeftSide: string = BrailleController.getAllBrailleForLeftSide(leftSideData);
+    let initialBraile: string = '';
+    let dataLength: number = allBrailleForeLeftSide.length;
+    let iteration: number = 1;
+    let i: number = 0;
+    while (i < dataLength) {
+      while (i < 29 * iteration && i < dataLength) {
+        initialBraile += allBrailleForeLeftSide[i];
+        i++;
+      }
+      for (let j = 0; j < 29 * iteration - i; j++) {
+        initialBraile += '⠀';
+      }
+      initialBraile += '⡇';
+      for (let j = 0; j < 10; j++) {
+        initialBraile += '⠀';
+      }
+      iteration++;
+    }
+    this.setBraille(initialBraile);
+    this.updateRightSideBraille(0);
   }
 
-  static getBraille(data, totalSegments, segmentNumber) {
-    let brailleData = '';
-    for (let i = 0; i < data.length; i += 1) {
-      const d = data[i];
-      const b = BrailleController.getBrailleValue(totalSegments, segmentNumber, d);
+  static getAllBrailleForLeftSide(data: number[]): string {
+    let brailleData: string = '';
+    for (let i = 0; i < data.length; i++) {
+      const d: number = data[i];
+      const b: number = BrailleController.getBrailleValue(d);
       brailleData += BrailleController.BRAILLE_SYMBOLS.charAt(b);
     }
     return brailleData;
   }
 
-  /** The equivalent of getBraille(), for a 1:2 mapping of character to number.*/
-  static getBraille2(data, totalSegments, segmentNumber) {
-    let brailleData = '';
-    for (let i = 0; i < data.length; i += 2) {
-      const d1 = data[i];
-      const d2 = data[i + 1];
-      const b1 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d1);
-      const b2 = BrailleController.getBrailleValue(totalSegments, segmentNumber, d2);
-      brailleData += BrailleController.BRAILLE_SYMBOLS2.charAt(b1 * 5 + b2);
+  static getBrailleForRightSide(dataElement: number): string {
+    let result: string = '';
+    let onCharscount: number = Math.round(dataElement);
+    let i: number = 0;
+    while (i < onCharscount) {
+      result += '⠒';
+      i++;
     }
-    return brailleData;
+    while (i < 10) {
+      result += '⠀';
+      i++;
+    }
+    return result;
   }
 
-  static getBrailleValue(totalSegments, segmentNumber, value) {
-    const segmentSize = 16 / totalSegments;
-    value = value - segmentSize * (segmentNumber);
-    if (value < 0 || value >= segmentSize) {
-      return 0;
-    }
-    const brailleDotMultiples = segmentSize / 4;
-    return Math.floor(value / brailleDotMultiples) + 1;
+  updateRightSideBraille(position: number) {
+    let positionInData: number = position - Math.floor(position / 40) * 11;
+    let rightSideDataElement: number = BrailleController.normalizeDataElement(this.data[positionInData], 10);
+    let rightSideBraille: string = BrailleController.getBrailleForRightSide(rightSideDataElement);
+    let positionToInsertBraille: number = Math.floor(position / 40) * 40 + 30;
+    let brailleText: string = this.getBraille();
+    brailleText = BrailleController.splice(brailleText, rightSideBraille, positionToInsertBraille);
+    this.setBraille(brailleText);
+    this.setCursorPosition(position);
+  }
+
+  static getBrailleValue(value: number): number {
+    return Math.floor(value) + 1;
   }
 
   checkSelection() {
@@ -127,30 +158,48 @@ class BrailleController {
     }
   }
 
-  noopEventCatcher(event) {
+
+  ignoreEvent(event) {
     event.preventDefault();
   }
 
   onKeyDown(event) {
-    if (event.key.includes('Arrow') || event.key.includes('Home') || event.key.includes('End')) {
-      return; // OK
+    if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
+      event.preventDefault();
     }
     if (event.key == ' ') {
-      speakSelectedCellPositionInfo(); // On space key press
+      const position = brailleController.currentPosition;
+      if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
+        speakSelectedCellPositionInfo(); // On space key press
+      }
+      event.preventDefault();
     }
-    event.preventDefault();
   }
 
   onSecondRoutingKeyPress(event) {
-    speakSelectedCellPositionInfo();
+    const position: number = brailleController.currentPosition;
+    if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
+      speakSelectedCellPositionInfo();
+    }
   }
 
-  setBraille(text) {
+  setBraille(text: string) {
     this.textarea.text(text);
+  }
+
+  getBraille(): string {
+    return this.textarea.text();
   }
 
   setSelectionListener(listener) {
     this.selectionListener = listener;
+  }
+
+  setCursorPosition(position: number) {
+    // The cursor will leave it's original position when setting a new braille text to the textarea
+    // so return it to the previous position in which it was before setting the braille text
+    this.textarea.prop('selectionEnd', position);
+    this.textarea.prop('selectionStart', position);
   }
 
   onSelection() {
@@ -166,5 +215,9 @@ class BrailleController {
     };
 
     brailleController.selectionListener(newEvent);
+  }
+
+  static splice(string: string, substring: string, position: number): string {
+    return string.slice(0, position) + substring + string.slice(position + substring.length);
   }
 }
