@@ -31,6 +31,9 @@ const setTranslationInHTML = () => {
         setTranslationByID(key, key);
     }
     setTranslationByID('select-language-header', 'selectLanguage');
+    $(document).ready(function() {
+        $("html").attr("lang", lang); //'language' value is retrieved from a cookie
+    });
 };
 
 const setTranslationByID = (id, langKey) => {
