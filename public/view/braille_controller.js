@@ -157,9 +157,6 @@ class BrailleController {
             speakSelectedCellPositionInfo();
         }
     }
-    onSecondRoutingKeyPress(event) {
-        speakSelectedCellPositionInfo();
-    }
     setBraille(text) {
         this.textarea.text(text);
     }
