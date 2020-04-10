@@ -1,3 +1,4 @@
+;
 /**
  * A CSV formatted string containing the data input from the user to pass to `view.ts` script
  * @type {string}
@@ -174,7 +175,9 @@ function parseWithHeaders(rawData) {
  * @throws {string} The error messages occured while parsing if this was the case
  */
 function parseWithoutHeaders(rawData) {
-    let results = Papa.parse(rawData, { 'dynamicTyping': true });
+    let results = Papa.parse(rawData, {
+        'dynamicTyping': true
+    });
     let data = fillDataArray(results.data[0]);
     if (results['aborted'] === true) {
         throw getErrorMessages(results.errors);
@@ -245,7 +248,7 @@ function isRowsEqual(data) {
     return true;
 }
 /**
- * Displays an error message to the user notifying him that the CSV he entered is in valid
+ * Displays an error message to the user notifying them that the CSV entered is invalid
  * The message is also accessible to screen readers using 'aria' techniques
  * @param {string} message - An error message to display to the user
  */
@@ -264,7 +267,7 @@ function displaySuccessMessage() {
 /**
  * Gets the min and max values from an array of numbers
  * @param {number[]} data - Array of numbers to get the min and max values from
- * @returns {number, number} An object contaning the max and min values
+ * @returns {maxValue: number, minValue: number} An object contaning the max and min values
  */
 function getMinMaxValues(data) {
     let maxValue = Math.max(...data);
