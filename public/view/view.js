@@ -24,7 +24,10 @@ function brailleControllerSelectionListener(event) {
     }
 }
 function processData() {
-    $('#graphDescriptionHeading').html(getUrlParam('description'));
+    const graphDescription = getUrlParam('description');
+    if (graphDescription !== '') {
+        $('#graphDescriptionHeading').html(graphDescription);
+    }
     parseData(getUrlParam('data'));
     brailleController = new BrailleController(document.getElementById('container'), data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
