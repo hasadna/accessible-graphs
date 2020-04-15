@@ -79,10 +79,6 @@ function onRadioChange(radio: HTMLInputElement) {
 function parseInput() {
   // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
-  if (input === '') {
-    displayErrorMessage('Empty data is in valid');
-    return;
-  }
   let normalizedData: string[][] = normalizeData(input);
   if (normalizeData == null) {
     return;
@@ -93,6 +89,9 @@ function parseInput() {
     let combinedDataAndHeaders: { dataHeaders: string[], data: number[] } = parseWithHeaders(rawData);
     data = combinedDataAndHeaders.data;
   } catch (error) {
+    if (error === 'Parsing with headers was unsuccessful, please stop parsing') {
+      return;
+    }
     try {
       data = parseWithoutHeaders(rawData);
     } catch (errorMessages) {
@@ -126,11 +125,16 @@ function normalizeData(input: string) {
     displayErrorMessage(getErrorMessages(results.errors));
     return null;
   }
+  results.data = removeEmptyElements(results.data);
+  if (results.data.length === 0 || results.data[0].length === 0) {
+    displayErrorMessage('Empty data is invalid');
+    return null;
+  }
   if (!isRowsEqual(results.data)) {
     displayErrorMessage('Row or column lengths aren\'t equal');
     return null;
   }
-  if (results.data[0].length == 1 || results.data[0].length == 2) {
+  if (needToTranspose(results.data)) {
     // Transpose the data if we have 1 or 2 columns
     // in that case, the user is supposed to have entered either 1 column of numbers,
     // or 2 columns: the first is lables, and the second is numbers
@@ -141,6 +145,30 @@ function normalizeData(input: string) {
     return null;
   }
   return results.data;
+}
+
+/**
+ * Checks whether we need to transpose the `data` matrix.
+ * This is needed because 'Papa parse' API can deal with headers when they're in the first row only, so we need to insure this happens.
+ * @param {string[][]} data - The data matrix to check
+ * @returns {boolean} Whether the matrix needs to be transposed
+ */
+function needToTranspose(data: string[][]): boolean {
+  if (data[0].length === 1) {
+    return true;
+  } else if (data[0].length === 2 && data.length === 1) {
+    return false;
+  } else if (data[0].length == 2) {
+    let isSecondRowNums: boolean = true;
+    for (let element of data[1]) {
+      let elementAsNum: number = Number(element);
+      if (Number.isNaN(elementAsNum)) {
+        isSecondRowNums = false;
+      }
+    }
+    return !isSecondRowNums;
+  }
+  return false;
 }
 
 
@@ -178,7 +206,13 @@ function parseWithHeaders(rawData: string) {
     throw 'Parsing with headers was unsuccessful.';
   }
   let dataHeaders: string[] = fillHeadersArray(results.data[0]);
-  let data: number[] = fillDataArray(results.data[0]);
+  let data: number[] = [];
+  try {
+    data = fillDataArray(results.data[0]);
+  } catch (error) {
+    displayErrorMessage(error);
+    throw 'Parsing with headers was unsuccessful, please stop parsing';
+  }
   return { dataHeaders, data };
 }
 
@@ -192,10 +226,10 @@ function parseWithHeaders(rawData: string) {
 function parseWithoutHeaders(rawData: string) {
   let results: { data: Object[], errors: Object[], meta: Object } =
     Papa.parse(rawData, { 'dynamicTyping': true });
-  let data: number[] = fillDataArray(results.data[0]);
   if (results['aborted'] === true) {
     throw getErrorMessages(results.errors);
   }
+  let data: number[] = fillDataArray(results.data[0]);
   return data;
 }
 
@@ -222,7 +256,7 @@ function fillDataArray(data: Object) {
   let dataArray: number[] = [];
   for (let key in data) {
     let dataElement: number = data[key];
-    if (typeof dataElement !== 'number') {
+    if (typeof (dataElement) !== 'number') {
       throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
     }
     dataArray.push(dataElement);
@@ -252,6 +286,34 @@ function transpose(data: string[][]) {
 
 
 /**
+ * Removes empty rows or columns from the `data` matrix
+ * @param {string[][]} data - The matrix to remove empty elements from if necessary
+ * @returns {string[][]} The result after the removal if that happend
+ */
+function removeEmptyElements(data: string[][]): string[][] {
+  let result: string[][] = [];
+  let currentRow: number = 0;
+  let rowWasEmpty: boolean = true;
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].length; j++) {
+      if (data[i][j] !== '') {
+        if (result[currentRow] === undefined) {
+          result.push([]);
+        }
+        result[currentRow].push(data[i][j]);
+        rowWasEmpty = false;
+      }
+    }
+    if (!rowWasEmpty) {
+      currentRow++;
+      rowWasEmpty = true;
+    }
+  }
+  return result;
+}
+
+
+/**
  * Checks whether the rows of the data matrix's lengths are equal
  * @param {string[][]} data - The data matrix to check
  * @returns {boolean} Whether the row's lengths of the matrix were equal or not
@@ -271,12 +333,12 @@ function isRowsEqual(data: string[][]) {
 
 
 /**
- * Displays an error message to the user notifying him that the CSV he entered is in valid
+ * Displays an error message to the user notifying him that the CSV he entered is invalid
  * The message is also accessible to screen readers using 'aria' techniques
  * @param {string} message - An error message to display to the user
  */
 function displayErrorMessage(message: string) {
-  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = `&cross; In valid input! ${message}`;
+  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = `&cross; Invalid input! ${message}`;
   (<HTMLInputElement>document.getElementById('viewButton')).disabled = true;
 }
 
