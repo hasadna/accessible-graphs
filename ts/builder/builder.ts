@@ -79,10 +79,6 @@ function onRadioChange(radio: HTMLInputElement) {
 function parseInput() {
   // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
   const input: string = (<HTMLInputElement>document.getElementById('dataInput')).value;
-  // if (input === '') {
-  //   displayErrorMessage('Empty data is in valid');
-  //   return;
-  // }
   let normalizedData: string[][] = normalizeData(input);
   if (normalizeData == null) {
     return;
@@ -131,7 +127,7 @@ function normalizeData(input: string) {
   }
   results.data = removeEmptyElements(results.data);
   if (results.data.length === 0 || results.data[0].length === 0) {
-    displayErrorMessage('Empty data is in valid');
+    displayErrorMessage('Empty data is invalid');
     return null;
   }
   if (!isRowsEqual(results.data)) {
@@ -337,12 +333,12 @@ function isRowsEqual(data: string[][]) {
 
 
 /**
- * Displays an error message to the user notifying him that the CSV he entered is in valid
+ * Displays an error message to the user notifying him that the CSV he entered is invalid
  * The message is also accessible to screen readers using 'aria' techniques
  * @param {string} message - An error message to display to the user
  */
 function displayErrorMessage(message: string) {
-  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = `&cross; In valid input! ${message}`;
+  (<HTMLSpanElement>document.getElementById('dataInputFeedback')).innerHTML = `&cross; Invalid input! ${message}`;
   (<HTMLInputElement>document.getElementById('viewButton')).disabled = true;
 }
 
