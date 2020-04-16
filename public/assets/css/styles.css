@@ -837,3 +837,15 @@ span.focus--mouse:focus,
   }
 
 }
+
+/*==========Text that's visible to screen readers only==========*/
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/*==========Text that's visible to screen readers only end==========*/
