@@ -11,13 +11,27 @@ let inputToPassToView = '';
 function initializeBuilderScript() {
     const data = getUrlParam('data');
     document.getElementById('dataInput').value = data;
-    document.getElementById('dataInput').focus();
     populateTtsList();
     // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
     //https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
     // for more details
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = populateTtsList;
+    }
+}
+/**
+ * Handles the user's click on the view button.
+ * In case there are errors, the focus is set back to the `data input` field.
+ * Error / success messages are displayed properly.
+ */
+function handleViewClick() {
+    let validationResult = parseInput();
+    if (validationResult === '') {
+        updateURL();
+    }
+    else {
+        document.getElementById('dataInput').focus();
+        displayErrorMessage(validationResult);
     }
 }
 /**
@@ -70,9 +84,12 @@ function onRadioChange(radio) {
 function parseInput() {
     // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
     const input = document.getElementById('dataInput').value;
-    let normalizedData = normalizeData(input);
-    if (normalizeData == null) {
-        return;
+    let normalizedData = null;
+    try {
+        normalizedData = normalizeData(input);
+    }
+    catch (error) {
+        return error;
     }
     let rawData = Papa.unparse(normalizedData);
     let data = [];
@@ -81,20 +98,20 @@ function parseInput() {
         data = combinedDataAndHeaders.data;
     }
     catch (error) {
-        if (error === 'Parsing with headers was unsuccessful, please stop parsing') {
-            return;
+        if (!(error instanceof ParsingWithHeadersNotSuccessfulError)) {
+            return error;
         }
         try {
             data = parseWithoutHeaders(rawData);
         }
         catch (errorMessages) {
-            displayErrorMessage(errorMessages);
-            return;
+            return errorMessages;
         }
     }
     setMinAndMaxValuesFrom(data);
     displaySuccessMessage();
     inputToPassToView = Papa.unparse(normalizedData, { delimiter: '\t' });
+    return '';
 }
 /**
  * Normalizes the data entered by the user to the `dataInput` textarea by doing the following:
@@ -113,17 +130,14 @@ function normalizeData(input) {
     // alternatively, we could also have 1 * N grid or N * 1
     let results = Papa.parse(input);
     if (results.meta['aborted'] === true) {
-        displayErrorMessage(getErrorMessages(results.errors));
-        return null;
+        throw getErrorMessages(results.errors);
     }
     results.data = removeEmptyElements(results.data);
     if (results.data.length === 0 || results.data[0].length === 0) {
-        displayErrorMessage('Empty data is invalid');
-        return null;
+        throw 'Empty data is invalid';
     }
     if (!isRowsEqual(results.data)) {
-        displayErrorMessage('Row or column lengths aren\'t equal');
-        return null;
+        throw 'Row or column lengths aren\'t equal';
     }
     if (needToTranspose(results.data)) {
         // Transpose the data if we have 1 or 2 columns
@@ -132,8 +146,7 @@ function normalizeData(input) {
         results.data = transpose(results.data);
     }
     if (results.data.length > 2) {
-        displayErrorMessage('Too many columns or rows');
-        return null;
+        throw 'Too many columns or rows';
     }
     return results.data;
 }
@@ -187,21 +200,27 @@ function parseWithHeaders(rawData) {
         'dynamicTyping': true
     });
     if (results.errors.length > 0) {
-        throw 'Parsing with headers was unsuccessful.';
+        throw new ParsingWithHeadersNotSuccessfulError();
     }
     if (results.data.length == 0) {
-        throw 'Parsing with headers was unsuccessful.';
+        throw new ParsingWithHeadersNotSuccessfulError();
     }
     let dataHeaders = fillHeadersArray(results.data[0]);
-    let data = [];
-    try {
-        data = fillDataArray(results.data[0]);
-    }
-    catch (error) {
-        displayErrorMessage(error);
-        throw 'Parsing with headers was unsuccessful, please stop parsing';
-    }
+    let data = fillDataArray(results.data[0]);
     return { dataHeaders, data };
+}
+/**
+ * Represents an error whitch states that parsing with headers was unsuccessful
+ */
+class ParsingWithHeadersNotSuccessfulError extends Error {
+    /**
+     * Instantiates a new error of this type
+     * @param {string} message - An optional message to be passed to the constructor
+     */
+    constructor(message) {
+        super(message); // 'Error' breaks prototype chain here
+        Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    }
 }
 /**
  * Tries to parse with out headers in case parsing with headers was unsuccessful
@@ -313,7 +332,6 @@ function isRowsEqual(data) {
  */
 function displayErrorMessage(message) {
     document.getElementById('dataInputFeedback').innerHTML = `&cross; Invalid input! ${message}`;
-    document.getElementById('viewButton').disabled = true;
 }
 /**
  * Displays a success message to the user notifying him that the CSV he entered is valid
@@ -321,7 +339,6 @@ function displayErrorMessage(message) {
  */
 function displaySuccessMessage() {
     document.getElementById('dataInputFeedback').innerHTML = '&check; Valid';
-    document.getElementById('viewButton').disabled = false;
 }
 /**
  * Gets the min and max values from an array of numbers
