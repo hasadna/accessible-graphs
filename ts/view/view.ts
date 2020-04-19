@@ -27,12 +27,15 @@ function brailleControllerSelectionListener(event) {
 }
 
 function processData() {
+  const container = document.getElementById('container');
   const graphDescription = getUrlParam('description');
   if (graphDescription !== '') {
-    $('#graphDescriptionHeading').html(graphDescription);
+    const graphDescriptionHeading = $(document.createElement('h1'));
+    graphDescriptionHeading.html(graphDescription);
+    container.appendChild(graphDescriptionHeading[0]);
   }
   parseData(getUrlParam('data'));
-  brailleController = new BrailleController(document.getElementById('container'), data);
+  brailleController = new BrailleController(container, data);
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();

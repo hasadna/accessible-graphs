@@ -36,12 +36,6 @@ class BrailleController {
     brailleControllerLabel.prop('for', 'brailleControllerText');
     parent.appendChild(brailleControllerLabel[0]);
     parent.appendChild(textarea[0]);
-    const speechOffNote = $(document.createElement('p'));
-    speechOffNote.prop('id', 'speechOffNote');
-    speechOffNote.text('Please turn off your screen reader\'s speech. The system includes its own speech output.');
-    speechOffNote.prop('style', 'display:none');
-    parent.appendChild(speechOffNote[0]);
-    textarea.attr('aria-describedby', 'speechOffNote');
 
     this.textarea = textarea;
 
