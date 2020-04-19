@@ -14,9 +14,9 @@
 
 <body onload="initializeBuilderScript()" onunload="">
   <div class="container-fluid">
-    <h2>Sensory interface</h2>
+    <h1>Sensory interface</h1>
 
-    <h3>Data</h3>
+    <h2>Entering data</h2>
     <div>
       <p>Data to display.
         Copy-paste your data from Excel or Google Spreadsheet etc. Can be a column with numbers, or 2 columns with
@@ -29,7 +29,7 @@
       <span id="dataInputFeedback" aria-live="assertive"></span>
     </div>
     <br>
-    <h3>Graph description</h3>
+    <h2>Graph description</h2>
     <div>
       <label for="graphDescription">
         Optional: Enter a description for the Graph:
@@ -37,7 +37,7 @@
       <input type="text" id="graphDescription" name="graphDescription" spellcheck="true" autocomplete="off">
     </div>
     <br>
-    <h3>Options</h3>
+    <h2>Options</h2>
 
     Value range:<br>
     <div class="container-fluid">
@@ -93,7 +93,7 @@
       <br>
     </div>
     <br>
-    <button id="viewButton" onclick="updateURL()">View</button>
+    <button id="viewButton" onclick="handleViewClick()">View</button>
     <br>
     <br>
     <a href="tutorial.html">Tutorial</a>
