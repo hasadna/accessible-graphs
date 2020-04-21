@@ -1,7 +1,29 @@
-declare let Papa: any;
+/**
+ * @link https://github.com/mholt/PapaParse/blob/master/papaparse.js
+ */
+declare class Papa {
+    static unparse(
+      input: string | string[][] | { data: string | string[][] },
+      config?: {
+        delimiter?: string,
+        dynamicTyping?: boolean,
+        header?: boolean
+      }
+    ): string;
+
+    static parse(
+      input: string,
+      config?: {
+        dynamicTyping?: boolean | Function,
+        header?: boolean,
+        transform?: Function,
+        error?: Function
+      }
+    ): { data: string[][], errors: Object[], meta: object };
+};
 
 
-/** 
+/**
  * A CSV formatted string containing the data input from the user to pass to `view.ts` script
  * @type {string}
  */
@@ -132,7 +154,7 @@ function parseInput() {
  * @param {string} input - The input data to normalize
  * @returns {string[][]} The normalized data
  */
-function normalizeData(input: string) {
+function normalizeData(input: string): string[][] {
   // Let's try to start to parse without headers first,
   // so we can decide whether we have 2 * N grid or N * 2
   // alternatively, we could also have 1 * N grid or N * 1
@@ -190,7 +212,7 @@ function needToTranspose(data: string[][]): boolean {
  * @param {Object[]} errors - An array of errors which may occured while parsing
  * @returns {string} A concatenation of all error messages
  */
-function getErrorMessages(errors: Object[]) {
+function getErrorMessages(errors: Object[]): string {
   let messages: string = '';
   for (let error of errors) {
     messages += `${error['message']}. `;
@@ -205,7 +227,7 @@ function getErrorMessages(errors: Object[]) {
  * @returns {dataHeaders: string[], data: number[]} The result of parsing with headers if available
  * @throws {string} A 'Parsing with headers was unsuccessful' string if this was the case
  */
-function parseWithHeaders(rawData: string) {
+function parseWithHeaders(rawData: string): {dataHeaders: string[], data: number[]} {
   let results: { data: Object[], errors: Object[], meta: Object } = Papa.parse(rawData,
     {
       'header': true,
@@ -244,9 +266,13 @@ class ParsingWithHeadersNotSuccessfulError extends Error {
  * @returns {number[]} The parsed data
  * @throws {string} The error messages occured while parsing if this was the case
  */
-function parseWithoutHeaders(rawData: string) {
-  let results: { data: Object[], errors: Object[], meta: Object } =
-    Papa.parse(rawData, { 'dynamicTyping': true });
+function parseWithoutHeaders(rawData: string): number[] {
+  let results: { data: Object[], errors: Object[], meta: Object } = Papa.parse(
+    rawData,
+    {
+      'dynamicTyping': true
+    });
+
   if (results['aborted'] === true) {
     throw getErrorMessages(results.errors);
   }
@@ -285,12 +311,12 @@ function fillDataArray(data: Object) {
   return dataArray;
 }
 
-/** 
+/**
  * Transposes the data matrix
  * @param {string[][]} data - The data matrix to transpose
  * @returns {string[][]} The data matrix transposed
  */
-function transpose(data: string[][]) {
+function transpose(data: string[][]): string[][] {
   // Initialize the result Array
   let result: string[][] = new Array(data[0].length);
   for (let i = 0; i < data[0].length; i++) {
@@ -339,7 +365,7 @@ function removeEmptyElements(data: string[][]): string[][] {
  * @param {string[][]} data - The data matrix to check
  * @returns {boolean} Whether the row's lengths of the matrix were equal or not
  */
-function isRowsEqual(data: string[][]) {
+function isRowsEqual(data: string[][]): boolean {
   if (data.length === 0) {
     return true;
   }
@@ -354,7 +380,7 @@ function isRowsEqual(data: string[][]) {
 
 
 /**
- * Displays an error message to the user notifying him that the CSV he entered is invalid
+ * Displays an error message to the user notifying them that the CSV entered is invalid
  * The message is also accessible to screen readers using 'aria' techniques
  * @param {string} message - An error message to display to the user
  */
@@ -375,11 +401,11 @@ function displaySuccessMessage() {
 /**
  * Gets the min and max values from an array of numbers
  * @param {number[]} data - Array of numbers to get the min and max values from
- * @returns {number, number} An object contaning the max and min values
+ * @returns {maxValue: number, minValue: number} An object contaning the max and min values
  */
-function getMinMaxValues(data: number[]) {
-  let maxValue: Number = Math.max(...data);
-  let minValue: Number = Math.min(...data);
+function getMinMaxValues(data: number[]): {maxValue: number, minValue: number} {
+  let maxValue: number = Math.max(...data);
+  let minValue: number = Math.min(...data);
   return { maxValue, minValue };
 }
 
