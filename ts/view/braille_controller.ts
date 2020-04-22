@@ -14,7 +14,7 @@ class BrailleController {
 
   constructor(parent, data) {
     if (document.getElementById('brailleControllerText')) {
-      throw 'Braille controller already created';
+      throw new Error('Braille controller already created');
     }
     const textarea = $(document.createElement('textarea'));
     textarea.prop('id', 'brailleControllerText');

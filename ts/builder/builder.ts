@@ -119,8 +119,9 @@ function parseInput() {
   try {
     normalizedData = normalizeData(input);
   } catch (error) {
-    return error;
+    throw error;
   }
+
   let rawData: string = Papa.unparse(normalizedData);
   let data: number[] = [];
   try {
@@ -128,12 +129,13 @@ function parseInput() {
     data = combinedDataAndHeaders.data;
   } catch (error) {
     if (!(error instanceof ParsingWithHeadersNotSuccessfulError)) {
-      return error;
+      throw error;
     }
+
     try {
       data = parseWithoutHeaders(rawData);
-    } catch (errorMessages) {
-      return errorMessages;
+    } catch (error) {
+      throw error;
     }
   }
   setMinAndMaxValuesFrom(data);
@@ -160,26 +162,32 @@ function normalizeData(input: string): string[][] {
   // alternatively, we could also have 1 * N grid or N * 1
   let results: { data: string[][], errors: Object[], meta: object } = Papa.parse(input);
   if (results.meta['aborted'] === true) {
-    throw getErrorMessages(results.errors);
+    throw results.errors;
   }
   results.data = removeEmptyElements(results.data);
+
   if (results.data.length === 0 || results.data[0].length === 0) {
-    throw 'Empty data is invalid';
+    throw new Error('Empty data is invalid');
   }
+
   if (!isRowsEqual(results.data)) {
-    throw 'Row or column lengths aren\'t equal';
+    throw new Error("Row or column lengths aren't equal");
   }
+
   if (needToTranspose(results.data)) {
     // Transpose the data if we have 1 or 2 columns
     // in that case, the user is supposed to have entered either 1 column of numbers,
     // or 2 columns: the first is lables, and the second is numbers
     results.data = transpose(results.data);
   }
+
   if (results.data.length > 2) {
-    throw 'Too many columns or rows';
+    throw new Error('Too many columns or rows');
   }
+
   return results.data;
 }
+
 
 /**
  * Checks whether we need to transpose the `data` matrix.
@@ -203,21 +211,6 @@ function needToTranspose(data: string[][]): boolean {
     return !isSecondRowNums;
   }
   return false;
-}
-
-
-/**
- * Gets all error messages from the result of the CSV parsing.
- * The messages are concatenated in to one string.
- * @param {Object[]} errors - An array of errors which may occured while parsing
- * @returns {string} A concatenation of all error messages
- */
-function getErrorMessages(errors: Object[]): string {
-  let messages: string = '';
-  for (let error of errors) {
-    messages += `${error['message']}. `;
-  }
-  return messages;
 }
 
 
@@ -274,7 +267,7 @@ function parseWithoutHeaders(rawData: string): number[] {
     });
 
   if (results['aborted'] === true) {
-    throw getErrorMessages(results.errors);
+    throw results.errors;
   }
   let data: number[] = fillDataArray(results.data[0]);
   return data;
@@ -304,7 +297,7 @@ function fillDataArray(data: Object) {
   for (let key in data) {
     let dataElement: number = data[key];
     if (typeof (dataElement) !== 'number') {
-      throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
+      throw new Error('You could enter either 1 row or column of numerical data, or 2 rows or 2 columns, where the second ones is numerical.')
     }
     dataArray.push(dataElement);
   }
