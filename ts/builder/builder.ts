@@ -246,9 +246,10 @@ class ParsingWithHeadersNotSuccessfulError extends Error {
    * Instantiates a new error of this type
    * @param {string} message - An optional message to be passed to the constructor
    */
-  constructor(message?: string) {
-    super(message); // 'Error' breaks prototype chain here
-    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+  constructor(message: string = '') {
+    super(...arguments);
+    this.message = message;
+    this.name = 'ParsingWithHeadersNotSuccessfulError';
   }
 }
 
