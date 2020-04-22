@@ -90,7 +90,7 @@ function parseInput() {
         normalizedData = normalizeData(input);
     }
     catch (error) {
-        return error;
+        throw error;
     }
     let rawData = Papa.unparse(normalizedData);
     let data = [];
@@ -100,13 +100,13 @@ function parseInput() {
     }
     catch (error) {
         if (!(error instanceof ParsingWithHeadersNotSuccessfulError)) {
-            return error;
+            throw error;
         }
         try {
             data = parseWithoutHeaders(rawData);
         }
-        catch (errorMessages) {
-            return errorMessages;
+        catch (error) {
+            throw error;
         }
     }
     setMinAndMaxValuesFrom(data);
@@ -131,14 +131,14 @@ function normalizeData(input) {
     // alternatively, we could also have 1 * N grid or N * 1
     let results = Papa.parse(input);
     if (results.meta['aborted'] === true) {
-        throw getErrorMessages(results.errors);
+        throw results.errors;
     }
     results.data = removeEmptyElements(results.data);
     if (results.data.length === 0 || results.data[0].length === 0) {
-        throw 'Empty data is invalid';
+        throw new Error('Empty data is invalid');
     }
     if (!isRowsEqual(results.data)) {
-        throw 'Row or column lengths aren\'t equal';
+        throw new Error("Row or column lengths aren't equal");
     }
     if (needToTranspose(results.data)) {
         // Transpose the data if we have 1 or 2 columns
@@ -147,7 +147,7 @@ function normalizeData(input) {
         results.data = transpose(results.data);
     }
     if (results.data.length > 2) {
-        throw 'Too many columns or rows';
+        throw new Error('Too many columns or rows');
     }
     return results.data;
 }
@@ -175,19 +175,6 @@ function needToTranspose(data) {
         return !isSecondRowNums;
     }
     return false;
-}
-/**
- * Gets all error messages from the result of the CSV parsing.
- * The messages are concatenated in to one string.
- * @param {Object[]} errors - An array of errors which may occured while parsing
- * @returns {string} A concatenation of all error messages
- */
-function getErrorMessages(errors) {
-    let messages = '';
-    for (let error of errors) {
-        messages += `${error['message']}. `;
-    }
-    return messages;
 }
 /**
  * Tries to parse the normalized data with headers using 'Papa parse'
@@ -234,7 +221,7 @@ function parseWithoutHeaders(rawData) {
         'dynamicTyping': true
     });
     if (results['aborted'] === true) {
-        throw getErrorMessages(results.errors);
+        throw results.errors;
     }
     let data = fillDataArray(results.data[0]);
     return data;
@@ -260,7 +247,7 @@ function fillDataArray(data) {
     for (let key in data) {
         let dataElement = data[key];
         if (typeof (dataElement) !== 'number') {
-            throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
+            throw new Error('You could enter either 1 row or column of numerical data, or 2 rows or 2 columns, where the second ones is numerical.');
         }
         dataArray.push(dataElement);
     }
