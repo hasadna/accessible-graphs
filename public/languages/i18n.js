@@ -39,7 +39,7 @@ const setTranslationInHTML = () => {
 const setTranslationByID = (id, langKey) => {
   const el = document.getElementById(id);
   if (el) {
-    el.innerText = i18n(langKey);
+    el.innerHTML = i18n(langKey);
   }
 };
 
