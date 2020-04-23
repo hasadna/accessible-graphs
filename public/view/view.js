@@ -19,16 +19,20 @@ function brailleControllerSelectionListener(event) {
     const position = event.position;
     let positionInData = position - Math.floor(position / 40) * 11;
     if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
-        updateSelectedCell($(`[row=${focusedRowIndex}][col=${positionInData}]`)[0]);
-        brailleController.updateRightSideBraille(position);
+        const row = document.querySelectorAll(`[row="${focusedRowIndex}"]`)[0];
+        if (row) {
+            const cell = row.querySelectorAll(`[col="${positionInData}"]`)[0];
+            updateSelectedCell(cell);
+            brailleController.updateRightSideBraille(position);
+        }
     }
 }
 function processData() {
     const container = document.getElementById('container');
     const graphDescription = getUrlParam('description');
     if (graphDescription !== '') {
-        const graphDescriptionHeading = $(document.createElement('h1'));
-        graphDescriptionHeading.html(graphDescription);
+        const graphDescriptionHeading = document.createElement('h1');
+        graphDescriptionHeading.innerText = graphDescription;
         container.appendChild(graphDescriptionHeading[0]);
     }
     parseData(getUrlParam('data'));
@@ -39,40 +43,58 @@ function processData() {
     addNavigationToGrid();
 }
 function createGrid() {
-    let combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
-    const grid = $(document.createElement('div'));
-    grid.attr('role', 'grid');
-    grid.prop('id', 'grid');
-    grid.attr('aria-readonly', 'true');
-    grid.width('100%');
-    grid.height('90%');
-    grid.prop('className', 'table');
-    for (let rowIndex = 0; rowIndex < combinedDataAndHeaders.length; rowIndex++) {
-        let gridRow = $(document.createElement('div'));
-        gridRow.prop('role', 'row');
-        gridRow.prop('className', 'row');
+    const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
+    const grid = document.createElement('div');
+    grid.setAttribute('role', 'grid');
+    grid.setAttribute('id', 'grid');
+    grid.setAttribute('aria-readonly', 'true');
+    grid.style.width = '100%';
+    grid.style.height = '90%';
+    grid.setAttribute('class', 'table');
+    combinedDataAndHeaders.forEach((rowData, rowIndex) => {
+        const gridRow = document.createElement('div');
+        gridRow.setAttribute('role', 'row');
+        gridRow.setAttribute('class', 'row');
+        /**
+         * The `combinedDataAndHeaders[0]` feels like it should be `combinedDataAndHeaders[rowIndex]`
+         * however, that would require type hinting similar to _`combinedDataAndHeaders: string[][]`_
+         */
         for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
-            let gridCell = $(document.createElement('div'));
-            gridCell.attr('role', 'gridcell');
-            gridCell.prop('className', 'cell');
+            let gridCell = document.createElement('div');
+            gridCell.setAttribute('role', 'gridcell');
+            gridCell.setAttribute('class', 'cell');
             gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
-            gridCell.attr('aria-readonly', 'true');
-            gridCell.attr('row', rowIndex);
-            gridCell.attr('col', colIndex);
+            gridCell.setAttribute('aria-readonly', 'true');
+            gridCell.setAttribute('row', rowIndex.toString());
+            gridCell.setAttribute('col', colIndex.toString());
             gridRow.append(gridCell);
         }
-        grid.append(gridRow);
-    }
-    let container = $('#container');
-    container.append(grid);
+    });
+    document.getElementById('container').appendChild(grid);
 }
+/**
+ * @param {string} element_name
+ * @param {string} role
+ * @returns {HTMLElement[]}
+ */
+const getElementsByRole = (element_name, role) => {
+    const elements_list = [];
+    const elements_collection = document.getElementsByTagName(element_name);
+    for (let i = 0; i < elements_collection.length; i++) {
+        const element = elements_collection[i];
+        if (element.getAttribute('role') === role) {
+            elements_list.push(element);
+        }
+    }
+    return elements_list;
+};
 function addOnClickAndOnTouchSoundToGrid() {
-    $('div[role="gridcell"]').each(function (index, element) {
-        $(element).click(onClick);
-        $(element).on('touchstart', startSoundPlayback);
-        $(element).on('touchmove', onCellChange);
-        $(element).on('touchleave', stopSoundPlayback);
-        $(element).on('touchcancel', stopSoundPlayback);
+    getElementsByRole('div', 'gridcell').forEach((element, _index) => {
+        element.addEventListener('click', onClick);
+        element.addEventListener('touchstart', startSoundPlayback);
+        element.addEventListener('touchmove', onCellChange);
+        element.addEventListener('touchleave', stopSoundPlayback);
+        element.addEventListener('touchcancel', stopSoundPlayback);
     });
 }
 function onClick(event) {
@@ -80,14 +102,14 @@ function onClick(event) {
     event.preventDefault();
 }
 function addNavigationToGrid() {
-    $('div[role="gridcell"]').each(function (index, gridCell) {
+    getElementsByRole('div', 'gridcell').forEach((gridCell, index) => {
         if (index === 0) {
-            $(gridCell).prop('tabindex', '0');
+            gridCell.setAttribute('tabindex', '0');
         }
         else {
-            $(gridCell).prop('tabindex', '-1');
+            gridCell.setAttribute('tabindex', '-1');
         }
-        $(gridCell).keydown(navigateGrid);
+        gridCell.addEventListener('keydown', navigateGrid);
     });
 }
 function navigateGrid(event) {
@@ -165,11 +187,11 @@ function onCellChange(event) {
 function updateSelectedCell(cell) {
     focusedRowIndex = parseInt(cell.getAttribute('row'));
     focusedColIndex = parseInt(cell.getAttribute('col'));
-    $(selectedCell).css('background-color', '');
-    $(selectedCell).css('border', '');
+    selectedCell.style.backgroundColor = '';
+    selectedCell.style.border = '';
     selectedCell = cell;
-    $(selectedCell).css('background-color', '#ffff4d');
-    $(selectedCell).css('border', '1px solid #0099ff');
+    selectedCell.style.backgroundColor = '#ffff4d';
+    selectedCell.style.boarder = '1px solid #0099ff';
     if (dataHeaders.length != 0 && focusedRowIndex == 0) {
         return;
     }
