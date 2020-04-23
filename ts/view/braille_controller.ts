@@ -7,7 +7,7 @@ class BrailleController {
   // These symbols map 1:1 to numbers.
   static BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
 
-  textarea: JQuery<HTMLElement>;
+  textarea: HTMLTextAreaElement;
   selectionListener: (this: void, e: Event) => void;
   currentPosition: number;
   data: number[];
@@ -16,24 +16,31 @@ class BrailleController {
     if (document.getElementById('brailleControllerText')) {
       throw new Error('Braille controller already created');
     }
-    const textarea = $(document.createElement('textarea'));
-    textarea.prop('id', 'brailleControllerText');
+    const textarea: HTMLTextAreaElement = document.createElement('textarea');
+    textarea.id = 'brailleControllerText';
     // In Chrome, readonly textarea doesn't support moving the cursor via the keyboard, or even cursor blinking
     // therefore, we can't use the readonly property, rather, we have to prevent the user from entering characters to the textarea. See:
     //https://stackoverflow.com/questions/19005579/how-to-enable-cursor-move-while-using-readonly-attribute-in-input-field-in-chrom
-    textarea.prop('maxlength', '0');
-    textarea.keydown(this.onKeyDown);
-    textarea.bind('cut', this.ignoreEvent);
-    textarea.mousedown(this.onSecondRoutingKeyPress);
+    textarea.setAttribute('maxlength', '0');
+    textarea.addEventListener('keydown', this.onKeyDown);
+    /**
+     * TO-DO: correct TypeScript complaints about...
+     *  - `(event: Event) => void` is not assignable to parameter of type 'ClipboardEvent'
+     *  - Property `clipboardData` is missing in type `(event: Event) => void`
+     */
+    // @ts-ignore
+    textarea.oncut(this.ignoreEvent);
+    textarea.addEventListener('mousedown', this.onSecondRoutingKeyPress);
     if (listenForAllEvents == true) {
-      textarea.bind(BrailleController.getAllEvents(textarea[0]), this.logEvent);
+      BrailleController.bindAllEvents(textarea[0], this.logEvent);
     }
     // Limit the textarea to one line using css techniques
-    textarea.css({ 'white-space': 'nowrap', 'overflow-x': 'auto' });
+    textarea.style.whiteSpace = 'nowrap';
+    textarea.style.overflowX = 'auto';
 
-    const brailleControllerLabel = $(document.createElement('label'));
-    brailleControllerLabel.html('Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.');
-    brailleControllerLabel.prop('for', 'brailleControllerText');
+    const brailleControllerLabel: HTMLLabelElement = document.createElement('label');
+    brailleControllerLabel.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.';
+    brailleControllerLabel.setAttribute('for', 'brailleControllerText');
     parent.appendChild(brailleControllerLabel[0]);
     parent.appendChild(textarea[0]);
 
@@ -45,6 +52,20 @@ class BrailleController {
     this.currentPosition = -1;
     this.data = data;
     this.initializeBraille();
+  }
+
+  /**
+   * @param {HTMLTextAreaElement} element
+   * @param {callback} callback
+   */
+  static bindAllEvents(element: HTMLTextAreaElement, callback) {
+    let events_list = [];
+    for (var key in this) {
+      if (key.indexOf('on') === 0) {
+        events_list.push(key.slice(2));
+      }
+    }
+    element.addEventListener(events_list.join(' '), callback)
   }
 
   static normalizeData(data: number[], range: number): number[] {
@@ -69,16 +90,6 @@ class BrailleController {
     }
     let normalizedDataElement: number = (dataElement - min) / (max - min) * (range - 0.01);
     return normalizedDataElement;
-  }
-
-  static getAllEvents(element) {
-    let result = [];
-    for (let key in element) {
-      if (key.indexOf('on') === 0) {
-        result.push(key.slice(2));
-      }
-    }
-    return result.join(' ');
   }
 
   logEvent(event) {
@@ -158,7 +169,7 @@ class BrailleController {
   }
 
 
-  ignoreEvent(event) {
+  ignoreEvent(event: Event) {
     event.preventDefault();
   }
 
@@ -183,11 +194,11 @@ class BrailleController {
   }
 
   setBraille(text: string) {
-    this.textarea.text(text);
+    this.textarea.setAttribute('text', text);
   }
 
   getBraille(): string {
-    return this.textarea.text();
+    return this.textarea.getAttribute('text');
   }
 
   setSelectionListener(listener) {
@@ -197,8 +208,8 @@ class BrailleController {
   setCursorPosition(position: number) {
     // The cursor will leave it's original position when setting a new braille text to the textarea
     // so return it to the previous position in which it was before setting the braille text
-    this.textarea.prop('selectionEnd', position);
-    this.textarea.prop('selectionStart', position);
+    this.textarea.setAttribute('selectionEnd', position.toString());
+    this.textarea.setAttribute('selectionStart', position.toString());
   }
 
   onSelection() {
