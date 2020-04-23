@@ -39,7 +39,7 @@ function google_translate_callback() {
 
 /**
  * @param {string?} language
- * @return {boolean}
+ * @returns {boolean}
  */
 function select_translation(language?: string): boolean {
   const preferred_language_code: string = (

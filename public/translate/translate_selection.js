@@ -11,7 +11,7 @@ function google_translate_callback() {
 }
 /**
  * @param {string?} language
- * @return {boolean}
+ * @returns {boolean}
  */
 function select_translation(language) {
     const preferred_language_code = (language || window.navigator['userLanguage'] || window.navigator.language).split('-')[0];
