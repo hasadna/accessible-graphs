@@ -81,6 +81,8 @@ function onRadioChange(radio) {
 /**
  * Parses the input from the user inputted to the `dataInput` textarea as a CSV
  * Uses the 'Papa parse' API to achieve this
+ *
+ * Why is this returning an empty string?
  */
 function parseInput() {
     // Todo: refactor this function and the ones it calls to be simpler to maintain if it's possible
@@ -164,14 +166,16 @@ function needToTranspose(data) {
     else if (data[0].length === 2 && data.length === 1) {
         return false;
     }
-    else if (data[0].length == 2) {
+    else if (data[0].length === 2) {
         let isSecondRowNums = true;
         for (let element of data[1]) {
-            let elementAsNum = Number(element);
-            if (Number.isNaN(elementAsNum)) {
+            // Number will coerce `null` and "null" to `0` which is a number!
+            if (isNaN(Number(element)) || element === 'null') {
                 isSecondRowNums = false;
+                break;
             }
         }
+        // Why is this boolean inverted?
         return !isSecondRowNums;
     }
     return false;
