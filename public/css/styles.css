@@ -11,6 +11,7 @@ body {
   background: #ffffff;
   color: #000A41;
   font-family: 'Lato', sans-serif;
+  text-align: initial;
 }
 
 /*========== header ==========*/
@@ -73,7 +74,6 @@ section {
 
 .section-title-responsive {
   font-size: 28px;
-  text-align: center;
   font-weight: 900;
 }
 
@@ -81,7 +81,6 @@ section {
 .section-description-responsive {
   font-weight: 400;
   font-size: 18px;
-  text-align: center;
 }
 
 /*========== sections end ==========*/
@@ -587,7 +586,7 @@ span.focus--mouse:focus,
 
 .header-img {
   background-size: cover;
-  background-image: url('/assets/images/back.svg');
+  background-image: url('../assets/images/back.svg');
 
   background-position: 49% 40%;
   height: 100vh;
@@ -634,13 +633,11 @@ span.focus--mouse:focus,
 
   .section-title-responsive {
     font-size: 30px;
-    text-align: left;
   }
 
   .section-description-responsive {
     font-weight: 300;
     font-size: 18px;
-    text-align: left;
   }
 
   .section-description {
