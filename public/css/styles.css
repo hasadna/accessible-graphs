@@ -587,7 +587,7 @@ span.focus--mouse:focus,
 
 .header-img {
   background-size: cover;
-  background-image: url('../images/back.svg');
+  background-image: url('/assets/images/back.svg');
 
   background-position: 49% 40%;
   height: 100vh;
