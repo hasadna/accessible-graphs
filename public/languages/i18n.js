@@ -1,4 +1,9 @@
-let langs = {};
+/**
+ * SyntaxError: redeclaration of const langs
+ * `lang` is declared within `js/app.js`
+ */
+// let langs = {};
+
 let lang;
 let langDirection;
 
