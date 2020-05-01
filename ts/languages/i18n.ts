@@ -1,65 +1,87 @@
-/**
- * SyntaxError: redeclaration of const langs
- * `lang` is declared within `js/app.js`
- */
-// let langs = {};
-
+let langs = {};
 let lang;
 let langDirection;
 
 
-const getLanguage = () => {
-  let lang = getQueryParam('lang');
+/**
+ * @returns {string} Defaults to "en" if no language defined by query string or local storage
+ */
+const getLanguage = (): string => {
+  let lang: string = getQueryParam('lang');
   if (lang) {
     return lang.toLowerCase();
   }
+
   lang = localStorage.getItem('language');
   if (lang) {
     return lang.toLowerCase();
   }
+
   return 'en';
 };
 
-// Save language in local storage if not already there, update HTML
-const setLanguage = (selectedLang) => {
-  lang = selectedLang;
-  localStorage.setItem('language', lang);
-  setQueryParam('lang', lang);
-  langDirection = langs[lang].direction;
-  setTranslationInHTML();
-  document.title = i18n('title');
+
+/**
+ * Save language in local storage if not already there, update HTML
+ * @param {string} selectLanguage
+ */
+const setLanguage = (selectedLang: string) => {
+  const language = selectedLang;
+  localStorage.setItem('language', language);
+  setQueryParam('lang', language);
+  langDirection = langs[language].direction;
+  setTranslationInHTML(language);
+  document.title = i18n('title', language);
 };
 
-const setTranslationInHTML = () => {
+
+/**
+ * @param {string} language
+ */
+const setTranslationInHTML = (language: string) => {
   // For keys that match element IDs:
-  for (let key in langs[lang]) {
-    setTranslationByID(key, key);
-  }
-  setTranslationByID('select-language-header', 'selectLanguage');
-  $(document).ready(function () {
-    $('html').attr('lang', lang); //'language' value is retrieved from a cookie
+  langs[language].forEach((key) => {
+    setTranslationByID(key, key, language);
   });
+
+  setTranslationByID('select-language-header', 'selectLanguage', language);
+  document.addEventListener('load', () => {
+    document.getElementsByTagName('html')[0].lang = language;
+  })
 };
 
-const setTranslationByID = (id, langKey) => {
-  const el = document.getElementById(id);
-  if (el) {
-    el.innerHTML = i18n(langKey);
+
+/**
+ * @param {string} id
+ * @param {string} langKey
+ * @param {string} language
+ */
+const setTranslationByID = (id: string, langKey: string, language: string) => {
+  const element: HTMLElement = document.getElementById(id);
+  if (element) {
+    element.innerHTML = i18n(langKey, language);
   }
 };
 
-const i18n = langKey => {
-  if (langs[lang].hasOwnProperty(langKey)) {
-    return langs[lang][langKey];
+
+/**
+ * @param {string} langKey
+ * @returns {string}
+ */
+const i18n = (langKey: string, language: string): string => {
+  if (langs[language].hasOwnProperty(langKey)) {
+    return langs[language][langKey];
   } else {
     console.log(langKey);
     return langs['en'][langKey];
   }
 };
 
+
+/**
+ *
+ */
 const initLanguage = () => {
-  // Get language from url or local storage
-  lang = getLanguage();
-  // Set it, and update everything needed
+  const lang: string = getLanguage();
   setLanguage(lang);
 };
