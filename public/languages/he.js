@@ -1,7 +1,7 @@
 const he = {
   language: 'שפה',
   direction: 'rtl',
-  title: 'The Sensory Interface',
+  title: 'Sensory Interface',
   tutorial: 'הדרכה',
   theTeam: 'הצוות',
   howWork: 'איך זה עובד',
