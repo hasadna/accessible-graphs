@@ -1,7 +1,7 @@
 const en = {
   language: 'Language',
   direction: 'ltr',
-  title: 'The Sensory Interface',
+  title: 'Sensory Interface',
   tutorial: 'Tutorial',
   theTeam: 'The team',
   howWork: 'How it\'s work',

@@ -26,7 +26,7 @@ $(document).ready(function () {
   });
 
   // page smooth scroll on link click
-  $('a[href^="#"]').on('click', function (event) {
+  $('a[href^="#.+"]').on('click', function (event) {
 
     let target = $(this.getAttribute('href'));
 
@@ -98,18 +98,22 @@ $('.language-click').click(function () {
 function addNoOpener(link) {
   let linkTypes = (link.getAttribute('rel') || '').split(' ');
   if (!linkTypes.includes('noopener')) {
-      linkTypes.push('noopener');
+    linkTypes.push('noopener');
   }
   link.setAttribute('rel', linkTypes.join(' ').trim());
 }
 
 function addNewTabMessage(link) {
   if (!link.querySelector('.screen-reader-only')) {
-      link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
+    link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
   }
 }
 
-document.querySelectorAll('a[target="_blank"]').forEach(link => {
-  addNoOpener(link);
-  addNewTabMessage(link);
-});
+const updateLinksAccessibility = () => {
+  document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    addNoOpener(link);
+    addNewTabMessage(link);
+  });
+};
+
+updateLinksAccessibility();

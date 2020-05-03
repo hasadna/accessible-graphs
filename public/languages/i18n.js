@@ -33,6 +33,7 @@ const setTranslationInHTML = () => {
   setTranslationByID('select-language-header', 'selectLanguage');
   $(document).ready(function () {
     $('html').attr('lang', lang); //'language' value is retrieved from a cookie
+    updateLinksAccessibility();
   });
 };
 
@@ -66,3 +67,4 @@ const changeLanguage = (language) => {
   console.log(language);
   setLanguage(language);
 };
+
