@@ -31,10 +31,9 @@ const setTranslationInHTML = () => {
     setTranslationByID(key, key);
   }
   setTranslationByID('select-language-header', 'selectLanguage');
-  $(document).ready(function () {
-    $('html').attr('lang', lang); //'language' value is retrieved from a cookie
-    updateLinksAccessibility();
-  });
+  handleLanguageSwitch(lang);
+  // $(document).ready(function () {
+  // });
 };
 
 const setTranslationByID = (id, langKey) => {
@@ -68,3 +67,11 @@ const changeLanguage = (language) => {
   setLanguage(language);
 };
 
+const handleLanguageSwitch = (language) => {
+  $('html').attr('lang', lang); //'language' value is retrieved from a cookie
+  updateLinksAccessibility();
+  let tutorialLanguage =  lang == 'en' ? 'english' : 'hebrew';
+  let tutorialPath = `tutorial-${tutorialLanguage}.html`;
+  $('#tutorial').attr('href', tutorialPath);
+  $('#goToTutorial') .attr('href', tutorialPath);
+}

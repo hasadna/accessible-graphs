@@ -18,7 +18,7 @@ const en = {
   stage1: '1. Go to our tutorial',
   stage2: '2. Define your graph',
   stage3: '3. Start using it!',
-  goTOtu: 'Go to tutorial',
+  goToTutorial: 'Go to tutorial',
   theTeam2: 'The team',
   mohammad: 'Mohammad Suliman',
   mohammad2: 'Software developer, B.Sc in Computer Science from Technion, blind and wants to help other blind people in STEM education',
