@@ -32,8 +32,6 @@ const setTranslationInHTML = () => {
   }
   setTranslationByID('select-language-header', 'selectLanguage');
   handleLanguageSwitch(lang);
-  // $(document).ready(function () {
-  // });
 };
 
 const setTranslationByID = (id, langKey) => {
