@@ -87,27 +87,8 @@ function createGrid() {
 }
 
 
-/**
- * @param {string} element_name
- * @param {string} role
- * @returns {HTMLElement[]}
- */
-const getElementsByRole = (element_name: string, role: string): HTMLElement[] => {
-  const elements_list = [];
-  const elements_collection: HTMLCollection = document.getElementsByTagName(element_name);
-  for (let i = 0; i < elements_collection.length; i++) {
-    const element = elements_collection[i];
-    if (element.getAttribute('role') === role) {
-      elements_list.push(element);
-    }
-  }
-
-  return elements_list;
-};
-
-
 function addOnClickAndOnTouchSoundToGrid() {
-  getElementsByRole('div', 'gridcell').forEach((element: HTMLElement, _index: number) => {
+  document.querySelectorAll('[role="gridcell"]').forEach((element: HTMLElement, _index: number) => {
     element.addEventListener('click', onClick);
     element.addEventListener('touchstart', startSoundPlayback);
     element.addEventListener('touchmove', onCellChange);
@@ -121,8 +102,9 @@ function onClick(event) {
   event.preventDefault();
 }
 
+
 function addNavigationToGrid() {
-  getElementsByRole('div', 'gridcell').forEach((gridCell: HTMLElement, index: number) => {
+  document.querySelectorAll('gridcell').forEach((gridCell: HTMLElement, index: number) => {
     if (index === 0) {
       gridCell.setAttribute('tabindex', '0')
     } else {
