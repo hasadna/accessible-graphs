@@ -7,14 +7,16 @@ let brailleData: string = null;
 let focusedRowIndex: number = 0;
 let focusedColIndex: number = 0;
 
+
 function initializeViewScript() {
   // Initialize speech synthesis
   // If we don't do that, Chrome will speak the first utterance with the default TTS voice
-  let synth = window.speechSynthesis;
-  let utterance = new SpeechSynthesisUtterance('');
+  const synth: SpeechSynthesis = window.speechSynthesis;
+  const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance('');
   synth.speak(utterance);
   processData();
 }
+
 
 function brailleControllerSelectionListener(event) {
   focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
@@ -30,25 +32,27 @@ function brailleControllerSelectionListener(event) {
   }
 }
 
+
 function processData() {
-  const container = document.getElementById('container');
-  const graphDescription = getUrlParam('description');
+  const container: HTMLElement = document.getElementById('container');
+  const graphDescription: string = getUrlParam('description');
   if (graphDescription !== '') {
-    const graphDescriptionHeading = document.createElement('h1');
+    const graphDescriptionHeading: HTMLHeadingElement = document.createElement('h1');
     graphDescriptionHeading.innerText = graphDescription;
     container.appendChild(graphDescriptionHeading[0]);
   }
   parseData(getUrlParam('data'));
-  brailleController = new BrailleController(container, data);
+  const brailleController: BrailleController = new BrailleController(container, data);
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
 }
 
+
 function createGrid() {
-  const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
-  const grid = document.createElement('div');
+  const combinedDataAndHeaders: (number | string)[][] = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
+  const grid: HTMLDivElement = document.createElement('div');
   grid.setAttribute('role', 'grid');
   grid.setAttribute('id', 'grid');
   grid.setAttribute('aria-readonly', 'true');
@@ -56,8 +60,8 @@ function createGrid() {
   grid.style.height = '90%';
   grid.setAttribute('class', 'table');
 
-  combinedDataAndHeaders.forEach((rowData, rowIndex) => {
-    const gridRow = document.createElement('div');
+  combinedDataAndHeaders.forEach((_rowData: (number[] | string[]), rowIndex: number) => {
+    const gridRow: HTMLDivElement = document.createElement('div');
     gridRow.setAttribute('role', 'row');
     gridRow.setAttribute('class', 'row');
 
@@ -66,7 +70,7 @@ function createGrid() {
      * however, that would require type hinting similar to _`combinedDataAndHeaders: string[][]`_
      */
     for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
-      let gridCell = document.createElement('div');
+      const gridCell: HTMLDivElement = document.createElement('div');
       gridCell.setAttribute('role', 'gridcell');
       gridCell.setAttribute('class', 'cell');
       gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
@@ -75,6 +79,8 @@ function createGrid() {
       gridCell.setAttribute('col', colIndex.toString());
       gridRow.append(gridCell);
     }
+
+    grid.append(gridRow);
   });
 
   document.getElementById('container').appendChild(grid);
@@ -126,6 +132,7 @@ function addNavigationToGrid() {
   });
 }
 
+
 function navigateGrid(event) {
   let currentCell = event.currentTarget;
   let newFocusedCell = null;
@@ -138,13 +145,13 @@ function navigateGrid(event) {
       break;
     case 'ArrowDown':
       if (currentCell.parentNode.nextSibling != null) {
-        let index = currentCell.getAttribute('col');
+        const index: number = Number(currentCell.getAttribute('col'));
         newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
       }
       break;
     case 'ArrowUp':
       if (currentCell.parentNode.previousSibling != null) {
-        let index = currentCell.getAttribute('col');
+        const index: number = Number(currentCell.getAttribute('col'));
         newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
       }
       break;
@@ -157,11 +164,12 @@ function navigateGrid(event) {
     default:
       return;
   }
-  if (newFocusedCell != null) {
+  if (newFocusedCell !== null) {
     newFocusedCell.focus();
     updateSelectedCell(newFocusedCell);
   }
 }
+
 
 /**
 * Maps (row, col) to a 2D coordinate. row and col are 0-based indices
@@ -171,7 +179,8 @@ function navigateGrid(event) {
 * Cells in a 1X2 grid will be positioned between -0.5 and 0.5 in x, and y will be 0
 * Cells in a 1X3 grid will be positioned between -1 and 1 in x, and y will be also 0
 */
-function get2DCoordinates(row, col) {
+function get2DCoordinates(_row: number, col: number): {x: number, y: number} {
+  // Note, `_row` is not used within this function
   const colCount = data.length;
   let xCoord = col - (colCount / 2 | 0);
   // Align xCoord to be symmetric with respect to y-axis
@@ -184,6 +193,7 @@ function get2DCoordinates(row, col) {
     y: yCoord,
   }
 }
+
 
 function onCellChange(event) {
   // Get the first changed touch point. We surely have one because we are listening to touchmove event, and surely a touch point have changed since the last event.
@@ -201,7 +211,8 @@ function onCellChange(event) {
   event.stopPropagation();
 }
 
-function updateSelectedCell(cell) {
+
+function updateSelectedCell(cell: Element) {
   focusedRowIndex = parseInt(cell.getAttribute('row'));
   focusedColIndex = parseInt(cell.getAttribute('col'));
   selectedCell.style.backgroundColor = '';
@@ -216,7 +227,8 @@ function updateSelectedCell(cell) {
   speakSelectedCell();
 }
 
-function getUrlParam(variableName) {
+
+function getUrlParam(variableName: string): string {
   const url = new URL(window.location.href);
   const params = url.searchParams;
   if (params.has(variableName) === false) {
@@ -225,7 +237,8 @@ function getUrlParam(variableName) {
   return params.get(variableName);
 }
 
-function parseData(dataString) {
+
+function parseData(dataString: string) {
   try {
     // parseWithHeaders and parseWithoutHeaders functions are found in app.ts file
     let combinedDataAndHeaders = parseWithHeaders(dataString);
