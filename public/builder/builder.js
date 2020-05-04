@@ -169,13 +169,15 @@ function needToTranspose(data) {
     else if (data[0].length === 2) {
         let isSecondRowNums = true;
         for (let element of data[1]) {
-            // Number will coerce `null` and "null" to `0` which is a number!
+            // Number will coerce `null` to `0` which is a number!
             if (isNaN(Number(element)) || element === 'null') {
                 isSecondRowNums = false;
                 break;
             }
         }
-        // Why is this boolean inverted?
+        /**
+         * Note, Boolean is flipped in-case second row contains numbers
+         */
         return !isSecondRowNums;
     }
     return false;

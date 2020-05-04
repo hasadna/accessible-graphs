@@ -17,10 +17,10 @@ const getLanguage = () => {
 };
 /**
  * Save language in local storage if not already there, update HTML
- * @param {string} selectLanguage
+ * @param {string} selectedLanguage
  */
-const setLanguage = (selectedLang) => {
-    const language = selectedLang;
+const setLanguage = (selectedLanguage) => {
+    const language = selectedLanguage;
     localStorage.setItem('language', language);
     setQueryParam('lang', language);
     langDirection = langs[language].direction;

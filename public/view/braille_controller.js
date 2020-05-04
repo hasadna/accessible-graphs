@@ -31,8 +31,8 @@ class BrailleController {
         const brailleControllerLabel = document.createElement('label');
         brailleControllerLabel.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.';
         brailleControllerLabel.setAttribute('for', 'brailleControllerText');
-        parent.appendChild(brailleControllerLabel[0]);
-        parent.appendChild(textarea[0]);
+        parent.appendChild(brailleControllerLabel);
+        parent.appendChild(textarea);
         this.textarea = textarea;
         // Note: We initially tried document.addEventListener('selectionchange', func)
         //       but that didn't work in Firefox.
@@ -46,13 +46,13 @@ class BrailleController {
      * @param {callback} callback
      */
     static bindAllEvents(element, callback) {
-        let events_list = [];
-        for (var key in this) {
+        const eventsList = [];
+        for (let key in this) {
             if (key.indexOf('on') === 0) {
-                events_list.push(key.slice(2));
+                eventsList.push(key.slice(2));
             }
         }
-        element.addEventListener(events_list.join(' '), callback);
+        element.addEventListener(eventsList.join(' '), callback);
     }
     static normalizeData(data, range) {
         const result = Array();
@@ -127,17 +127,17 @@ class BrailleController {
         return result;
     }
     updateRightSideBraille(position) {
-        let positionInData = position - Math.floor(position / 40) * 11;
+        let positionInData = position - (position / 40 | 0) * 11;
         let rightSideDataElement = BrailleController.normalizeDataElement(this.data[positionInData], 10);
         let rightSideBraille = BrailleController.getBrailleForRightSide(rightSideDataElement);
-        let positionToInsertBraille = Math.floor(position / 40) * 40 + 30;
+        let positionToInsertBraille = (position / 40 | 0) * 40 + 30;
         let brailleText = this.getBraille();
         brailleText = BrailleController.splice(brailleText, rightSideBraille, positionToInsertBraille);
         this.setBraille(brailleText);
         this.setCursorPosition(position);
     }
     static getBrailleValue(value) {
-        return Math.floor(value) + 1;
+        return value + 1 | 0;
     }
     checkSelection() {
         if (brailleController.currentPosition !== brailleController.textarea.prop('selectionStart')) {

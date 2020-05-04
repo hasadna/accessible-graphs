@@ -9,15 +9,15 @@ let focusedColIndex = 0;
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
-    let synth = window.speechSynthesis;
-    let utterance = new SpeechSynthesisUtterance('');
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance('');
     synth.speak(utterance);
     processData();
 }
 function brailleControllerSelectionListener(event) {
     focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
     const position = event.position;
-    let positionInData = position - Math.floor(position / 40) * 11;
+    const positionInData = position - (position / 40 | 0) * 11;
     if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
         const row = document.querySelectorAll(`[row="${focusedRowIndex}"]`)[0];
         if (row) {
@@ -36,7 +36,7 @@ function processData() {
         container.appendChild(graphDescriptionHeading[0]);
     }
     parseData(getUrlParam('data'));
-    brailleController = new BrailleController(container, data);
+    const brailleController = new BrailleController(container, data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
@@ -51,7 +51,7 @@ function createGrid() {
     grid.style.width = '100%';
     grid.style.height = '90%';
     grid.setAttribute('class', 'table');
-    combinedDataAndHeaders.forEach((rowData, rowIndex) => {
+    combinedDataAndHeaders.forEach((_rowData, rowIndex) => {
         const gridRow = document.createElement('div');
         gridRow.setAttribute('role', 'row');
         gridRow.setAttribute('class', 'row');
@@ -60,7 +60,7 @@ function createGrid() {
          * however, that would require type hinting similar to _`combinedDataAndHeaders: string[][]`_
          */
         for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
-            let gridCell = document.createElement('div');
+            const gridCell = document.createElement('div');
             gridCell.setAttribute('role', 'gridcell');
             gridCell.setAttribute('class', 'cell');
             gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
@@ -69,27 +69,12 @@ function createGrid() {
             gridCell.setAttribute('col', colIndex.toString());
             gridRow.append(gridCell);
         }
+        grid.append(gridRow);
     });
     document.getElementById('container').appendChild(grid);
 }
-/**
- * @param {string} element_name
- * @param {string} role
- * @returns {HTMLElement[]}
- */
-const getElementsByRole = (element_name, role) => {
-    const elements_list = [];
-    const elements_collection = document.getElementsByTagName(element_name);
-    for (let i = 0; i < elements_collection.length; i++) {
-        const element = elements_collection[i];
-        if (element.getAttribute('role') === role) {
-            elements_list.push(element);
-        }
-    }
-    return elements_list;
-};
 function addOnClickAndOnTouchSoundToGrid() {
-    getElementsByRole('div', 'gridcell').forEach((element, _index) => {
+    document.querySelectorAll('[role="gridcell"]').forEach((element, _index) => {
         element.addEventListener('click', onClick);
         element.addEventListener('touchstart', startSoundPlayback);
         element.addEventListener('touchmove', onCellChange);
@@ -97,12 +82,17 @@ function addOnClickAndOnTouchSoundToGrid() {
         element.addEventListener('touchcancel', stopSoundPlayback);
     });
 }
+/**
+ * To-do: double-check type hints for `event` on `onClick` and `navigateGrid`
+ * @link https://github.com/Microsoft/TypeScript/issues/299
+ * @link https://developer.mozilla.org/en-US/docs/Web/API/Event
+ */
 function onClick(event) {
     updateSelectedCell(event.currentTarget);
     event.preventDefault();
 }
 function addNavigationToGrid() {
-    getElementsByRole('div', 'gridcell').forEach((gridCell, index) => {
+    document.querySelectorAll('gridcell').forEach((gridCell, index) => {
         if (index === 0) {
             gridCell.setAttribute('tabindex', '0');
         }
@@ -124,13 +114,13 @@ function navigateGrid(event) {
             break;
         case 'ArrowDown':
             if (currentCell.parentNode.nextSibling != null) {
-                let index = currentCell.getAttribute('col');
+                const index = Number(currentCell.getAttribute('col'));
                 newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case 'ArrowUp':
             if (currentCell.parentNode.previousSibling != null) {
-                let index = currentCell.getAttribute('col');
+                const index = Number(currentCell.getAttribute('col'));
                 newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
             break;
@@ -143,7 +133,7 @@ function navigateGrid(event) {
         default:
             return;
     }
-    if (newFocusedCell != null) {
+    if (newFocusedCell !== null) {
         newFocusedCell.focus();
         updateSelectedCell(newFocusedCell);
     }
@@ -156,9 +146,10 @@ function navigateGrid(event) {
 * Cells in a 1X2 grid will be positioned between -0.5 and 0.5 in x, and y will be 0
 * Cells in a 1X3 grid will be positioned between -1 and 1 in x, and y will be also 0
 */
-function get2DCoordinates(row, col) {
+function get2DCoordinates(_row, col) {
+    // Note, `_row` is not used within this function
     const colCount = data.length;
-    let xCoord = col - Math.floor(colCount / 2);
+    let xCoord = col - (colCount / 2 | 0);
     // Align xCoord to be symmetric with respect to y-axis
     if (colCount % 2 === 0) {
         xCoord += 0.5;
