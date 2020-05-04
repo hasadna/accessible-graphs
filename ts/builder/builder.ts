@@ -189,10 +189,12 @@ function normalizeData(input: string): string[][] {
  */
 function needToTranspose(data: string[][]): boolean {
   if (data[0].length === 1) {
+    // 1 * N matrix
     return true;
   } else if (data[0].length === 2 && data.length === 1) {
+    // 2 * 2 matrix
     return false;
-  } else if (data[0].length == 2) {
+  } else if (data[0].length == 2 && data.length === 2) {
     let isSecondRowNums: boolean = true;
     for (let element of data[1]) {
       let elementAsNum: number = Number(element);
@@ -201,6 +203,9 @@ function needToTranspose(data: string[][]): boolean {
       }
     }
     return !isSecondRowNums;
+  } else if (data[0].length === 2) {
+    // 2 * N matrix
+    return true;
   }
   return false;
 }
