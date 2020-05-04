@@ -19,7 +19,7 @@ function initializeViewScript() {
 function brailleControllerSelectionListener(event) {
   focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
   const position = event.position;
-  let positionInData = position - Math.floor(position / 40) * 11;
+  const positionInData = position - (position / 40 | 0) * 11;
   if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
     const row = document.querySelectorAll(`[row="${focusedRowIndex}"]`)[0];
     if (row) {
@@ -173,7 +173,7 @@ function navigateGrid(event) {
 */
 function get2DCoordinates(row, col) {
   const colCount = data.length;
-  let xCoord = col - Math.floor(colCount / 2);
+  let xCoord = col - (colCount / 2 | 0);
   // Align xCoord to be symmetric with respect to y-axis
   if (colCount % 2 === 0) {
     xCoord += 0.5;

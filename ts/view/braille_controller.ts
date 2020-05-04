@@ -147,10 +147,10 @@ class BrailleController {
   }
 
   updateRightSideBraille(position: number) {
-    let positionInData: number = position - Math.floor(position / 40) * 11;
+    let positionInData: number = position - (position / 40 | 0) * 11;
     let rightSideDataElement: number = BrailleController.normalizeDataElement(this.data[positionInData], 10);
     let rightSideBraille: string = BrailleController.getBrailleForRightSide(rightSideDataElement);
-    let positionToInsertBraille: number = Math.floor(position / 40) * 40 + 30;
+    let positionToInsertBraille: number = (position / 40 | 0) * 40 + 30;
     let brailleText: string = this.getBraille();
     brailleText = BrailleController.splice(brailleText, rightSideBraille, positionToInsertBraille);
     this.setBraille(brailleText);
@@ -158,7 +158,7 @@ class BrailleController {
   }
 
   static getBrailleValue(value: number): number {
-    return Math.floor(value) + 1;
+    return value + 1 | 0;
   }
 
   checkSelection() {
