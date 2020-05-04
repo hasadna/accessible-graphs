@@ -97,6 +97,12 @@ function addOnClickAndOnTouchSoundToGrid() {
   });
 }
 
+
+/**
+ * To-do: double-check type hints for `event` on `onClick` and `navigateGrid`
+ * @link https://github.com/Microsoft/TypeScript/issues/299
+ * @link https://developer.mozilla.org/en-US/docs/Web/API/Event
+ */
 function onClick(event) {
   updateSelectedCell(event.currentTarget);
   event.preventDefault();
