@@ -14,7 +14,7 @@ const getQueryParam = (name: string): string => {
  * @param {string} value
  */
 const setQueryParam = (name: string, value: string) => {
-  let urlParams = new URLSearchParams(window.location.search);
+  let urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   urlParams.set(name, value);
   urlParams.sort();
   window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
@@ -26,8 +26,8 @@ const setQueryParam = (name: string, value: string) => {
  * @param {string} name
  */
 const deleteQueryParam = (name: string) => {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+  const queryString: string = window.location.search;
+  const urlParams: URLSearchParams = new URLSearchParams(queryString);
   urlParams.delete(name);
   window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
 };
