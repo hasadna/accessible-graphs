@@ -38,8 +38,6 @@ const deleteQueryParam = (name: string) => {
  */
 const changeLanguage = (language: string) => {
   document.getElementById('language-popup').setAttribute('modal', 'toggle');
-  // Note, TypeScript complained about `.modal` not being present on JQuery element
-  // $('#language-popup').modal('toggle');
 
   console.log(language);
 
