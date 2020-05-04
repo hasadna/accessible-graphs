@@ -59,13 +59,13 @@ class BrailleController {
    * @param {callback} callback
    */
   static bindAllEvents(element: HTMLTextAreaElement, callback) {
-    let events_list = [];
-    for (var key in this) {
+    const eventsList = [];
+    for (let key in this) {
       if (key.indexOf('on') === 0) {
-        events_list.push(key.slice(2));
+        eventsList.push(key.slice(2));
       }
     }
-    element.addEventListener(events_list.join(' '), callback)
+    element.addEventListener(eventsList.join(' '), callback);
   }
 
   static normalizeData(data: number[], range: number): number[] {
