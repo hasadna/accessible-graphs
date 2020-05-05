@@ -68,3 +68,11 @@ const changeLanguage = (language) => {
   setLanguage(language);
 };
 
+const handleLanguageSwitch = (language) => {
+  $('html').attr('lang', lang); //'language' value is retrieved from a cookie
+  updateLinksAccessibility();
+  let tutorialLanguage =  lang == 'en' ? 'english' : 'hebrew';
+  let tutorialPath = `${tutorialLanguage}_guides/usage_tutorial_${lang}.html`;
+  $('#tutorial').attr('href', tutorialPath);
+  $('#goToTutorial') .attr('href', tutorialPath);
+}

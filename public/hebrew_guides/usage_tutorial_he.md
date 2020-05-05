@@ -41,3 +41,5 @@
 אנו מודים לך על שיתוף הפעולה בהתנסות במערכת Sensory Interface.
 
 [נודה לך על משוב קצר בטופס מקוון ואנונימי](https://docs.google.com/forms/d/e/1FAIpQLSfaYX_axRDfrM_BCRNiwsQMA5PHyPG_gkLeUyNZJXCSdbCILg/viewform)
+
+למידע נוסף על איך עושים שימוש בברייל במערכת אנא לחצו [כאן](tutorial_braille_he.html)
