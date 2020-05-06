@@ -17,11 +17,13 @@ const getLanguage = () => {
 
 // Save language in local storage if not already there, update HTML
 const setLanguage = (selectedLang) => {
+  let frag = window.location.hash;
   lang = selectedLang;
   localStorage.setItem('language', lang);
   setQueryParam('lang', lang);
   langDirection = langs[lang].direction;
   setTranslationInHTML();
+  window.location.hash=frag;
   document.title = i18n('title');
 };
 

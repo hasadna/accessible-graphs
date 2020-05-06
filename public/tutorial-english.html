@@ -3,14 +3,98 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="canonical" href="https://sensoryinterface.com/" />
   <title> Braille tutorial - Sensory interface </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!--========== web tags ==========-->
+  <meta name="description" content="Sensory interface"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
+
+  <meta property="og:title" content="Sensory interface" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sensoryinterface.com/" />
+  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png"/>
+
+  <!--========== goolge fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/tutorial.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
-  <h1>Sensory interface tutorial</h1>
+<!--========== navbar ==========-->
+<nav class="wonder-nav">
+  <ul class="wonder-nav-ul" dir="ltr">
+
+    <!--===== desktop view =====-->
+    <li class="nav-logo d-none d-md-block" aria-hidden="true">
+      <img class="top-bar-icon-desk" src="assets/images/logo/s-logo-white.svg" alt="navbar-logo">
+    </li>
+
+    <li class="wonder-nav-li d-none d-md-block">
+      <a class="nav-link" target="_blank" href="tutorial-english.html">
+        Tutorial
+      </a>
+    </li>
+
+    <li class="wonder-nav-li d-none d-md-block">
+      <a class="nav-link" href="./index.html#team-anchor" id="theTeam">
+        The team
+      </a>
+    </li>
+    <li class="wonder-nav-li d-none d-md-block">
+      <a class="nav-link" href="./index.html#how-anchor" id="howWork">
+        How it's work
+      </a>
+    </li>
+    <li class="wonder-nav-li d-none d-md-block">
+      <a class="nav-link" href="./index.html#about-anchor" id="aboutUs1">
+        About us
+      </a>
+    </li>
+    <!--===== desktop view end =====-->
+    <!--===== mobile view =====-->
+
+    <li class="nav-logo d-md-none">
+      <a href="index.html">
+        <img class="top-bar-icon" src="assets/images/logo/s-logo-blue.svg" alt="navbar-logo">
+      </a>
+    </li>
+
+    <li class="wonder-nav-li d-md-none">
+      <button aria-label="Open the menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px">
+          <span class="hamburger-box" aria-hidden=”true”>
+            <span class="hamburger-inner" aria-hidden=”true”></span></span>
+      </button>
+    </li>
+    <!--===== mobile view end =====-->
+  </ul>
+
+</nav>
+<!--========== navbar end ==========-->
+
+<!--========== header ==========-->
+<header class="header-tut">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-12 text-center">
+        <h1 class="tut-title" style="">
+          Sensory interface tutorial
+        </h1>
+      </div>
+    </div>
+  </div>
+
+</header>
+<!--========== header end ==========-->
+<br>
+<div class="tutorial-div">
   <h3>Introduction</h3>
   <p>
     Welcome to the Sensory Interface tutorial!
@@ -29,6 +113,7 @@
     <li>Connect a braille display to your computer</li>
     <li>Configure the screen reader to use it if necessary</li>
   </ul>
+  <hr>
   <h3>Stage 1 - Drawing with braille</h3>
   <p>
     Let’s try to understand how we use braille in our system.
@@ -45,6 +130,7 @@
     something? These are not text characters. We will be using the braille display as a sort of drawing pad to draw up
     our visualizations.
   </p>
+  <hr>
   <h3>Stage 2 - As easy as 1 2 3 4</h3>
   <p>
     After we had an initial taste of how we are using braille in our system, let’s dive more deeply into how exactly we
@@ -76,6 +162,7 @@
   <p>
     ⣀⠤⠒⠉
   </p>
+  <hr>
   <h3>Stage 3 - Another example</h3>
   <p>
     Let’s now have a more advanced example: Let’s assume we want to present the following data in braille, again,
@@ -90,6 +177,7 @@
   <p>
     ⣀⠤⠒⠉⠒⠤⣀
   </p>
+  <hr>
   <h3>Stage 4 - Representing numbers 1 to 20</h3>
   <p>
     Now, what happens if we have more than 4 characters to display? For example, let’s say we want to present the
@@ -118,6 +206,7 @@
   <p>
     ⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠒⠒⠒⠒⠒⠉⠉⠉⠉⠉
   </p>
+  <hr>
   <h3>Stage 5 - Looking at complex data</h3>
   <p>
     Now that we have a basic understanding of how we represent numerical data using our special braille patterns, let’s
@@ -182,6 +271,7 @@
     So, after you have reviewed the braille representation of the numerical data, do you think you can get “a feeling of
     the graph”? We think you can! 😊
   </p>
+  <hr>
   <h3>Stage 6 - Looking at different number ranges</h3>
   <p>
     Let’s now talk about some interesting case where the range doesn’t start from 1. Rather, it starts from some
@@ -212,6 +302,7 @@
     supposed to distinguish between the 2 cases? The answer is simple, via braille you can’t! However, in such
     situations, speech comes into play. It will help you to determine the exact value you are examining.
   </p>
+  <hr>
   <h3>Configuring your screen reader</h3>
   <p>
     It’s highly recommended to configure your screen reader according to the following steps, to get the best experience
@@ -225,4 +316,100 @@
     <li>When in the view page, it’s recommended to turn off your screen reader speech, because the system has its own
       speech capability in that page. To do this in NVDA for example, you can hit NVDA key + s.</li>
   </ul>
-</body /html>
+</div>
+<!--========== footer ==========-->
+<footer>
+  <div class="container">
+
+    <!--========== social-icons ==========-->
+    <div class="row text-center row-social-icon">
+      <div class="col">
+        <a class="footer-social-link" target="_blank" Rel=”noopener”
+           href="https://github.com/hasadna/sensory-interface" title="github">
+          <img class="footer-social-img" src="assets/images/social-icons/github.png" alt="github logo">
+        </a>
+      </div>
+    </div>
+    <!--========== social-icons end ==========-->
+
+    <!--==========  project details ==========-->
+    <div class="big-footer-text-heb-row">
+      <p class="small-footer-text" id="credit">
+        This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
+        collaborations, please send an email to: info@sensoryinterface.com
+      </p>
+    </div>
+    <hr width="50%">
+    <div class="row text-center">
+      <div class="col">
+        <p class="small-footer-text">
+          Made with &nbsp;<img src="assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
+                               alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
+        </p>
+      </div>
+
+    </div>
+    <!--==========  project details end ==========-->
+
+  </div>
+
+</footer>
+<!--========== footer end ==========-->
+
+<!--========== side bar ==========-->
+<div class="side-bar" style="display: none;">
+  <div class="container">
+    <div class="row side-bar-row text-center">
+      <div class="col-12">
+        <a class="side-bar-link" href="./index.html#about-anchor">
+          About us
+        </a>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="col-12">
+        <a class="side-bar-link" href="./index.html#how-anchor">
+          How it's work
+        </a>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="col-12">
+        <a class="side-bar-link" href="./index.html#team-anchor">
+          The team
+        </a>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="col-12">
+        <a class="side-bar-link" target="_blank" href="tutorial-english.html" id="tutorial">
+          Tutorial
+        </a>
+      </div>
+      <br>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+<!--========== side bar end ==========-->
+
+<!---========== scripts ==========-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="./js/utils.js"></script>
+<script src="languages/i18n.js"></script>
+<script src="languages/he.js"></script>
+<script src="languages/en.js"></script>
+</body>
+</html>
