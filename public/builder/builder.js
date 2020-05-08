@@ -159,12 +159,14 @@ function normalizeData(input) {
  */
 function needToTranspose(data) {
     if (data[0].length === 1) {
+        // 1 * N matrix
         return true;
     }
     else if (data[0].length === 2 && data.length === 1) {
+        // 2 * 2 matrix
         return false;
     }
-    else if (data[0].length == 2) {
+    else if (data[0].length == 2 && data.length === 2) {
         let isSecondRowNums = true;
         for (let element of data[1]) {
             let elementAsNum = Number(element);
@@ -173,6 +175,10 @@ function needToTranspose(data) {
             }
         }
         return !isSecondRowNums;
+    }
+    else if (data[0].length === 2) {
+        // 2 * N matrix
+        return true;
     }
     return false;
 }
