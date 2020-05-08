@@ -120,7 +120,7 @@ function stopSoundPlayback() {
       source.stop(audioContext.currentTime);
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 

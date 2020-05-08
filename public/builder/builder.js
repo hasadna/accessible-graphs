@@ -26,14 +26,20 @@ function initializeBuilderScript() {
  * Error / success messages are displayed properly.
  */
 function handleViewClick() {
-    let validationResult = parseInput();
-    if (validationResult === '') {
-        updateURL();
+    try {
+        parseInput();
     }
-    else {
+    catch (error) {
         document.getElementById('dataInput').focus();
-        displayErrorMessage(validationResult);
+        if (Array.isArray(error) && error.length > 0) {
+            displayErrorMessage(error[0].message);
+        }
+        else {
+            displayErrorMessage(error.message);
+        }
+        return;
     }
+    updateURL();
 }
 /**
  * Sets `window.location.href` with search parameter data to be parsed by `view.ts`
@@ -90,7 +96,7 @@ function parseInput() {
         normalizedData = normalizeData(input);
     }
     catch (error) {
-        return error;
+        throw error;
     }
     let rawData = Papa.unparse(normalizedData);
     let data = [];
@@ -100,19 +106,18 @@ function parseInput() {
     }
     catch (error) {
         if (!(error instanceof ParsingWithHeadersNotSuccessfulError)) {
-            return error;
+            throw error;
         }
         try {
             data = parseWithoutHeaders(rawData);
         }
-        catch (errorMessages) {
-            return errorMessages;
+        catch (error) {
+            throw error;
         }
     }
     setMinAndMaxValuesFrom(data);
     displaySuccessMessage();
     inputToPassToView = Papa.unparse(normalizedData, { delimiter: '\t' });
-    return '';
 }
 /**
  * Normalizes the data entered by the user to the `dataInput` textarea by doing the following:
@@ -131,14 +136,14 @@ function normalizeData(input) {
     // alternatively, we could also have 1 * N grid or N * 1
     let results = Papa.parse(input);
     if (results.meta['aborted'] === true) {
-        throw getErrorMessages(results.errors);
+        throw results.errors;
     }
     results.data = removeEmptyElements(results.data);
     if (results.data.length === 0 || results.data[0].length === 0) {
-        throw 'Empty data is invalid';
+        throw new Error('Empty data is invalid');
     }
     if (!isRowsEqual(results.data)) {
-        throw 'Row or column lengths aren\'t equal';
+        throw new Error("Row or column lengths aren't equal");
     }
     if (needToTranspose(results.data)) {
         // Transpose the data if we have 1 or 2 columns
@@ -147,7 +152,7 @@ function normalizeData(input) {
         results.data = transpose(results.data);
     }
     if (results.data.length > 2) {
-        throw 'Too many columns or rows';
+        throw new Error('Too many columns or rows');
     }
     return results.data;
 }
@@ -169,11 +174,15 @@ function needToTranspose(data) {
     else if (data[0].length == 2 && data.length === 2) {
         let isSecondRowNums = true;
         for (let element of data[1]) {
-            let elementAsNum = Number(element);
-            if (Number.isNaN(elementAsNum)) {
+            // Number will coerce `null` to `0` which is a number!
+            if (isNaN(Number(element)) || element === 'null') {
                 isSecondRowNums = false;
+                break;
             }
         }
+        /**
+         * Note, Boolean is flipped in-case second row contains numbers
+         */
         return !isSecondRowNums;
     }
     else if (data[0].length === 2) {
@@ -181,19 +190,6 @@ function needToTranspose(data) {
         return true;
     }
     return false;
-}
-/**
- * Gets all error messages from the result of the CSV parsing.
- * The messages are concatenated in to one string.
- * @param {Object[]} errors - An array of errors which may occured while parsing
- * @returns {string} A concatenation of all error messages
- */
-function getErrorMessages(errors) {
-    let messages = '';
-    for (let error of errors) {
-        messages += `${error['message']}. `;
-    }
-    return messages;
 }
 /**
  * Tries to parse the normalized data with headers using 'Papa parse'
@@ -224,9 +220,10 @@ class ParsingWithHeadersNotSuccessfulError extends Error {
      * Instantiates a new error of this type
      * @param {string} message - An optional message to be passed to the constructor
      */
-    constructor(message) {
-        super(message); // 'Error' breaks prototype chain here
-        Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    constructor(message = '') {
+        super(...arguments);
+        this.message = message;
+        this.name = 'ParsingWithHeadersNotSuccessfulError';
     }
 }
 /**
@@ -240,7 +237,7 @@ function parseWithoutHeaders(rawData) {
         'dynamicTyping': true
     });
     if (results['aborted'] === true) {
-        throw getErrorMessages(results.errors);
+        throw results.errors;
     }
     let data = fillDataArray(results.data[0]);
     return data;
@@ -266,7 +263,7 @@ function fillDataArray(data) {
     for (let key in data) {
         let dataElement = data[key];
         if (typeof (dataElement) !== 'number') {
-            throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
+            throw new Error('You could enter either 1 row or column of numerical data, or 2 rows or 2 columns, where the second ones is numerical.');
         }
         dataArray.push(dataElement);
     }

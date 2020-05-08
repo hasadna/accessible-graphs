@@ -1,5 +1,8 @@
 # Attributions
+
+
 Resources that where helpful in making and/or understanding this project:
+
 
 - [StackOverflow -- How to append data to div using JavaScript](https://stackoverflow.com/questions/5677799)
 
@@ -12,3 +15,5 @@ Resources that where helpful in making and/or understanding this project:
 - [How to use object values with TypeScript](https://stackoverflow.com/questions/42966362)
 
 - [StackOverflow -- Get selected value in dropdown list using JavaScript](https://stackoverflow.com/questions/1085801)
+
+- [StackOverflow -- How to select element by `role` attribute and filter by class with vanilla JS?](https://stackoverflow.com/questions/46648761/)

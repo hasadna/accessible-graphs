@@ -110,7 +110,7 @@ function stopSoundPlayback() {
         }
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 function speakSelectedCell() {
