@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    html {
+      color: black;
+    }
+  </style>
+  <meta charset="utf-8">
+  <title>Basic Sensory Interface guide</title>
+</head>
+
+<body>
+  <h1 id="sensory-interface-guide">Sensory Interface guide</h1>
+  <p>In this guide, we will go through how to make graphs accessible for people with low vision or blindness.
+    Using the system, you can understand things like stock price behaviour, see whether a given stock has a price
+    decrease at some point, and also other more finer details. Another popular example nowadays is the ability to
+    understand Coronavirus data, which gets updated on a daily basis, such as daily patient count graphs.
+    In this guide, you will practice making an accessible graph, with data provided as an example, in 3 stages.
+    Note: Currently, this guide is intended for Windows users, using your preferred browser and screen reader.</p>
+  <h2 id="stage-1">Stage 1</h2>
+  <ul>
+    <li><a href="http://sensoryinterface.com/assets/tutorial_data.xlsx">Downl oad the Excel file spreadsheet to your
+        computer</a></li>
+    <li>Copy the first column, which consists of 10 rows. You can perform this by following those steps:</li>
+  </ul>
+  <ol>
+    <li>Select the first column by pressing Ctrl + Space</li>
+    <li>Copy the data in this column by pressing Ctrl + C</li>
+  </ol>
+  <h2 id="stage-2">Stage 2</h2>
+  <ul>
+    <li>To make this data accessible, please visit the link <a href="https://sensoryinterface.com/builder/index.html"
+        target="_blank">Builder - Sensory interface</a></li>
+    <li>Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press Tab.
+    </li>
+    <li>If the data is copied successfully, your screen reader will report that the data is valid.</li>
+    <li>From here onwards, you can navigate to the view button to produce the accessible graph.
+      Note: In this stage, we will skip some more advanced options.</li>
+  </ul>
+  <h2 id="stage-3">Stage 3</h2>
+  <p>You should now see an accessible graph such as the one <a
+      href="https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&amp;minValue=0&amp;maxValue=100&amp;instrumentType=synthesizer&amp;ttsName=Google%20US%20English"
+      target="_blank">in
+      this link</a>.</p>
+  <h3 id="navigating-the-graph-with-a-screen-reader">Navigating the graph with a screen reader</h3>
+  <ul>
+    <li>With left and right arrows, you can move between the values found on the Y axis. The data is conveyed using 3
+      channels - braille, speech and tones.</li>
+    <li>For each data element, you can press the spacebar to hear more info</li>
+  </ul>
+  <h3 id="navigating-the-graph-with-a-braille-display">Navigating the graph with a braille display</h3>
+  <ul>
+    <li>The left side of the braille display (cells 1 to 29) displays an overview of the graph. This part is static.
+    </li>
+    <li>The 30th cell is a kind of separator between the left and the right sides</li>
+    <li>The right side (cells 31 to 40) displays the data element under the cursor in the left side more accurately. You
+      can think of the right side as an area where the data element under the cursor is displayed under a greater
+      magnification level</li>
+  </ul>
+  <p></br></p>
+  <p>To learn more on how we use braille in the system, please click <a href="tutorial_braille_en.html"
+      target="_blank">here</a>.</p>
+  <p>Thanks for your time and efforts and we hope you enjoy viewing graphs!</p>
+
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="../js/scripts.js"></script>
+</body>
+
+</html>
