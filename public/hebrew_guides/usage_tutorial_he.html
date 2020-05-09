@@ -2,83 +2,245 @@
 <html lang="he">
 
 <head>
-  <style>
-    html {
-      text-align: right;
-      color: black;
-      direction: rtl;
-    }
-  </style>
   <meta charset="utf-8">
-  <title>מדריך התנסות במערכת Sensory interface בסביבת Windows</title>
+  <link rel="canonical" href="https://sensoryinterface.com/" />
+  <title>מדריך למערכת Sensory interface</title>
+
+  <!--========== web tags ==========-->
+  <meta name="description" content="Sensory interface" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
+
+  <meta property="og:title" content="Sensory interface" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sensoryinterface.com/" />
+  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png" />
+  <!--========== google fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/tutorial.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
-<body>
-  <h1 id="-sensory-interface">מדריך למערכת Sensory Interface</h1>
-  <p>במדריך זה נלמד כיצד להשתמש במערכת בכדי להנגיש גרפים לאנשים עם לקויות ראייה ועיוורון המסתייעים בתוכנות קוראות מסך
-    ובצגי ברייל.</p>
-  <p>לדוגמה, באמצעות המערכת ניתן להבין נתוני מניות בכלל ואת נקודות הזמן בהם חלו ירידות משמעותיות או זינוק במניות. דוגמה
-    נוספת ופופולארית בימים אלו של התפרצות נגיף הקורונה, היא ביכולת להבין את הנתונים הגראפיים הויזואליים המתעדכנים מידי
-    יום - בתקווה שמאמצים משותפים יביאו לשיטוח העקומה.</p>
-  <p>במדריך זה תתנסו בהנגשת גרף לדוגמה בשלושה שלבים.</p>
-  <p>את ההתנסות יש לבצע בשלב זה עם קורא המסך והדפדפן המועדפים עליכם בסביבת Windows.</p>
-  <h2 id="-1">שלב 1</h2>
-  <ul>
-    <li><a href="http://sensoryinterface.com/assets/tutorial_data.xlsx">הורידו למחשב את גיליון הנתונים בקובץ אקסל</a>
-    </li>
-    <li>העתיקו את העמודה הראשונה, שהיא בת 10 שורות. תוכלו לעשות זאת ע&quot;י:<ol>
-        <li>סימון עמודת הנתונים: לחיצה על קונטרול + רווח - בכדי לסמן את עמודת הנתונים כולה</li>
-        <li>העתקת נתונים על ידי CTRL+C</li>
-      </ol>
-    </li>
-  </ul>
-  <h2 id="-2">שלב 2</h2>
-  <ul>
-    <li>בכדי להנגיש את הנתונים, היכנסו ליישום <a href="https://sensoryinterface.com/builder/index.html"
-        target="_blank">Builder - Sensory interface</a></li>
-    <li>הדביקו את הנתונים שהעתקתם מגיליון האקסל בתיבת העריכה הראשונה ביישום (ע&quot;י צירוף המקשים Ctrl + V או בדרך אחרת
-      המוכרת לכם) ולאחר מכן לחצו על מקש ה TAB</li>
-    <li>אם הנתונים הודבקו כהלכה, קוראי המסכים התומכים יציינו שהנתונים הועתקו בהצלחה </li>
-    <li>מכאן ניתן להמשיך ולנווט אל כפתור ה View בכדי להפיק את הגרף המונגש
-      <p>הערה: בשלב ההתנסות הראשונית, נדלג על תכונות מתקדמות יותר.</p>
-    </li>
-  </ul>
-  <h2 id="-3">שלב 3</h2>
-  <p><a
-      href="https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&amp;minValue=0&amp;maxValue=100&amp;instrumentType=synthesizer&amp;ttsName=Google%20US%20English"
-      target="_blank">הגעתם לעמוד הצגת הגרף המונגש</a></p>
-  <h3 id="-">ניווט בגרף עם תוכנה קוראת מסך</h3>
-  <ul>
-    <li>
-      <p>באמצעות מקשי החיצים ימינה ושמאלה ניתן לעבור על הנתונים בציר ה X בגרף. המידע יוצג בשלושה ערוצים - ברייל, צלילים
-        ודיבור.</p>
-    </li>
-    <li>
-      <p>עבור כל נתון מספרי שיוקרא, ניתן ללחוץ על מקש הרווח בכדי לשמוע מידע נוסף.</p>
-    </li>
-  </ul>
-  <h3 id="-">ניווט בגרף על צג הברייל</h3>
-  <ul>
-    <li>
-      <p>החלק השמאלי בצג הברייל (תאים 1 עד 29) מציגים מבט על על הגרף. חלק זה הוא סטטי.</p>
-    </li>
-    <li>
-      <p>התא ה 30 הוא מעין מחיצה בין החלק הסטטי לדינמי.</p>
-    </li>
-    <li>
-      <p>החלק הימני (תאים 31 עד 40) מציג את הנתון תחת הסמן בחלק השמאלי ברמת דיוק יותר גבוהה. אפשר לחשוב על החלק הימני
-        כאזור בו מוצג הערך שמתחת לסמן באופן מוגדל.</p>
-    </li>
-  </ul>
-  <p>אנו מודים לך על שיתוף הפעולה בהתנסות במערכת Sensory Interface.</p>
-  <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfaYX_axRDfrM_BCRNiwsQMA5PHyPG_gkLeUyNZJXCSdbCILg/viewform"
-      target="_blank">נודה לך על משוב קצר בטופס מקוון ואנונימי</a></p>
-  <p>למידע נוסף על איך עושים שימוש בברייל במערכת אנא לחצו <a href="tutorial_braille_he.html" target="_blank">כאן</a></p>
+<body dir="auto">
+  <!--========== navbar ==========-->
+  <nav class="wonder-nav">
+    <ul class="wonder-nav-ul" dir="ltr">
+
+      <!--===== desktop view =====-->
+      <li class="nav-logo d-none d-md-block" aria-hidden="true">
+        <img class="top-bar-icon-desk" src="../assets/images/logo/s-logo-white.svg" alt="navbar-logo">
+      </li>
 
 
-  <link rel="stylesheet" href="../css/styles.css" />
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html?lang=he#team-anchor">
+          הצוות
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html?lang=he#how-anchor">
+          איך זה עובד
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html?lang=he#about-anchor">
+          עלינו
+        </a>
+      </li>
+      <!--===== desktop view end =====-->
+      <!--===== mobile view =====-->
+      <li class="nav-logo d-md-none">
+        <a href="../index.html?lang=" he">
+          <img class="top-bar-icon" src="../assets/images/logo/s-logo-blue.svg" alt="Home">
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-md-none">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px">
+          <span class="hamburger-box" aria-hidden=”true”>
+            <span class="hamburger-inner" aria-hidden=”true”></span></span>
+        </button>
+      </li>
+      <!--===== mobile view end =====-->
+    </ul>
+
+  </nav>
+  <!--========== navbar end ==========-->
+
+  <!--========== header ==========-->
+  <main>
+    <div class="header-tut">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-12 text-center">
+            <h1 class="tut-title" style="">מדריך למערכת Sensory Interface</h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--========== header end ==========-->
+    <br>
+    <div class="tutorial-div">
+
+      <p>במדריך זה נלמד כיצד להשתמש במערכת בכדי להנגיש גרפים לאנשים עם לקויות ראייה ועיוורון המסתייעים בתוכנות קוראות
+        מסך
+        ובצגי ברייל.</p>
+      <p>לדוגמה, באמצעות המערכת ניתן להבין נתוני מניות בכלל ואת נקודות הזמן בהם חלו ירידות משמעותיות או זינוק במניות.
+        דוגמה
+        נוספת ופופולארית בימים אלו של התפרצות נגיף הקורונה, היא ביכולת להבין את הנתונים הגראפיים הויזואליים המתעדכנים
+        מידי
+        יום - בתקווה שמאמצים משותפים יביאו לשיטוח העקומה.</p>
+      <p>במדריך זה תתנסו בהנגשת גרף לדוגמה בשלושה שלבים.</p>
+      <p>את ההתנסות יש לבצע בשלב זה עם קורא המסך והדפדפן המועדפים עליכם בסביבת Windows.</p>
+      <h2 id="-1">שלב 1</h2>
+      <ul>
+        <li><a href="http://sensoryinterface.com/assets/tutorial_data.xlsx">הורידו למחשב את גיליון הנתונים בקובץ
+            אקסל</a>
+        </li>
+        <li>העתיקו את העמודה הראשונה, שהיא בת 10 שורות. תוכלו לעשות זאת ע&quot;י:<ol>
+            <li>סימון עמודת הנתונים: לחיצה על קונטרול + רווח - בכדי לסמן את עמודת הנתונים כולה</li>
+            <li>העתקת נתונים על ידי CTRL+C</li>
+          </ol>
+        </li>
+      </ul>
+      <h2 id="-2">שלב 2</h2>
+      <ul>
+        <li>בכדי להנגיש את הנתונים, היכנסו ליישום <a href="https://sensoryinterface.com/builder/index.html"
+            target="_blank">Builder - Sensory interface</a></li>
+        <li>הדביקו את הנתונים שהעתקתם מגיליון האקסל בתיבת העריכה הראשונה ביישום (ע&quot;י צירוף המקשים Ctrl + V או בדרך
+          אחרת
+          המוכרת לכם) ולאחר מכן לחצו על מקש ה TAB</li>
+        <li>אם הנתונים הודבקו כהלכה, קוראי המסכים התומכים יציינו שהנתונים הועתקו בהצלחה </li>
+        <li>מכאן ניתן להמשיך ולנווט אל כפתור ה View בכדי להפיק את הגרף המונגש
+          <p>הערה: בשלב ההתנסות הראשונית, נדלג על תכונות מתקדמות יותר.</p>
+        </li>
+      </ul>
+      <h2 id="-3">שלב 3</h2>
+      <p><a
+          href="https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&amp;minValue=0&amp;maxValue=100&amp;instrumentType=synthesizer&amp;ttsName=Google%20US%20English"
+          target="_blank">הגעתם לעמוד הצגת הגרף המונגש</a></p>
+      <h3 id="-">ניווט בגרף עם תוכנה קוראת מסך</h3>
+      <ul>
+        <li>
+          <p>באמצעות מקשי החיצים ימינה ושמאלה ניתן לעבור על הנתונים בציר ה X בגרף. המידע יוצג בשלושה ערוצים - ברייל,
+            צלילים
+            ודיבור.</p>
+        </li>
+        <li>
+          <p>עבור כל נתון מספרי שיוקרא, ניתן ללחוץ על מקש הרווח בכדי לשמוע מידע נוסף.</p>
+        </li>
+      </ul>
+      <h3 id="-">ניווט בגרף על צג הברייל</h3>
+      <ul>
+        <li>
+          <p>החלק השמאלי בצג הברייל (תאים 1 עד 29) מציגים מבט על על הגרף. חלק זה הוא סטטי.</p>
+        </li>
+        <li>
+          <p>התא ה 30 הוא מעין מחיצה בין החלק הסטטי לדינמי.</p>
+        </li>
+        <li>
+          <p>החלק הימני (תאים 31 עד 40) מציג את הנתון תחת הסמן בחלק השמאלי ברמת דיוק יותר גבוהה. אפשר לחשוב על החלק
+            הימני
+            כאזור בו מוצג הערך שמתחת לסמן באופן מוגדל.</p>
+        </li>
+      </ul>
+      <p>אנו מודים לך על שיתוף הפעולה בהתנסות במערכת Sensory Interface.</p>
+      <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfaYX_axRDfrM_BCRNiwsQMA5PHyPG_gkLeUyNZJXCSdbCILg/viewform"
+          target="_blank">נודה לך על משוב קצר בטופס מקוון ואנונימי</a></p>
+      <p>למידע נוסף על איך עושים שימוש בברייל במערכת אנא לחצו <a href="tutorial_braille_he.html">כאן</a></p>
+
+    </div>
+  </main>
+  <!--========== footer ==========-->
+  <footer>
+    <div class="container">
+
+      <!--========== social-icons ==========-->
+      <div class="row text-center row-social-icon">
+        <div class="col">
+          <a class="footer-social-link" target="_blank" Rel=”noopener”
+            href="https://github.com/hasadna/sensory-interface" title="github">
+            <img class="footer-social-img" src="../assets/images/social-icons/github.png" alt="github logo">
+          </a>
+        </div>
+      </div>
+      <!--========== social-icons end ==========-->
+
+      <!--==========  project details ==========-->
+      <div class="big-footer-text-heb-row">
+        <p class="small-footer-text" id="credit">
+          פרויקט זה מנוהל על ידי הסדנא לידע ציבורי(עמותה). לפרטים נוספים ושיתופי פעולה, אנא שלחו דוא"ל לכתובת:
+          info@sensoryinterface.com
+
+        </p>
+      </div>
+      <hr width="50%">
+      <div class="row text-center">
+        <div class="col">
+          <p class="small-footer-text">
+            Made with &nbsp;<img src="../assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
+              alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
+          </p>
+        </div>
+
+      </div>
+      <!--==========  project details end ==========-->
+
+    </div>
+
+  </footer>
+  <!--========== footer end ==========-->
+
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
+    <div class="container">
+      <div class="row side-bar-row text-center">
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html?lang=he#about-anchor">
+            עלינו
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html?lang=he#how-anchor">
+            איך זה עובד
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html?lang=he#team-anchor">
+            הצוות
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+  <!--========== side bar end ==========-->
+
+  <!---========== scripts ==========-->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
   <script src="../js/scripts.js"></script>
 </body>
 

@@ -2,71 +2,229 @@
 <html lang="en">
 
 <head>
-  <style>
-    html {
-      color: black;
-    }
-  </style>
   <meta charset="utf-8">
-  <title>Basic Sensory Interface guide</title>
+  <link rel="canonical" href="https://sensoryinterface.com/" />
+  <title> Basic Sensory Interface guide</title>
+  <!--========== web tags ==========-->
+  <meta name="description" content="Sensory interface" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
+
+  <meta property="og:title" content="Sensory interface" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sensoryinterface.com/" />
+  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png" />
+
+  <!--========== google fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/tutorial.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
-  <h1 id="sensory-interface-guide">Sensory Interface guide</h1>
-  <p>In this guide, we will go through how to make graphs accessible for people with low vision or blindness.
-    Using the system, you can understand things like stock price behaviour, see whether a given stock has a price
-    decrease at some point, and also other more finer details. Another popular example nowadays is the ability to
-    understand Coronavirus data, which gets updated on a daily basis, such as daily patient count graphs.
-    In this guide, you will practice making an accessible graph, with data provided as an example, in 3 stages.
-    Note: Currently, this guide is intended for Windows users, using your preferred browser and screen reader.</p>
-  <h2 id="stage-1">Stage 1</h2>
-  <ul>
-    <li><a href="http://sensoryinterface.com/assets/tutorial_data.xlsx">Downl oad the Excel file spreadsheet to your
-        computer</a></li>
-    <li>Copy the first column, which consists of 10 rows. You can perform this by following those steps:</li>
-  </ul>
-  <ol>
-    <li>Select the first column by pressing Ctrl + Space</li>
-    <li>Copy the data in this column by pressing Ctrl + C</li>
-  </ol>
-  <h2 id="stage-2">Stage 2</h2>
-  <ul>
-    <li>To make this data accessible, please visit the link <a href="https://sensoryinterface.com/builder/index.html"
-        target="_blank">Builder - Sensory interface</a></li>
-    <li>Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press Tab.
-    </li>
-    <li>If the data is copied successfully, your screen reader will report that the data is valid.</li>
-    <li>From here onwards, you can navigate to the view button to produce the accessible graph.
-      Note: In this stage, we will skip some more advanced options.</li>
-  </ul>
-  <h2 id="stage-3">Stage 3</h2>
-  <p>You should now see an accessible graph such as the one <a
-      href="https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&amp;minValue=0&amp;maxValue=100&amp;instrumentType=synthesizer&amp;ttsName=Google%20US%20English"
-      target="_blank">in
-      this link</a>.</p>
-  <h3 id="navigating-the-graph-with-a-screen-reader">Navigating the graph with a screen reader</h3>
-  <ul>
-    <li>With left and right arrows, you can move between the values found on the Y axis. The data is conveyed using 3
-      channels - braille, speech and tones.</li>
-    <li>For each data element, you can press the spacebar to hear more info</li>
-  </ul>
-  <h3 id="navigating-the-graph-with-a-braille-display">Navigating the graph with a braille display</h3>
-  <ul>
-    <li>The left side of the braille display (cells 1 to 29) displays an overview of the graph. This part is static.
-    </li>
-    <li>The 30th cell is a kind of separator between the left and the right sides</li>
-    <li>The right side (cells 31 to 40) displays the data element under the cursor in the left side more accurately. You
-      can think of the right side as an area where the data element under the cursor is displayed under a greater
-      magnification level</li>
-  </ul>
-  <p></br></p>
-  <p>To learn more on how we use braille in the system, please click <a href="tutorial_braille_en.html"
-      target="_blank">here</a>.</p>
-  <p>Thanks for your time and efforts and we hope you enjoy viewing graphs!</p>
+  <!--========== navbar ==========-->
+  <nav class="wonder-nav">
+    <ul class="wonder-nav-ul" dir="ltr">
 
-  <link rel="stylesheet" href="../css/styles.css" />
+      <!--===== desktop view =====-->
+      <li class="nav-logo d-none d-md-block" aria-hidden="true">
+        <img class="top-bar-icon-desk" src="../assets/images/logo/s-logo-white.svg" alt="navbar-logo">
+      </li>
+
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#team-anchor" id="theTeam">
+          The team
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#how-anchor" id="howWork">
+          How it works
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#about-anchor" id="aboutUs1">
+          About us
+        </a>
+      </li>
+      <!--===== desktop view end =====-->
+      <!--===== mobile view =====-->
+
+      <li class="nav-logo d-md-none">
+        <a href="../index.html">
+          <img class="top-bar-icon" src="../assets/images/logo/s-logo-blue.svg" alt="Home">
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-md-none">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px">
+          <span class="hamburger-box" aria-hidden=”true”>
+            <span class="hamburger-inner" aria-hidden=”true”></span></span>
+        </button>
+      </li>
+      <!--===== mobile view end =====-->
+    </ul>
+
+  </nav>
+  <!--========== navbar end ==========-->
+
+  <!--========== header ==========-->
+  <main>
+    <div class="header-tut">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-12 text-center">
+            <h1 class="tut-title">Sensory Interface guide</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--========== header end ==========-->
+    <br>
+    <div class="tutorial-div">
+      <p>In this guide, we will go through how to make graphs accessible for people with low vision or blindness.
+        Using the system, you can understand things like stock price behaviour, see whether a given stock has a price
+        decrease at some point, and also other more finer details. Another popular example nowadays is the ability to
+        understand Coronavirus data, which gets updated on a daily basis, such as daily patient count graphs.
+        In this guide, you will practice making an accessible graph, with data provided as an example, in 3 stages.
+        Note: Currently, this guide is intended for Windows users, using your preferred browser and screen reader.</p>
+      <h2 id="stage-1">Stage 1</h2>
+      <ul>
+        <li><a href="http://sensoryinterface.com/assets/tutorial_data.xlsx">Downl oad the Excel file spreadsheet to your
+            computer</a></li>
+        <li>Copy the first column, which consists of 10 rows. You can perform this by following those steps:</li>
+      </ul>
+      <ol>
+        <li>Select the first column by pressing Ctrl + Space</li>
+        <li>Copy the data in this column by pressing Ctrl + C</li>
+      </ol>
+      <h2 id="stage-2">Stage 2</h2>
+      <ul>
+        <li>To make this data accessible, please visit the link <a
+            href="https://sensoryinterface.com/builder/index.html" target="_blank">Builder - Sensory interface</a></li>
+        <li>Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press
+          Tab.
+        </li>
+        <li>If the data is copied successfully, your screen reader will report that the data is valid.</li>
+        <li>From here onwards, you can navigate to the view button to produce the accessible graph.
+          Note: In this stage, we will skip some more advanced options.</li>
+      </ul>
+      <h2 id="stage-3">Stage 3</h2>
+      <p>You should now see an accessible graph such as the one <a
+          href="https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&amp;minValue=0&amp;maxValue=100&amp;instrumentType=synthesizer&amp;ttsName=Google%20US%20English"
+          target="_blank">in
+          this link</a>.</p>
+      <h3 id="navigating-the-graph-with-a-screen-reader">Navigating the graph with a screen reader</h3>
+      <ul>
+        <li>With left and right arrows, you can move between the values found on the Y axis. The data is conveyed using
+          3
+          channels - braille, speech and tones.</li>
+        <li>For each data element, you can press the spacebar to hear more info</li>
+      </ul>
+      <h3 id="navigating-the-graph-with-a-braille-display">Navigating the graph with a braille display</h3>
+      <ul>
+        <li>The left side of the braille display (cells 1 to 29) displays an overview of the graph. This part is static.
+        </li>
+        <li>The 30th cell is a kind of separator between the left and the right sides</li>
+        <li>The right side (cells 31 to 40) displays the data element under the cursor in the left side more accurately.
+          You
+          can think of the right side as an area where the data element under the cursor is displayed under a greater
+          magnification level</li>
+      </ul>
+      <hr>
+      <p>To learn more on how we use braille in the system, please click <a href="tutorial_braille_en.html">here</a>.
+      </p>
+      <p>Thanks for your time and efforts and we hope you enjoy viewing graphs!</p>
+
+    </div>
+  </main>
+  <!--========== footer ==========-->
+  <footer>
+    <div class="container">
+
+      <!--========== social-icons ==========-->
+      <div class="row text-center row-social-icon">
+        <div class="col">
+          <a class="footer-social-link" target="_blank" Rel=”noopener”
+            href="https://github.com/hasadna/sensory-interface" title="github">
+            <img class="footer-social-img" src="../assets/images/social-icons/github.png" alt="github logo">
+          </a>
+        </div>
+      </div>
+      <!--========== social-icons end ==========-->
+
+      <!--==========  project details ==========-->
+      <div class="big-footer-text-heb-row">
+        <p class="small-footer-text" id="credit">
+          This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
+          collaborations, please send an email to: info@sensoryinterface.com
+        </p>
+      </div>
+      <hr width="50%">
+      <div class="row text-center">
+        <div class="col">
+          <p class="small-footer-text">
+            Made with &nbsp;<img src="../assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
+              alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
+          </p>
+        </div>
+
+      </div>
+      <!--==========  project details end ==========-->
+
+    </div>
+
+  </footer>
+  <!--========== footer end ==========-->
+
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
+    <div class="container">
+      <div class="row side-bar-row text-center">
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html#about-anchor">
+            About us
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html#how-anchor">
+            How it works
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="../index.html#team-anchor">
+            The team
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+  <!--========== side bar end ==========-->
+
+  <!---========== scripts ==========-->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
   <script src="../js/scripts.js"></script>
 </body>
 
