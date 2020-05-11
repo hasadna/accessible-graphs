@@ -19,7 +19,7 @@
   <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sensoryinterface.com/" />
-  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png" />
+  <meta property="og:image" content="assets/images/social-image.png" />
 
   <!--========== google fonts ==========-->
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
@@ -31,10 +31,25 @@
 
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
+  <!---========== scripts ==========-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script defer src="js/scripts.js"></script>
+  <script defer src="js/utils.js"></script>
+  <script defer src="languages/i18n.js"></script>
+  <script defer src="languages/he.js"></script>
+  <script defer src="languages/en.js"></script>
+
 </head>
 
-<body>
 
+<body onload="initLanguage()">
   <!--========== navbar ==========-->
   <nav class="wonder-nav">
     <ul class="wonder-nav-ul" dir="ltr">
@@ -64,7 +79,7 @@
       </li>
       <li class="wonder-nav-li d-none d-md-block">
         <a class="nav-link" href="#how-anchor" id="howWork">
-          How it's work
+          How it works
         </a>
       </li>
       <li class="wonder-nav-li d-none d-md-block">
@@ -299,7 +314,7 @@
         <br>
         <div class="col-12">
           <a class="side-bar-link" href="#how-anchor">
-            How it's work
+            How it works
           </a>
         </div>
         <br>
@@ -346,25 +361,6 @@
 
   </div>
   <!--========== language-pop-up end ==========-->
-
-  <!---========== scripts ==========-->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="js/scripts.js"></script>
-  <script src="./js/utils.js"></script>
-  <script src="languages/i18n.js"></script>
-  <script src="languages/he.js"></script>
-  <script src="languages/en.js"></script>
-  <!-- initialize translation -->
-  <script>
-    initLanguage();
-  </script>
 </body>
 
 </html>
