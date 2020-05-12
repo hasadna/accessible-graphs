@@ -376,6 +376,12 @@ function setMinAndMaxValuesFrom(data, min_html_id = 'minValue', max_html_id = 'm
 function populateTtsList() {
     const ttsVoiceSelect = document.getElementById('ttsVoice');
     ttsVoiceSelect.innerHTML = '';
+    const option = document.createElement('option');
+    let optionValueAndText = 'Use my screen reader TTS';
+    option.value = optionValueAndText;
+    option.innerText = optionValueAndText;
+    option.setAttribute('data-name', 'noTts');
+    ttsVoiceSelect.appendChild(option);
     const voices = window.speechSynthesis.getVoices();
     voices.forEach((voice) => {
         const option = document.createElement('option');

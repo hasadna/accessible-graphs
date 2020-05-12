@@ -6,6 +6,7 @@ let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
+let speakWithTts = initSpeakWithTts();
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
@@ -33,12 +34,36 @@ function processData() {
         graphDescriptionHeading.innerText = graphDescription;
         container.appendChild(graphDescriptionHeading);
     }
+    createTtsToggle();
     parseData(getUrlParam('data'));
     brailleController = new BrailleController(container, data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    const liveRegion = document.createElement('p');
+    liveRegion.id = 'liveRegion';
+    liveRegion.setAttribute('aria-live', 'assertive');
+    liveRegion.className = 'hidden';
+    container.appendChild(liveRegion);
+}
+function createTtsToggle() {
+    const ttsToggle = document.createElement('a');
+    ttsToggle.setAttribute('id', 'ttsToggle');
+    ttsToggle.setAttribute('role', 'button');
+    ttsToggle.setAttribute('tabIndex', '0');
+    ttsToggle.setAttribute('aria-pressed', speakWithTts.toString());
+    ttsToggle.innerHTML = 'Use browser TTS';
+    ttsToggle.addEventListener('click', onToggleClick);
+    document.getElementById('container').appendChild(ttsToggle);
+    let lineBreak = document.createElement('br');
+    document.getElementById('container').appendChild(lineBreak);
+}
+function onToggleClick(event) {
+    speakWithTts = !speakWithTts;
+    let ttsToggle = document.getElementById('ttsToggle');
+    let isAriaPressed = ttsToggle.getAttribute('aria-pressed') === 'true';
+    ttsToggle.setAttribute('aria-pressed', isAriaPressed ? 'false' : 'true');
 }
 function createGrid() {
     const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
@@ -187,7 +212,7 @@ function updateSelectedCell(cell) {
         return;
     }
     startSoundPlayback();
-    speakSelectedCell();
+    reportText(false);
 }
 function getUrlParam(variableName) {
     const url = new URL(window.location.href);
@@ -207,5 +232,44 @@ function parseData(dataString) {
     catch (error) {
         data = parseWithoutHeaders(dataString);
     }
+}
+function getTextToReportOnArrows() {
+    let value = data[focusedColIndex];
+    let valueText = String(value);
+    if (value < 0) {
+        value = Math.abs(value);
+        valueText = `Minus ${value}`;
+    }
+    return valueText;
+}
+function getTextToReportOnSpace() {
+    let textToReport = '';
+    if (dataHeaders.length == 0) {
+        textToReport = `Position ${focusedColIndex + 1}`;
+    }
+    else {
+        let headerText = dataHeaders[focusedColIndex];
+        textToReport = `${headerText}, position ${focusedColIndex + 1}`;
+    }
+    return textToReport;
+}
+function reportText(onSpace) {
+    let textToReport = '';
+    if (onSpace) {
+        textToReport = getTextToReportOnSpace();
+    }
+    else {
+        textToReport = getTextToReportOnArrows();
+    }
+    if (speakWithTts) {
+        speakText(textToReport);
+    }
+    else {
+        document.getElementById('liveRegion').innerHTML = textToReport;
+    }
+}
+function initSpeakWithTts() {
+    let ttsName = getUrlParam('ttsName');
+    return ttsName === 'noTts' ? false : true;
 }
 //# sourceMappingURL=view.js.map

@@ -174,7 +174,7 @@ class BrailleController {
     if (event.key == ' ') {
       const position = brailleController.currentPosition;
       if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
-        speakSelectedCellPositionInfo(); // On space key press
+        reportText(true); // On space key press
       }
       event.preventDefault();
     }
@@ -183,7 +183,7 @@ class BrailleController {
   onSecondRoutingKeyPress(event) {
     const position: number = brailleController.currentPosition;
     if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
-      speakSelectedCellPositionInfo();
+      reportText(true);
     }
   }
 
