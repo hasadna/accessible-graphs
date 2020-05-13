@@ -1,75 +1,96 @@
 let langs = {};
 let lang;
 let langDirection;
-
-
+/**
+ * @returns {string} Defaults to "en" if no language defined by query string or local storage
+ */
 const getLanguage = () => {
-  let lang = getQueryParam('lang');
-  if (lang) {
-    return lang.toLowerCase();
-  }
-  lang = localStorage.getItem('language');
-  if (lang) {
-    return lang.toLowerCase();
-  }
-  return 'en';
+    let lang = getQueryParam('lang');
+    if (lang) {
+        return lang.toLowerCase();
+    }
+    lang = localStorage.getItem('language');
+    if (lang) {
+        return lang.toLowerCase();
+    }
+    return 'en';
 };
-
-// Save language in local storage if not already there, update HTML
-const setLanguage = (selectedLang) => {
-  lang = selectedLang;
-  localStorage.setItem('language', lang);
-  setQueryParam('lang', lang);
-  langDirection = langs[lang].direction;
-  setTranslationInHTML();
-  document.title = i18n('title');
+/**
+ * Save language in local storage if not already there, update HTML
+ * @param {string} selectedLanguage
+ */
+const setLanguage = (selectedLanguage) => {
+    const language = selectedLanguage;
+    localStorage.setItem('language', language);
+    setQueryParam('lang', language);
+    langDirection = langs[language].direction;
+    setTranslationInHTML(language);
+    document.title = i18n('title', language);
 };
-
-const setTranslationInHTML = () => {
-  // For keys that match element IDs:
-  for (let key in langs[lang]) {
-    setTranslationByID(key, key);
-  }
-  setTranslationByID('select-language-header', 'selectLanguage');
-  handleLanguageSwitch(lang);
+/**
+ * @param {string} language
+ */
+const setTranslationInHTML = (language) => {
+    // For keys that match element IDs:
+    for (let key in langs[language]) {
+        if (langs[language].hasOwnProperty(key)) {
+            setTranslationByID(key, key, language);
+        }
+    }
+    setTranslationByID('select-language-header', 'selectLanguage', language);
 };
-
-const setTranslationByID = (id, langKey) => {
-  const el = document.getElementById(id);
-  if (el) {
-    el.innerHTML = i18n(langKey);
-  }
+/**
+ * @param {string} id
+ * @param {string} langKey
+ * @param {string} language
+ */
+const setTranslationByID = (id, langKey, language) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.innerHTML = i18n(langKey, language);
+    }
 };
-
-const i18n = langKey => {
-  if (langs[lang].hasOwnProperty(langKey)) {
-    return langs[lang][langKey];
-  } else {
-    console.log(langKey);
-    return langs['en'][langKey];
-  }
+/**
+ * @param {string} langKey
+ * @returns {string}
+ */
+const i18n = (langKey, language) => {
+    if (langs[language].hasOwnProperty(langKey)) {
+        return langs[language][langKey];
+    }
+    else {
+        console.log(langKey);
+        return langs['en'][langKey];
+    }
 };
-
+/**
+ *
+ */
 const initLanguage = () => {
-  // Get language from url or local storage
-  lang = getLanguage();
-  // Set it, and update everything needed
-  setLanguage(lang);
+    const lang = getLanguage();
+    setLanguage(lang);
 };
-
-
-//Save on the design between language
+/**
+ *
+ * @param {string} language
+ */
 const changeLanguage = (language) => {
-  $('#language-popup').modal('toggle');
-  console.log(language);
-  setLanguage(language);
+    // @ts-ignore: Property 'modal' does not exist on type 'JQuery<HTMLElement>'
+    $('#language-popup').modal('toggle');
+    console.log(language);
+    setLanguage(language);
+    handleLanguageSwitch(language);
 };
-
+/**
+ *
+ * @param {string} language
+ */
 const handleLanguageSwitch = (language) => {
-  $('html').attr('lang', lang); //'language' value is retrieved from a cookie
-  updateLinksAccessibility();
-  let tutorialLanguage =  lang == 'en' ? 'english' : 'hebrew';
-  let tutorialPath = `${tutorialLanguage}_guides/usage_tutorial_${lang}.html`;
-  $('#tutorial').attr('href', tutorialPath);
-  $('#goToTutorial') .attr('href', tutorialPath);
-}
+    document.getElementsByTagName('html')[0].lang = language;
+    updateLinksAccessibility();
+    let tutorialLanguage = language == 'en' ? 'english' : 'hebrew';
+    let tutorialPath = `tutorial-${tutorialLanguage}.html`;
+    document.getElementById('tutorial').setAttribute('href', tutorialPath);
+    document.getElementById('goToTutorial').setAttribute('href', tutorialPath);
+};
+//# sourceMappingURL=i18n.js.map

@@ -9,17 +9,19 @@ let focusedColIndex = 0;
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
-    let synth = window.speechSynthesis;
-    let utterance = new SpeechSynthesisUtterance('');
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance('');
     synth.speak(utterance);
     processData();
 }
 function brailleControllerSelectionListener(event) {
     focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
     const position = event.position;
-    let positionInData = position - Math.floor(position / 40) * 11;
+    const positionInData = position - (position / 40 | 0) * 11;
     if (position % 40 >= 0 && position % 40 < 29 && positionInData < data.length) {
-        updateSelectedCell($(`[row=${focusedRowIndex}][col=${positionInData}]`)[0]);
+        let cellSelector = `[row='${focusedRowIndex}'][col='${positionInData}']`;
+        const cell = document.querySelectorAll(cellSelector)[0];
+        updateSelectedCell(cell);
         brailleController.updateRightSideBraille(position);
     }
 }
@@ -27,9 +29,9 @@ function processData() {
     const container = document.getElementById('container');
     const graphDescription = getUrlParam('description');
     if (graphDescription !== '') {
-        const graphDescriptionHeading = $(document.createElement('h1'));
-        graphDescriptionHeading.html(graphDescription);
-        container.appendChild(graphDescriptionHeading[0]);
+        const graphDescriptionHeading = document.createElement('h1');
+        graphDescriptionHeading.innerText = graphDescription;
+        container.appendChild(graphDescriptionHeading);
     }
     parseData(getUrlParam('data'));
     brailleController = new BrailleController(container, data);
@@ -39,55 +41,63 @@ function processData() {
     addNavigationToGrid();
 }
 function createGrid() {
-    let combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
-    const grid = $(document.createElement('div'));
-    grid.attr('role', 'grid');
-    grid.prop('id', 'grid');
-    grid.attr('aria-readonly', 'true');
-    grid.width('100%');
-    grid.height('90%');
-    grid.prop('className', 'table');
-    for (let rowIndex = 0; rowIndex < combinedDataAndHeaders.length; rowIndex++) {
-        let gridRow = $(document.createElement('div'));
-        gridRow.prop('role', 'row');
-        gridRow.prop('className', 'row');
+    const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
+    const grid = document.createElement('div');
+    grid.setAttribute('role', 'grid');
+    grid.setAttribute('id', 'grid');
+    grid.setAttribute('aria-readonly', 'true');
+    grid.style.width = '100%';
+    grid.style.height = '90%';
+    grid.setAttribute('class', 'table');
+    combinedDataAndHeaders.forEach((_rowData, rowIndex) => {
+        const gridRow = document.createElement('div');
+        gridRow.setAttribute('role', 'row');
+        gridRow.setAttribute('class', 'row');
+        /**
+         * The `combinedDataAndHeaders[0]` feels like it should be `combinedDataAndHeaders[rowIndex]`
+         * however, that would require type hinting similar to _`combinedDataAndHeaders: string[][]`_
+         */
         for (let colIndex = 0; colIndex < combinedDataAndHeaders[0].length; colIndex++) {
-            let gridCell = $(document.createElement('div'));
-            gridCell.attr('role', 'gridcell');
-            gridCell.prop('className', 'cell');
+            const gridCell = document.createElement('div');
+            gridCell.setAttribute('role', 'gridcell');
+            gridCell.setAttribute('class', 'cell');
             gridCell.append(document.createTextNode(combinedDataAndHeaders[rowIndex][colIndex].toString()));
-            gridCell.attr('aria-readonly', 'true');
-            gridCell.attr('row', rowIndex);
-            gridCell.attr('col', colIndex);
+            gridCell.setAttribute('aria-readonly', 'true');
+            gridCell.setAttribute('row', rowIndex.toString());
+            gridCell.setAttribute('col', colIndex.toString());
             gridRow.append(gridCell);
         }
         grid.append(gridRow);
-    }
-    let container = $('#container');
-    container.append(grid);
+    });
+    document.getElementById('container').appendChild(grid);
 }
 function addOnClickAndOnTouchSoundToGrid() {
-    $('div[role="gridcell"]').each(function (index, element) {
-        $(element).click(onClick);
-        $(element).on('touchstart', startSoundPlayback);
-        $(element).on('touchmove', onCellChange);
-        $(element).on('touchleave', stopSoundPlayback);
-        $(element).on('touchcancel', stopSoundPlayback);
+    document.querySelectorAll('[role="gridcell"]').forEach((element, _index) => {
+        element.addEventListener('click', onClick);
+        element.addEventListener('touchstart', startSoundPlayback);
+        element.addEventListener('touchmove', onCellChange);
+        element.addEventListener('touchleave', stopSoundPlayback);
+        element.addEventListener('touchcancel', stopSoundPlayback);
     });
 }
+/**
+ * To-do: double-check type hints for `event` on `onClick` and `navigateGrid`
+ * @link https://github.com/Microsoft/TypeScript/issues/299
+ * @link https://developer.mozilla.org/en-US/docs/Web/API/Event
+ */
 function onClick(event) {
     updateSelectedCell(event.currentTarget);
     event.preventDefault();
 }
 function addNavigationToGrid() {
-    $('div[role="gridcell"]').each(function (index, gridCell) {
+    document.querySelectorAll('[role="gridcell"]').forEach((gridCell, index) => {
         if (index === 0) {
-            $(gridCell).prop('tabindex', '0');
+            gridCell.setAttribute('tabindex', '0');
         }
         else {
-            $(gridCell).prop('tabindex', '-1');
+            gridCell.setAttribute('tabindex', '-1');
         }
-        $(gridCell).keydown(navigateGrid);
+        gridCell.addEventListener('keydown', navigateGrid);
     });
 }
 function navigateGrid(event) {
@@ -102,13 +112,13 @@ function navigateGrid(event) {
             break;
         case 'ArrowDown':
             if (currentCell.parentNode.nextSibling != null) {
-                let index = currentCell.getAttribute('col');
+                const index = Number(currentCell.getAttribute('col'));
                 newFocusedCell = currentCell.parentNode.nextSibling.childNodes[index];
             }
             break;
         case 'ArrowUp':
             if (currentCell.parentNode.previousSibling != null) {
-                let index = currentCell.getAttribute('col');
+                const index = Number(currentCell.getAttribute('col'));
                 newFocusedCell = currentCell.parentNode.previousSibling.childNodes[index];
             }
             break;
@@ -121,7 +131,7 @@ function navigateGrid(event) {
         default:
             return;
     }
-    if (newFocusedCell != null) {
+    if (newFocusedCell !== null) {
         newFocusedCell.focus();
         updateSelectedCell(newFocusedCell);
     }
@@ -134,9 +144,10 @@ function navigateGrid(event) {
 * Cells in a 1X2 grid will be positioned between -0.5 and 0.5 in x, and y will be 0
 * Cells in a 1X3 grid will be positioned between -1 and 1 in x, and y will be also 0
 */
-function get2DCoordinates(row, col) {
+function get2DCoordinates(_row, col) {
+    // Note, `_row` is not used within this function
     const colCount = data.length;
-    let xCoord = col - Math.floor(colCount / 2);
+    let xCoord = col - (colCount / 2 | 0);
     // Align xCoord to be symmetric with respect to y-axis
     if (colCount % 2 === 0) {
         xCoord += 0.5;
@@ -165,11 +176,13 @@ function onCellChange(event) {
 function updateSelectedCell(cell) {
     focusedRowIndex = parseInt(cell.getAttribute('row'));
     focusedColIndex = parseInt(cell.getAttribute('col'));
-    $(selectedCell).css('background-color', '');
-    $(selectedCell).css('border', '');
+    if (selectedCell) {
+        selectedCell.style.backgroundColor = '';
+        selectedCell.style.border = '';
+    }
     selectedCell = cell;
-    $(selectedCell).css('background-color', '#ffff4d');
-    $(selectedCell).css('border', '1px solid #0099ff');
+    selectedCell.style.backgroundColor = '#ffff4d';
+    selectedCell.style.boarder = '1px solid #0099ff';
     if (dataHeaders.length != 0 && focusedRowIndex == 0) {
         return;
     }

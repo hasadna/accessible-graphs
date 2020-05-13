@@ -2,24 +2,24 @@
  * @link https://github.com/mholt/PapaParse/blob/master/papaparse.js
  */
 declare class Papa {
-    static unparse(
-      input: string | string[][] | { data: string | string[][] },
-      config?: {
-        delimiter?: string,
-        dynamicTyping?: boolean,
-        header?: boolean
-      }
-    ): string;
+  static unparse(
+    input: string | string[][] | { data: string | string[][] },
+    config?: {
+      delimiter?: string,
+      dynamicTyping?: boolean,
+      header?: boolean
+    }
+  ): string;
 
-    static parse(
-      input: string,
-      config?: {
-        dynamicTyping?: boolean | Function,
-        header?: boolean,
-        transform?: Function,
-        error?: Function
-      }
-    ): { data: string[][], errors: Object[], meta: object };
+  static parse(
+    input: string,
+    config?: {
+      dynamicTyping?: boolean | Function,
+      header?: boolean,
+      transform?: Function,
+      error?: Function
+    }
+  ): { data: string[][], errors: Object[], meta: object };
 };
 
 
@@ -53,13 +53,18 @@ function initializeBuilderScript() {
  * Error / success messages are displayed properly.
  */
 function handleViewClick() {
-  let validationResult: string = parseInput();
-  if (validationResult === '') {
-    updateURL();
-  } else {
+  try {
+    parseInput();
+  } catch (error) {
     (<HTMLInputElement>document.getElementById('dataInput')).focus();
-    displayErrorMessage(validationResult);
+    if (Array.isArray(error) && error.length > 0) {
+      displayErrorMessage(error[0].message);
+    } else {
+      displayErrorMessage(error.message);
+    }
+    return;
   }
+  updateURL();
 }
 
 /**
@@ -119,8 +124,9 @@ function parseInput() {
   try {
     normalizedData = normalizeData(input);
   } catch (error) {
-    return error;
+    throw error;
   }
+
   let rawData: string = Papa.unparse(normalizedData);
   let data: number[] = [];
   try {
@@ -128,18 +134,18 @@ function parseInput() {
     data = combinedDataAndHeaders.data;
   } catch (error) {
     if (!(error instanceof ParsingWithHeadersNotSuccessfulError)) {
-      return error;
+      throw error;
     }
+
     try {
       data = parseWithoutHeaders(rawData);
-    } catch (errorMessages) {
-      return errorMessages;
+    } catch (error) {
+      throw error;
     }
   }
   setMinAndMaxValuesFrom(data);
   displaySuccessMessage();
   inputToPassToView = Papa.unparse(normalizedData, { delimiter: '\t' });
-  return '';
 }
 
 
@@ -160,26 +166,32 @@ function normalizeData(input: string): string[][] {
   // alternatively, we could also have 1 * N grid or N * 1
   let results: { data: string[][], errors: Object[], meta: object } = Papa.parse(input);
   if (results.meta['aborted'] === true) {
-    throw getErrorMessages(results.errors);
+    throw results.errors;
   }
   results.data = removeEmptyElements(results.data);
+
   if (results.data.length === 0 || results.data[0].length === 0) {
-    throw 'Empty data is invalid';
+    throw new Error('Empty data is invalid');
   }
+
   if (!isRowsEqual(results.data)) {
-    throw 'Row or column lengths aren\'t equal';
+    throw new Error("Row or column lengths aren't equal");
   }
+
   if (needToTranspose(results.data)) {
     // Transpose the data if we have 1 or 2 columns
     // in that case, the user is supposed to have entered either 1 column of numbers,
     // or 2 columns: the first is lables, and the second is numbers
     results.data = transpose(results.data);
   }
+
   if (results.data.length > 2) {
-    throw 'Too many columns or rows';
+    throw new Error('Too many columns or rows');
   }
+
   return results.data;
 }
+
 
 /**
  * Checks whether we need to transpose the `data` matrix.
@@ -197,11 +209,15 @@ function needToTranspose(data: string[][]): boolean {
   } else if (data[0].length == 2 && data.length === 2) {
     let isSecondRowNums: boolean = true;
     for (let element of data[1]) {
-      let elementAsNum: number = Number(element);
-      if (Number.isNaN(elementAsNum)) {
+      // Number will coerce `null` to `0` which is a number!
+      if (isNaN(Number(element)) || element === 'null') {
         isSecondRowNums = false;
+        break;
       }
     }
+    /**
+     * Note, Boolean is flipped in-case second row contains numbers
+     */
     return !isSecondRowNums;
   } else if (data[0].length === 2) {
     // 2 * N matrix
@@ -212,27 +228,12 @@ function needToTranspose(data: string[][]): boolean {
 
 
 /**
- * Gets all error messages from the result of the CSV parsing.
- * The messages are concatenated in to one string.
- * @param {Object[]} errors - An array of errors which may occured while parsing
- * @returns {string} A concatenation of all error messages
- */
-function getErrorMessages(errors: Object[]): string {
-  let messages: string = '';
-  for (let error of errors) {
-    messages += `${error['message']}. `;
-  }
-  return messages;
-}
-
-
-/**
  * Tries to parse the normalized data with headers using 'Papa parse'
  * @param {string} rawData - The raw data, AKA the unparsed version of the normalized data
  * @returns {dataHeaders: string[], data: number[]} The result of parsing with headers if available
  * @throws {string} A 'Parsing with headers was unsuccessful' string if this was the case
  */
-function parseWithHeaders(rawData: string): {dataHeaders: string[], data: number[]} {
+function parseWithHeaders(rawData: string): { dataHeaders: string[], data: number[] } {
   let results: { data: Object[], errors: Object[], meta: Object } = Papa.parse(rawData,
     {
       'header': true,
@@ -258,9 +259,10 @@ class ParsingWithHeadersNotSuccessfulError extends Error {
    * Instantiates a new error of this type
    * @param {string} message - An optional message to be passed to the constructor
    */
-  constructor(message?: string) {
-    super(message); // 'Error' breaks prototype chain here
-    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+  constructor(message: string = '') {
+    super(...arguments);
+    this.message = message;
+    this.name = 'ParsingWithHeadersNotSuccessfulError';
   }
 }
 
@@ -279,7 +281,7 @@ function parseWithoutHeaders(rawData: string): number[] {
     });
 
   if (results['aborted'] === true) {
-    throw getErrorMessages(results.errors);
+    throw results.errors;
   }
   let data: number[] = fillDataArray(results.data[0]);
   return data;
@@ -309,7 +311,7 @@ function fillDataArray(data: Object) {
   for (let key in data) {
     let dataElement: number = data[key];
     if (typeof (dataElement) !== 'number') {
-      throw 'You could enter either 1 row or column of  numerical data, or 2 rows or 2 columns, where the second ones is numerical.';
+      throw new Error('You could enter either 1 row or column of numerical data, or 2 rows or 2 columns, where the second ones is numerical.')
     }
     dataArray.push(dataElement);
   }
@@ -408,7 +410,7 @@ function displaySuccessMessage() {
  * @param {number[]} data - Array of numbers to get the min and max values from
  * @returns {maxValue: number, minValue: number} An object contaning the max and min values
  */
-function getMinMaxValues(data: number[]): {maxValue: number, minValue: number} {
+function getMinMaxValues(data: number[]): { maxValue: number, minValue: number } {
   let maxValue: number = Math.max(...data);
   let minValue: number = Math.min(...data);
   return { maxValue, minValue };
