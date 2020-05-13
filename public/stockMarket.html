@@ -2,258 +2,264 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <link rel="canonical" href="https://sensoryinterface.com/" />
-    <title> Braille tutorial - Sensory interface </title>
-    <!--========== web tags ==========-->
-    <meta name="description" content="Sensory interface"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--========== social media tags ==========-->
+  <meta charset="utf-8">
+  <link rel="canonical" href="https://sensoryinterface.com/" />
+  <title>Stock Markit - Sensory interface</title>
+  <!--========== web tags ==========-->
+  <meta name="description" content="Sensory interface" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
 
-    <meta property="og:title" content="Sensory interface" />
-    <meta property="og:description" content="Helping blind people see graphs using sound and touch"/>
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sensoryinterface.com/" />
-    <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png"/>
+  <meta property="og:title" content="Sensory interface" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sensoryinterface.com/" />
+  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png" />
 
-    <!--========== goolge fonts ==========-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+  <!--========== google fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
 
-    <!--========== css files ==========-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/styles.css" />
-    <link rel="stylesheet" href="./css/stockMarket.css" />
-    <script src="./js/stockMarket.js"></script>
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/stockMarket.css" />
 </head>
 
 <body>
-<!--========== navbar ==========-->
-<nav class="wonder-nav">
+  <!--========== navbar ==========-->
+  <nav class="wonder-nav">
     <ul class="wonder-nav-ul" dir="ltr">
 
-        <!--===== desktop view =====-->
-        <li class="nav-logo d-none d-md-block" aria-hidden="true">
-            <img class="top-bar-icon-desk" src="assets/images/logo/s-logo-white.svg" alt="navbar-logo">
-        </li>
+      <!--===== desktop view =====-->
+      <li class="nav-logo d-none d-md-block>
+            <img class=" top-bar-icon-desk" src="assets/images/logo/s-logo-white.svg" alt="">
+      </li>
 
-        <li class="wonder-nav-li d-none d-md-block">
-            <a class="nav-link" target="_blank" href="tutorial-english.html">
-                Tutorial
-            </a>
-        </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" target="_blank" href="english_guides/usage_tutorial_en.html">
+          Tutorial
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="./index.html#about-anchor" id="aboutUs1">
+          About us
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="index.html#how-anchor" id="howWork">
+          How it works
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="index.html#team-anchor" id="theTeam">
+          The team
+        </a>
+      </li>
+      <!--===== desktop view end =====-->
+      <!--===== mobile view =====-->
 
-        <li class="wonder-nav-li d-none d-md-block">
-            <a class="nav-link" href="./index.html#team-anchor" id="theTeam">
-                The team
-            </a>
-        </li>
-        <li class="wonder-nav-li d-none d-md-block">
-            <a class="nav-link" href="./index.html#how-anchor" id="howWork">
-                How it's work
-            </a>
-        </li>
-        <li class="wonder-nav-li d-none d-md-block">
-            <a class="nav-link" href="./index.html#about-anchor" id="aboutUs1">
-                About us
-            </a>
-        </li>
-        <!--===== desktop view end =====-->
-        <!--===== mobile view =====-->
+      <li class="nav-logo d-md-none">
+        <a href="index.html">
+          <img class="top-bar-icon" src="assets/images/logo/s-logo-blue.svg" alt="Sensory Interface">
+        </a>
+      </li>
 
-        <li class="nav-logo d-md-none">
-            <a href="index.html">
-                <img class="top-bar-icon" src="assets/images/logo/s-logo-blue.svg" alt="navbar-logo">
-            </a>
-        </li>
-
-        <li class="wonder-nav-li d-md-none">
-            <button aria-label="Open the menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px">
+      <li class="wonder-nav-li d-md-none">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px">
           <span class="hamburger-box" aria-hidden=”true”>
             <span class="hamburger-inner" aria-hidden=”true”></span></span>
-            </button>
-        </li>
-        <!--===== mobile view end =====-->
+        </button>
+      </li>
+      <!--===== mobile view end =====-->
     </ul>
 
-</nav>
-<!--========== navbar end ==========-->
+  </nav>
+  <!--========== navbar end ==========-->
 
-<!--========== header ==========-->
-<header class="header-stock">
-    <div class="container">
+  <!--========== header ==========-->
+  <main>
+    <div class="header-stock">
+      <div class="container">
         <div class="row">
-            <div class="col-md-12 col-12 text-center">
-                <h1 class="stock-title" style="">
-                    The Sensory Interface - Stock Market
-                </h1>
-            </div>
+          <div class="col-md-12 col-12 text-center">
+            <h1 class="stock-title" style="">
+              The Sensory Interface - Stock Market
+            </h1>
+          </div>
         </div>
-    </div>
+      </div>
 
-</header>
-<!--========== header end ==========-->
-<!--========== main start ==========-->
-<div class="stock-div">
-    <br>
-    <div class="row text-center">
+    </div>
+    <!--========== header end ==========-->
+    <!--========== main start ==========-->
+    <div class="stock-div">
+      <br>
+      <div class="row text-center">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <h2 class="text-center">Most Searched Stocks:</h2>
+          <h2 class="text-center">Most Searched Stocks:</h2>
         </div>
-    </div>
-    <div class="row">
+      </div>
+      <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <a id="FB"><img alt="Facebook" class="img-thumbnail logo-img" src="./assets/images/stockMarket/facebook.png"></a>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <a id="AMZN"><img alt="Amazon" class="img-thumbnail logo-img" src="./assets/images/stockMarket/amazon.png"></a>
+          <a id="FB"><img alt="Facebook" class="img-thumbnail logo-img"
+              src="assets/images/stockMarket/facebook.png"></a>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <a id="AAPL"><img alt="Apple" class="img-thumbnail logo-img" src="./assets/images/stockMarket/apple.png"></a>
+          <a id="AMZN"><img alt="Amazon" class="img-thumbnail logo-img" src="assets/images/stockMarket/amazon.png"></a>
         </div>
-    </div>
-    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <a id="AAPL"><img alt="Apple" class="img-thumbnail logo-img" src="assets/images/stockMarket/apple.png"></a>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-lg-3 col-md-6 col-sm-12">
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
-            <a id="teva"><img alt="Teva" class="img-thumbnail logo-img" src="./assets/images/stockMarket/teva.png"></a>
+          <a id="teva"><img alt="Teva" class="img-thumbnail logo-img" src="assets/images/stockMarket/teva.png"></a>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
-            <a id="MSFT"><img  alt="Microsoft" class="img-thumbnail logo-img" src="./assets/images/stockMarket/microsoft.png"></a>
+          <a id="MSFT"><img alt="Microsoft" class="img-thumbnail logo-img"
+              src="assets/images/stockMarket/microsoft.png"></a>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
         </div>
-    </div>
-    <hr>
-    <div class="row text-center">
+      </div>
+      <hr>
+      <div class="row text-center">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <h2 class="text-center">Major Indexes:</h2>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <a id="^GSPC"><img alt="s&p 500" class="img-thumbnail logo-img" src="./assets/images/stockMarket/SP-logo.png"></a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <a id="^DJI"><img  alt="dow Jones" class="img-thumbnail logo-img" src="./assets/images/stockMarket/dowJones.png"></a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                </div>
+          <h2 class="text-center">Major Indexes:</h2>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
             </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row text-center">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <h2 class="text-center">Currencies:</h2>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <a id="EUR/USD"><img alt="EUR/USD" class="img-thumbnail currency" src="./assets/images/stockMarket/eurusd.jpg"></a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <a id="EUR/GBP"><img  alt="EUR/GBP" class="img-thumbnail currency" src="./assets/images/stockMarket/eurgbp.jpg"></a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <a id="^GSPC"><img alt="s&p 500" class="img-thumbnail logo-img"
+                  src="assets/images/stockMarket/SP-logo.png"></a>
             </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <a id="^DJI"><img alt="dow Jones" class="img-thumbnail logo-img"
+                  src="assets/images/stockMarket/dowJones.png"></a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+            </div>
+          </div>
         </div>
+      </div>
+      <hr>
+      <div class="row text-center">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <h2 class="text-center">Currencies:</h2>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <a id="EUR/USD"><img alt="EUR/USD" class="img-thumbnail currency"
+                  src="assets/images/stockMarket/eurusd.jpg"></a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <a id="EUR/GBP"><img alt="EUR/GBP" class="img-thumbnail currency"
+                  src="assets/images/stockMarket/eurgbp.jpg"></a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<!--========== main end ==========-->
-<!--========== footer ==========-->
-<footer>
+  </main>
+  <!--========== main end ==========-->
+  <!--========== footer ==========-->
+  <footer>
     <div class="container">
 
-        <!--========== social-icons ==========-->
-        <div class="row text-center row-social-icon">
-            <div class="col">
-                <a class="footer-social-link" target="_blank" Rel=”noopener”
-                   href="https://github.com/hasadna/sensory-interface" title="github">
-                    <img class="footer-social-img" src="assets/images/social-icons/github.png" alt="github logo">
-                </a>
-            </div>
+      <!--========== social-icons ==========-->
+      <div class="row text-center row-social-icon">
+        <div class="col">
+          <a class="footer-social-link" target="_blank" Rel=”noopener”
+            href="https://github.com/hasadna/sensory-interface" title="github">
+            <img class="footer-social-img" src="assets/images/social-icons/github.png" alt="github logo">
+          </a>
         </div>
-        <!--========== social-icons end ==========-->
+      </div>
+      <!--========== social-icons end ==========-->
 
-        <!--==========  project details ==========-->
-        <div class="big-footer-text-heb-row">
-            <p class="small-footer-text" id="credit">
-                This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
-                collaborations, please send an email to: info@sensoryinterface.com
-            </p>
+      <!--==========  project details ==========-->
+      <div class="big-footer-text-heb-row">
+        <p class="small-footer-text" id="credit">
+          This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
+          collaborations, please send an email to: info@sensoryinterface.com
+        </p>
+      </div>
+      <hr width="50%">
+      <div class="row text-center">
+        <div class="col">
+          <p class="small-footer-text">
+            Made with &nbsp;<img src="assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
+              alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
+          </p>
         </div>
-        <hr width="50%">
-        <div class="row text-center">
-            <div class="col">
-                <p class="small-footer-text">
-                    Made with &nbsp;<img src="assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
-                                         alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
-                </p>
-            </div>
 
-        </div>
-        <!--==========  project details end ==========-->
+      </div>
+      <!--==========  project details end ==========-->
 
     </div>
 
-</footer>
-<!--========== footer end ==========-->
+  </footer>
+  <!--========== footer end ==========-->
 
-<!--========== side bar ==========-->
-<div class="side-bar" style="display: none;">
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
     <div class="container">
-        <div class="row side-bar-row text-center">
-            <div class="col-12">
-                <a class="side-bar-link" href="./index.html#about-anchor">
-                    About us
-                </a>
-            </div>
-            <br>
-            <br>
-            <br>
-            <div class="col-12">
-                <a class="side-bar-link" href="./index.html#how-anchor">
-                    How it's work
-                </a>
-            </div>
-            <br>
-            <br>
-            <br>
-            <div class="col-12">
-                <a class="side-bar-link" href="./index.html#team-anchor">
-                    The team
-                </a>
-            </div>
-            <br>
-            <br>
-            <br>
-            <div class="col-12">
-                <a class="side-bar-link" target="_blank" href="tutorial-english.html" id="tutorial">
-                    Tutorial
-                </a>
-            </div>
-            <br>
-            <br>
-            <br>
+      <div class="row side-bar-row text-center">
+        <div class="col-12">
+          <a class="side-bar-link" href="index.html#about-anchor">
+            About us
+          </a>
         </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="index.html#how-anchor">
+            How it works
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" href="index.html#team-anchor">
+            The team
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-12">
+          <a class="side-bar-link" target="_blank" href="english_guides/usage_tutorial_en.html" id="tutorial">
+            Tutorial
+          </a>
+        </div>
+        <br>
+        <br>
+        <br>
+      </div>
     </div>
-</div>
-<!--========== side bar end ==========-->
+  </div>
+  <!--========== side bar end ==========-->
 
-<!---========== scripts ==========-->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<script src="js/scripts.js"></script>
-<script src="./js/utils.js"></script>
-<script src="languages/i18n.js"></script>
-<script src="languages/he.js"></script>
-<script src="languages/en.js"></script>
+  <!---========== scripts ==========-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/stockMarket.js"></script>
 </body>
+
 </html>
