@@ -27,7 +27,7 @@ getLink = (historyData) => {
   let minValue = Math.min(...historyData.data);
   let data = historyData.data.join('%09');
   let symbol = historyData.symbol;
-  let link = `https://sensoryinterface.com/view/index.html?
+  let link = `view/index.html?
 data=${data}
 &description=${symbolToName(symbol)}%20graph
 &minValue=${minValue}
