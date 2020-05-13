@@ -28,7 +28,6 @@ data=${data}
 &maxValue=${maxValue}
 &instrumentType=synthesizer`;
   this.links.push({ symbol: symbol, href: link });
-  console.log(symbol)
   document.getElementById(symbol).href = link;
 }
 
@@ -70,8 +69,8 @@ symbolToName = (symbol) => {
       return 'Apple';
     case 'TSLA':
       return 'Tesla';
-    case 'TEVA':
-      return 'Teva';
+    case 'GOOG':
+      return 'Google';
     case 'MSFT':
       return 'Microsoft';
     case 'NFLX':
@@ -79,9 +78,9 @@ symbolToName = (symbol) => {
     case 'BABA':
       return 'Alibaba';
     case '^GSPC':
-      return 's and p 500';
+      return 'S and P 500';
     case '^DJI':
-      return 'dow Jones';
+      return 'Dow Jones';
     case 'EUR/USD':
       return 'EUR/USD';
     case 'EUR/GBP':
@@ -91,15 +90,17 @@ symbolToName = (symbol) => {
   }
 }
 
-getStockData('FB');
-getStockData('AMZN');
-getStockData('AAPL');
-getStockData('TSLA');
-getStockData('TEVA');
-getStockData('MSFT');
-getStockData('NFLX');
-getStockData('BABA');
-getCurrencyHistory('EURUSD');
-getCurrencyHistory('EURGBP');
-getIndexHistory('DJI');
-getIndexHistory('GSPC');
+window.addEventListener('DOMContentLoaded', (event) => {
+  getStockData('FB');
+  getStockData('AMZN');
+  getStockData('AAPL');
+  getStockData('TSLA');
+  getStockData('GOOG');
+  getStockData('MSFT');
+  getStockData('NFLX');
+  getStockData('BABA');
+  getCurrencyHistory('EURUSD');
+  getCurrencyHistory('EURGBP');
+  getIndexHistory('DJI');
+  getIndexHistory('GSPC');
+});
