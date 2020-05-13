@@ -1,14 +1,8 @@
 links = [];
+// TODO: Read stocks/symbols.json into this variable
+symbols = [];
 
-//get symbol by name
-getSymbolByName = (name) => {
-  let symbol;
-  fetch(`https://financialmodelingprep.com/api/v3/search?query=${name}&limit=10&exchange=NASDAQ`)
-    .then(response => response.json())
-    .then(data => getStockData(data[0].symbol));
-}
-
-//get data by symbol
+// Get data by symbol
 getStockData = (symbol) => {
   let historyData = { symbol: symbol, data: [] };
   fetch(`https://financialmodelingprep.com/api/company/historical-price/${symbol}?serietype=line&serieformat=array&datatype=json`)
@@ -29,7 +23,7 @@ getLink = (historyData) => {
   let symbol = historyData.symbol;
   let link = `view/index.html?
 data=${data}
-&description=${symbolToName(symbol)}%20graph
+&description=${symbolToName(symbol)}%20stock (${symbol})
 &minValue=${minValue}
 &maxValue=${maxValue}
 &instrumentType=synthesizer`;
@@ -72,14 +66,18 @@ symbolToName = (symbol) => {
       return 'Facebook';
     case 'AMZN':
       return 'Amazon';
-    case 'NFLX':
-        return 'Netflix';
     case 'AAPL':
       return 'Apple';
-    case 'teva':
+    case 'TSLA':
+      return 'Tesla';
+    case 'TEVA':
       return 'Teva';
     case 'MSFT':
       return 'Microsoft';
+    case 'NFLX':
+      return 'Netflix';
+    case 'BABA':
+      return 'Alibaba';
     case '^GSPC':
       return 's and p 500';
     case '^DJI':
@@ -93,13 +91,14 @@ symbolToName = (symbol) => {
   }
 }
 
-//STOCK PRICE
-getStockData('teva');
-getSymbolByName('microsoft');
-getSymbolByName('apple');
-getSymbolByName('amazon');
-getSymbolByName('Netflix');
-getSymbolByName('facebook');
+getStockData('FB');
+getStockData('AMZN');
+getStockData('AAPL');
+getStockData('TSLA');
+getStockData('TEVA');
+getStockData('MSFT');
+getStockData('NFLX');
+getStockData('BABA');
 getCurrencyHistory('EURUSD');
 getCurrencyHistory('EURGBP');
 getIndexHistory('DJI');

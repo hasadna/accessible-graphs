@@ -55,6 +55,14 @@ ul {
   margin-top: 60px;
 }
 
+.stock-link {
+  font-size: 20px;
+}
+
+.big-footer-text {
+  font-size: 16px;
+}
+
 @media(min-width:768px) {
 
   .stock-title {
