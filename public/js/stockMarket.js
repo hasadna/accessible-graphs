@@ -72,6 +72,8 @@ symbolToName = (symbol) => {
       return 'Facebook';
     case 'AMZN':
       return 'Amazon';
+    case 'NFLX':
+        return 'Netflix';
     case 'AAPL':
       return 'Apple';
     case 'teva':
@@ -96,7 +98,7 @@ getStockData('teva');
 getSymbolByName('microsoft');
 getSymbolByName('apple');
 getSymbolByName('amazon');
-// getSymbolByName('Alphabet');
+getSymbolByName('Netflix');
 getSymbolByName('facebook');
 getCurrencyHistory('EURUSD');
 getCurrencyHistory('EURGBP');
