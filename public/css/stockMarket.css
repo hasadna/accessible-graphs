@@ -1,8 +1,11 @@
 .header-stock {
   background-size: cover;
   background-image: url('../assets/images/back.svg');
-  background-position: 50% 100%;
-  height: 25vh;
+  background-position:50% 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-repeat: no-repeat;
 }
 
