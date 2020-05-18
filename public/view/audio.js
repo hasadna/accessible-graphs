@@ -117,7 +117,6 @@ function speakText(textToSpeak) {
     const synth = window.speechSynthesis;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    let ttsName = getUrlParam('ttsName');
     let selectedTtsVoice = findTtsVoice(ttsName);
     utterance.voice = selectedTtsVoice;
     synth.speak(utterance);

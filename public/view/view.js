@@ -6,7 +6,7 @@ let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
-let speakWithTts = initSpeakWithTts();
+let ttsName = getUrlParam('ttsName');
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
@@ -34,7 +34,7 @@ function processData() {
         graphDescriptionHeading.innerText = graphDescription;
         container.appendChild(graphDescriptionHeading);
     }
-    createTtsToggle();
+    createTtsCombo();
     parseData(getUrlParam('data'));
     brailleController = new BrailleController(container, data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
@@ -47,23 +47,20 @@ function processData() {
     liveRegion.className = 'hidden';
     container.appendChild(liveRegion);
 }
-function createTtsToggle() {
-    const ttsToggle = document.createElement('a');
-    ttsToggle.setAttribute('id', 'ttsToggle');
-    ttsToggle.setAttribute('role', 'button');
-    ttsToggle.setAttribute('tabIndex', '0');
-    ttsToggle.setAttribute('aria-pressed', speakWithTts.toString());
-    ttsToggle.innerHTML = 'Use browser TTS';
-    ttsToggle.addEventListener('click', onToggleClick);
-    document.getElementById('container').appendChild(ttsToggle);
+function createTtsCombo() {
+    const ttsCombo = document.createElement('select');
+    ttsCombo.setAttribute('id', 'ttsVoice');
+    ttsCombo.addEventListener('change', onTtsComboChange);
+    document.getElementById('container').appendChild(ttsCombo);
+    // This function is found in builder script
+    populateTtsList();
+    updateTtsCombo();
     let lineBreak = document.createElement('br');
     document.getElementById('container').appendChild(lineBreak);
 }
-function onToggleClick(event) {
-    speakWithTts = !speakWithTts;
-    let ttsToggle = document.getElementById('ttsToggle');
-    let isAriaPressed = ttsToggle.getAttribute('aria-pressed') === 'true';
-    ttsToggle.setAttribute('aria-pressed', isAriaPressed ? 'false' : 'true');
+function onTtsComboChange(event) {
+    const ttsCombo = document.getElementById('ttsVoice');
+    ttsName = ttsCombo.options[ttsCombo.selectedIndex].getAttribute('data-name');
 }
 function createGrid() {
     const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
@@ -261,15 +258,23 @@ function reportText(onSpace) {
     else {
         textToReport = getTextToReportOnArrows();
     }
-    if (speakWithTts) {
-        speakText(textToReport);
-    }
-    else {
+    if (ttsName === 'noTts') {
         document.getElementById('liveRegion').innerHTML = textToReport;
     }
+    else {
+        speakText(textToReport);
+    }
 }
-function initSpeakWithTts() {
-    let ttsName = getUrlParam('ttsName');
-    return ttsName === 'noTts' ? false : true;
+function updateTtsCombo() {
+    const ttsCombo = document.getElementById('ttsVoice');
+    for (let index = 0; index < ttsCombo.options.length; index++) {
+        let currentTtsName = ttsCombo.options[index].getAttribute('data-name');
+        if (currentTtsName === ttsName) {
+            ttsCombo.selectedIndex = index;
+            return;
+        }
+    }
+    ttsCombo.selectedIndex = 0;
+    return;
 }
 //# sourceMappingURL=view.js.map
