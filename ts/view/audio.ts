@@ -124,34 +124,10 @@ function stopSoundPlayback() {
   }
 }
 
-function speakSelectedCell() {
+function speakText(textToSpeak) {
   const synth = window.speechSynthesis;
   synth.cancel();
-  let value = data[focusedColIndex];
-  let valueText = String(value);
-  if (value < 0) {
-    value = Math.abs(value);
-    valueText = `Minus ${value}`;
-  }
-  const utterance = new SpeechSynthesisUtterance(valueText);
-  let ttsName = getUrlParam('ttsName');
-  let selectedTtsVoice = findTtsVoice(ttsName);
-  utterance.voice = selectedTtsVoice;
-  synth.speak(utterance);
-}
-
-function speakSelectedCellPositionInfo() {
-  const synth = window.speechSynthesis;
-  synth.cancel();
-  let textToSpeak = '';
-  if (dataHeaders.length == 0) {
-    textToSpeak = `Position ${focusedColIndex + 1}`;
-  } else {
-    let headerText = dataHeaders[focusedColIndex];
-    textToSpeak = `${headerText}, position ${focusedColIndex + 1}`;
-  }
   const utterance = new SpeechSynthesisUtterance(textToSpeak);
-  let ttsName = getUrlParam('ttsName');
   let selectedTtsVoice = findTtsVoice(ttsName);
   utterance.voice = selectedTtsVoice;
   synth.speak(utterance);
