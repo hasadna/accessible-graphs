@@ -69,6 +69,7 @@ function createGrid() {
     grid.setAttribute('role', 'grid');
     grid.setAttribute('id', 'grid');
     grid.setAttribute('aria-readonly', 'true');
+    grid.setAttribute('aria-hidden', 'true');
     grid.style.width = '100%';
     grid.style.height = '90%';
     grid.setAttribute('class', 'table');
@@ -114,12 +115,6 @@ function onClick(event) {
 }
 function addNavigationToGrid() {
     document.querySelectorAll('[role="gridcell"]').forEach((gridCell, index) => {
-        if (index === 0) {
-            gridCell.setAttribute('tabindex', '0');
-        }
-        else {
-            gridCell.setAttribute('tabindex', '-1');
-        }
         gridCell.addEventListener('keydown', navigateGrid);
     });
 }
