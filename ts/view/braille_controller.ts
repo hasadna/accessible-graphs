@@ -25,6 +25,8 @@ class BrailleController {
     textarea.addEventListener('keydown', this.onKeyDown);
     textarea.addEventListener('oncut', this.ignoreEvent);
     textarea.addEventListener('mousedown', this.onSecondRoutingKeyPress);
+    textarea.addEventListener('focus', this.showLiveRegion);
+    textarea.addEventListener('blur', this.hideLiveRegion);
     if (listenForAllEvents == true) {
       BrailleController.bindAllEvents(textarea[0], this.logEvent);
     }
@@ -174,7 +176,7 @@ class BrailleController {
     if (event.key == ' ') {
       const position = brailleController.currentPosition;
       if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
-        speakSelectedCellPositionInfo(); // On space key press
+        reportText(true); // On space key press
       }
       event.preventDefault();
     }
@@ -183,7 +185,7 @@ class BrailleController {
   onSecondRoutingKeyPress(event) {
     const position: number = brailleController.currentPosition;
     if (position % 40 >= 0 && position % 40 < 29 && position < brailleController.data.length) {
-      speakSelectedCellPositionInfo();
+      reportText(true);
     }
   }
 
@@ -223,5 +225,13 @@ class BrailleController {
 
   static splice(string: string, substring: string, position: number): string {
     return string.slice(0, position) + substring + string.slice(position + substring.length);
+  }
+
+  showLiveRegion() {
+    document.getElementById('liveRegion').setAttribute('style', '');
+  }
+
+  hideLiveRegion() {
+    document.getElementById('liveRegion').setAttribute('style', 'display: none;');
   }
 }

@@ -6,6 +6,7 @@ let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
+let ttsName = getUrlParam('ttsName');
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
@@ -33,12 +34,34 @@ function processData() {
         graphDescriptionHeading.innerText = graphDescription;
         container.appendChild(graphDescriptionHeading);
     }
+    createTtsCombo();
     parseData(getUrlParam('data'));
     brailleController = new BrailleController(container, data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    const liveRegion = document.createElement('p');
+    liveRegion.id = 'liveRegion';
+    liveRegion.setAttribute('aria-live', 'assertive');
+    liveRegion.className = 'hidden';
+    liveRegion.setAttribute('style', 'display: none;');
+    container.appendChild(liveRegion);
+}
+function createTtsCombo() {
+    const ttsCombo = document.createElement('select');
+    ttsCombo.setAttribute('id', 'ttsVoice');
+    ttsCombo.addEventListener('change', onTtsComboChange);
+    document.getElementById('container').appendChild(ttsCombo);
+    // This function is found in builder script
+    populateTtsList();
+    updateTtsCombo();
+    let lineBreak = document.createElement('br');
+    document.getElementById('container').appendChild(lineBreak);
+}
+function onTtsComboChange(event) {
+    const ttsCombo = document.getElementById('ttsVoice');
+    ttsName = ttsCombo.options[ttsCombo.selectedIndex].getAttribute('data-name');
 }
 function createGrid() {
     const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
@@ -187,7 +210,7 @@ function updateSelectedCell(cell) {
         return;
     }
     startSoundPlayback();
-    speakSelectedCell();
+    reportText(false);
 }
 function getUrlParam(variableName) {
     const url = new URL(window.location.href);
@@ -207,5 +230,52 @@ function parseData(dataString) {
     catch (error) {
         data = parseWithoutHeaders(dataString);
     }
+}
+function getTextToReportOnArrows() {
+    let value = data[focusedColIndex];
+    let valueText = String(value);
+    if (value < 0) {
+        value = Math.abs(value);
+        valueText = `Minus ${value}`;
+    }
+    return valueText;
+}
+function getTextToReportOnSpace() {
+    let textToReport = '';
+    if (dataHeaders.length == 0) {
+        textToReport = `Position ${focusedColIndex + 1}`;
+    }
+    else {
+        let headerText = dataHeaders[focusedColIndex];
+        textToReport = `${headerText}, position ${focusedColIndex + 1}`;
+    }
+    return textToReport;
+}
+function reportText(onSpace) {
+    let textToReport = '';
+    if (onSpace) {
+        textToReport = getTextToReportOnSpace();
+    }
+    else {
+        textToReport = getTextToReportOnArrows();
+    }
+    if (ttsName === 'noTts') {
+        document.getElementById('liveRegion').innerHTML = textToReport;
+    }
+    else {
+        speakText(textToReport);
+    }
+}
+function updateTtsCombo() {
+    const ttsCombo = document.getElementById('ttsVoice');
+    for (let index = 0; index < ttsCombo.options.length; index++) {
+        let currentTtsName = ttsCombo.options[index].getAttribute('data-name');
+        if (currentTtsName === ttsName) {
+            ttsCombo.selectedIndex = index;
+            return;
+        }
+    }
+    ttsCombo.selectedIndex = 0;
+    return;
 }
 //# sourceMappingURL=view.js.map

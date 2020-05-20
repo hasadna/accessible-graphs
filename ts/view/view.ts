@@ -6,6 +6,7 @@ let dataHeaders: string[] = [];
 let brailleData: string = null;
 let focusedRowIndex: number = 0;
 let focusedColIndex: number = 0;
+let ttsName: string = getUrlParam('ttsName');
 
 
 function initializeViewScript() {
@@ -39,12 +40,38 @@ function processData() {
     graphDescriptionHeading.innerText = graphDescription;
     container.appendChild(graphDescriptionHeading);
   }
+  createTtsCombo();
   parseData(getUrlParam('data'));
   brailleController = new BrailleController(container, data);
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
+  const liveRegion: HTMLParagraphElement = document.createElement('p');
+  liveRegion.id = 'liveRegion';
+  liveRegion.setAttribute('aria-live', 'assertive');
+  liveRegion.className = 'hidden';
+  liveRegion.setAttribute('style', 'display: none;');
+  container.appendChild(liveRegion);
+}
+
+
+function createTtsCombo() {
+  const ttsCombo: HTMLSelectElement = document.createElement('select');
+  ttsCombo.setAttribute('id', 'ttsVoice');
+  ttsCombo.addEventListener('change', onTtsComboChange);
+  document.getElementById('container').appendChild(ttsCombo);
+  // This function is found in builder script
+  populateTtsList();
+  updateTtsCombo();
+  let lineBreak: HTMLElement = document.createElement('br');
+  document.getElementById('container').appendChild(lineBreak);
+}
+
+
+function onTtsComboChange(event: Event) {
+  const ttsCombo: HTMLSelectElement = <HTMLSelectElement>document.getElementById('ttsVoice');
+  ttsName = ttsCombo.options[ttsCombo.selectedIndex].getAttribute('data-name');
 }
 
 
@@ -212,7 +239,7 @@ function updateSelectedCell(cell: Element) {
     return;
   }
   startSoundPlayback();
-  speakSelectedCell();
+  reportText(false);
 }
 
 
@@ -235,4 +262,55 @@ function parseData(dataString: string) {
   } catch (error) {
     data = parseWithoutHeaders(dataString);
   }
+}
+
+function getTextToReportOnArrows() {
+  let value = data[focusedColIndex];
+  let valueText = String(value);
+  if (value < 0) {
+    value = Math.abs(value);
+    valueText = `Minus ${value}`;
+  }
+  return valueText;
+}
+
+
+function getTextToReportOnSpace() {
+  let textToReport = '';
+  if (dataHeaders.length == 0) {
+    textToReport = `Position ${focusedColIndex + 1}`;
+  } else {
+    let headerText = dataHeaders[focusedColIndex];
+    textToReport = `${headerText}, position ${focusedColIndex + 1}`;
+  }
+  return textToReport;
+}
+
+
+function reportText(onSpace: boolean) {
+  let textToReport: string = '';
+  if (onSpace) {
+    textToReport = getTextToReportOnSpace();
+  } else {
+    textToReport = getTextToReportOnArrows();
+  }
+  if (ttsName === 'noTts') {
+    document.getElementById('liveRegion').innerHTML = textToReport;
+  } else {
+    speakText(textToReport);
+  }
+}
+
+
+function updateTtsCombo() {
+  const ttsCombo: HTMLSelectElement = <HTMLSelectElement>document.getElementById('ttsVoice');
+  for (let index = 0; index < ttsCombo.options.length; index++) {
+    let currentTtsName = ttsCombo.options[index].getAttribute('data-name');
+    if (currentTtsName === ttsName) {
+      ttsCombo.selectedIndex = index;
+      return;
+    }
+  }
+  ttsCombo.selectedIndex = 0;
+  return;
 }
