@@ -40,8 +40,11 @@ function processData() {
     graphDescriptionHeading.innerText = graphDescription;
     container.appendChild(graphDescriptionHeading);
   }
-  createTtsCombo();
   parseData(getUrlParam('data'));
+  createTtsCombo();
+  const graphSummary: HTMLParagraphElement = document.createElement('p');
+  graphSummary.innerText = getGraphSummary();
+  container.appendChild(graphSummary);
   brailleController = new BrailleController(container, data);
   brailleController.setSelectionListener(brailleControllerSelectionListener);
   createGrid();
@@ -261,25 +264,39 @@ function parseData(dataString: string) {
 }
 
 function getTextToReportOnArrows() {
-  let value = data[focusedColIndex];
-  let valueText = String(value);
-  if (value < 0) {
-    value = Math.abs(value);
-    valueText = `Minus ${value}`;
+  let xValue = data[focusedColIndex];
+  let xValueText = String(xValue);
+  if (xValue < 0) {
+    xValue = Math.abs(xValue);
+    xValueText = `Minus ${xValue}`;
   }
-  return valueText;
+  let yValueText = '';
+  if (dataHeaders.length == 0) {
+    yValueText = `Position ${focusedColIndex + 1}`;
+  } else {
+    let headerText = dataHeaders[focusedColIndex];
+    yValueText = `${headerText}, position ${focusedColIndex + 1}`;
+  }
+  return `${xValueText}. ${yValueText}`;
 }
 
 
 function getTextToReportOnSpace() {
-  let textToReport = '';
-  if (dataHeaders.length == 0) {
-    textToReport = `Position ${focusedColIndex + 1}`;
-  } else {
-    let headerText = dataHeaders[focusedColIndex];
-    textToReport = `${headerText}, position ${focusedColIndex + 1}`;
+  let graphValuesNum: number = data.length;
+  let currentPosition: number = focusedColIndex + 1;
+  let minValue: number = Math.min(...data);
+  let maxValue: number = Math.max(...data);
+  let average: number = getAverage(data);
+  return `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
+}
+
+
+function getAverage(data: number[]): number {
+  let sum: number = 0;
+  for (let dataElement of data) {
+    sum += dataElement;
   }
-  return textToReport;
+  return sum / data.length;
 }
 
 
@@ -295,6 +312,16 @@ function reportText(onSpace: boolean) {
   } else {
     speakText(textToReport);
   }
+}
+
+
+function getGraphSummary() {
+  let graphValuesNum: number = data.length;
+  let minValue: number = Math.min(...data);
+  let maxValue: number = Math.max(...data);
+  let average: number = getAverage(data);
+  return `This graph has ${graphValuesNum} values. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}.
+During graph navigation, press space to hear this again.`;
 }
 
 
