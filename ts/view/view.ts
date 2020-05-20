@@ -54,6 +54,7 @@ function processData() {
   liveRegion.id = 'liveRegion';
   liveRegion.setAttribute('aria-live', 'assertive');
   liveRegion.className = 'hidden';
+  liveRegion.setAttribute('style', 'display: none;');
   container.appendChild(liveRegion);
 }
 
