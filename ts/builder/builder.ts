@@ -446,6 +446,13 @@ function populateTtsList() {
   const ttsVoiceSelect: HTMLElement = document.getElementById('ttsVoice');
   ttsVoiceSelect.innerHTML = '';
 
+  const option = document.createElement('option');
+  let optionValueAndText: string = 'Use my screen reader TTS';
+  option.value = optionValueAndText;
+  option.innerText = optionValueAndText;
+  option.setAttribute('data-name', 'noTts');
+  ttsVoiceSelect.appendChild(option);
+
   const voices: Array<SpeechSynthesisVoice> = window.speechSynthesis.getVoices();
   voices.forEach((voice) => {
     const option = document.createElement('option');
