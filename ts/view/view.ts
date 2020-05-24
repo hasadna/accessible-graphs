@@ -16,6 +16,12 @@ function initializeViewScript() {
   const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance('');
   synth.speak(utterance);
   processData();
+  // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
+  //https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
+  // for more details
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = populateTtsList;
+  }
 }
 
 
@@ -335,5 +341,6 @@ function updateTtsCombo() {
     }
   }
   ttsCombo.selectedIndex = 0;
+  ttsName = 'noTts';
   return;
 }

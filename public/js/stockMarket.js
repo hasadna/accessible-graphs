@@ -5,14 +5,12 @@ symbols = [];
 // Get data by symbol
 getStockData = (symbol) => {
   let historyData = { symbol: symbol, data: [], dates: []};
-  fetch(`https://financialmodelingprep.com/api/company/historical-price/${symbol}?serietype=line&serieformat=array&datatype=json`)
+  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=d14cc5b97d675f42397fba2bbaa98d4c&serietype=line`)
     .then(response => response.json())
     .then(data => {
-      data.historical.slice(data.historical.length - 21, data.historical.length).map((item) => {
-        historyData.data.push(item[1]);
-        let date = item[0];
-        date = new Date(date).toDateString();
-        historyData.dates.push(date);
+      data.historical.slice(0, 20).map((item) => {
+        historyData.data.push(item.close);
+        historyData.dates.push(item.date);
       })
       getLink(historyData);
     });
@@ -39,7 +37,7 @@ data=${data}
 //get Currency History data
 getCurrencyHistory = (currency) => {
   let historyData = { symbol: "", data: [], dates: [] };
-  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}`)
+  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
     .then(response => response.json())
     .then(data => {
       historyData.symbol = data.symbol;
@@ -54,7 +52,7 @@ getCurrencyHistory = (currency) => {
 //get Index History data
 getIndexHistory = (index) => {
   let historyData = { symbol: "", data: [], dates: [] };
-  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5E${index}`)
+  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5E${index}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
     .then(response => response.json())
     .then(data => {
       historyData.symbol = data.symbol;
