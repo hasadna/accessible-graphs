@@ -22,7 +22,7 @@ window.addEventListener('load', (_event) => {
   });
 
   // page smooth scroll on link click
-  $('a[href^="#.+"]').on('click', function (_event) {
+  $('a[href^="#.+"]').on('click', function(_event) {
     let target = $(this.getAttribute('href'));
 
     if (target.length) {
@@ -35,7 +35,7 @@ window.addEventListener('load', (_event) => {
   });
 
   // side-bar menu open
-  $('.hamburger').click(function () {
+  $('.hamburger').click(function() {
     $(this).toggleClass('is-active');
     $('.side-bar').fadeToggle(50);
   });
@@ -49,23 +49,23 @@ window.addEventListener('load', (_event) => {
 
   /*! track-focus v 1.0.0 | Author: Jeremy Fields [jeremy.fields@vget.com], 2015 | License: MIT */
   // inspired by: http://irama.org/pkg/keyboard-focus-0.3/jquery.keyboard-focus.js
-  (function () {
+  (function() {
     let usingMouse;
 
-    let preFocus = function (event) {
+    let preFocus = function(event) {
       usingMouse = (event.type === 'mousedown');
     };
 
-    let addFocus = function (event) {
+    let addFocus = function(event) {
       if (usingMouse)
         event.target.classList.add('focus--mouse');
     };
 
-    let removeFocus = function (event) {
+    let removeFocus = function(event) {
       event.target.classList.remove('focus--mouse');
     };
 
-    let bindEvents = function () {
+    let bindEvents = function() {
       document.body.addEventListener('keydown', preFocus);
       document.body.addEventListener('mousedown', preFocus);
       document.body.addEventListener('focusin', addFocus);
