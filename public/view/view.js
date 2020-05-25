@@ -6,6 +6,7 @@ let dataHeaders = [];
 let brailleData = null;
 let focusedRowIndex = 0;
 let focusedColIndex = 0;
+let ttsName = getUrlParam('ttsName');
 function initializeViewScript() {
     // Initialize speech synthesis
     // If we don't do that, Chrome will speak the first utterance with the default TTS voice
@@ -13,6 +14,12 @@ function initializeViewScript() {
     const utterance = new SpeechSynthesisUtterance('');
     synth.speak(utterance);
     processData();
+    // In Chrome, we need to wait for the "voiceschanged" event to be fired before we can get the list of all voices. See
+    //https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
+    // for more details
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = populateTtsList;
+    }
 }
 function brailleControllerSelectionListener(event) {
     focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
@@ -34,11 +41,36 @@ function processData() {
         container.appendChild(graphDescriptionHeading);
     }
     parseData(getUrlParam('data'));
+    createTtsCombo();
+    const graphSummary = document.createElement('p');
+    graphSummary.innerText = getGraphSummary();
+    container.appendChild(graphSummary);
     brailleController = new BrailleController(container, data);
     brailleController.setSelectionListener(brailleControllerSelectionListener);
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    const liveRegion = document.createElement('p');
+    liveRegion.id = 'liveRegion';
+    liveRegion.setAttribute('aria-live', 'assertive');
+    liveRegion.className = 'hidden';
+    liveRegion.setAttribute('style', 'display: none;');
+    container.appendChild(liveRegion);
+}
+function createTtsCombo() {
+    const ttsCombo = document.createElement('select');
+    ttsCombo.setAttribute('id', 'ttsVoice');
+    ttsCombo.addEventListener('change', onTtsComboChange);
+    document.getElementById('container').appendChild(ttsCombo);
+    // This function is found in builder script
+    populateTtsList();
+    updateTtsCombo();
+    let lineBreak = document.createElement('br');
+    document.getElementById('container').appendChild(lineBreak);
+}
+function onTtsComboChange(event) {
+    const ttsCombo = document.getElementById('ttsVoice');
+    ttsName = ttsCombo.options[ttsCombo.selectedIndex].getAttribute('data-name');
 }
 function createGrid() {
     const combinedDataAndHeaders = (dataHeaders.length != 0 ? [dataHeaders, data] : [data]);
@@ -46,6 +78,7 @@ function createGrid() {
     grid.setAttribute('role', 'grid');
     grid.setAttribute('id', 'grid');
     grid.setAttribute('aria-readonly', 'true');
+    grid.setAttribute('aria-hidden', 'true');
     grid.style.width = '100%';
     grid.style.height = '90%';
     grid.setAttribute('class', 'table');
@@ -91,12 +124,6 @@ function onClick(event) {
 }
 function addNavigationToGrid() {
     document.querySelectorAll('[role="gridcell"]').forEach((gridCell, index) => {
-        if (index === 0) {
-            gridCell.setAttribute('tabindex', '0');
-        }
-        else {
-            gridCell.setAttribute('tabindex', '-1');
-        }
         gridCell.addEventListener('keydown', navigateGrid);
     });
 }
@@ -187,7 +214,7 @@ function updateSelectedCell(cell) {
         return;
     }
     startSoundPlayback();
-    speakSelectedCell();
+    reportText(false);
 }
 function getUrlParam(variableName) {
     const url = new URL(window.location.href);
@@ -207,5 +234,73 @@ function parseData(dataString) {
     catch (error) {
         data = parseWithoutHeaders(dataString);
     }
+}
+function getTextToReportOnArrows() {
+    let xValue = data[focusedColIndex];
+    let xValueText = String(xValue);
+    if (xValue < 0) {
+        xValue = Math.abs(xValue);
+        xValueText = `Minus ${xValue}`;
+    }
+    let yValueText = '';
+    if (dataHeaders.length == 0) {
+        yValueText = `Position ${focusedColIndex + 1}`;
+    }
+    else {
+        let headerText = dataHeaders[focusedColIndex];
+        yValueText = `${headerText}, position ${focusedColIndex + 1}`;
+    }
+    return `${xValueText}. ${yValueText}`;
+}
+function getTextToReportOnSpace() {
+    let graphValuesNum = data.length;
+    let currentPosition = focusedColIndex + 1;
+    let minValue = Math.min(...data);
+    let maxValue = Math.max(...data);
+    let average = getAverage(data);
+    return `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
+}
+function getAverage(data) {
+    let sum = 0;
+    for (let dataElement of data) {
+        sum += dataElement;
+    }
+    return sum / data.length;
+}
+function reportText(onSpace) {
+    let textToReport = '';
+    if (onSpace) {
+        textToReport = getTextToReportOnSpace();
+    }
+    else {
+        textToReport = getTextToReportOnArrows();
+    }
+    if (ttsName === 'noTts') {
+        document.getElementById('liveRegion').innerHTML = textToReport;
+    }
+    else {
+        speakText(textToReport);
+    }
+}
+function getGraphSummary() {
+    let graphValuesNum = data.length;
+    let minValue = Math.min(...data);
+    let maxValue = Math.max(...data);
+    let average = getAverage(data);
+    return `This graph has ${graphValuesNum} values. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}.
+During graph navigation, press space to hear this again.`;
+}
+function updateTtsCombo() {
+    const ttsCombo = document.getElementById('ttsVoice');
+    for (let index = 0; index < ttsCombo.options.length; index++) {
+        let currentTtsName = ttsCombo.options[index].getAttribute('data-name');
+        if (currentTtsName === ttsName) {
+            ttsCombo.selectedIndex = index;
+            return;
+        }
+    }
+    ttsCombo.selectedIndex = 0;
+    ttsName = 'noTts';
+    return;
 }
 //# sourceMappingURL=view.js.map
