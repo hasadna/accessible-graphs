@@ -85,25 +85,33 @@ $('.language-click').click(() => {
 
 
 // Links that opens in a new tabs accessibility and security adjusments
-const addNoOpener = (link) => {
-  let linkTypes = (link.getAttribute('rel') || '').split(' ');
-  if (!linkTypes.includes('noopener')) {
-      linkTypes.push('noopener');
+const addNoReferrer = (link: HTMLLinkElement) => {
+  const linkTypes = (link.getAttribute('rel') || '').split(' ');
+  if (!linkTypes.includes('noreferrer')) {
+    const warningMessage = [
+      'Warning JavaScript is adding `rel="noreferrer"` attribute!',
+      'Please open an Issue with the following information',
+      'Title: [Security] Link with `target="_blank"` missing `rel="noreferrer"`',
+      `Body: Warning, page ${window.location.pathname} with link to ${link.href} is missing 'rel="noreferrer"' attribute`,
+    ];
+    console.warn(warningMessage.join('\n'));
+    linkTypes.push('noreferrer');
   }
   link.setAttribute('rel', linkTypes.join(' ').trim());
 }
 
 
-const addNewTabMessage = (link) => {
+const addNewTabMessage = (link: HTMLLinkElement) => {
   if (!link.querySelector('.screen-reader-only')) {
-      link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
+    link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
   }
 }
 
 
 const updateLinksAccessibility = () => {
-  document.querySelectorAll('a[target="_blank"]').forEach(link => {
-    addNoOpener(link);
+  const linkElements: NodeListOf<HTMLLinkElement> = document.querySelectorAll('a[target="_blank"]');
+  linkElements.forEach((link) => {
+    addNoReferrer(link);
     addNewTabMessage(link);
   });
 };
