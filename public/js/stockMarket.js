@@ -10,7 +10,8 @@ getStockData = (symbol) => {
     .then(data => {
       data.historical.slice(0, 20).map((item) => {
         historyData.data.push(item.close);
-        historyData.dates.push(item.date);
+        let date = new Date(item.date).toDateString();
+        historyData.dates.push(date);
       })
       getLink(historyData);
     });
@@ -43,7 +44,8 @@ getCurrencyHistory = (currency) => {
       historyData.symbol = data.symbol;
       data.historical.slice(0, 20).map((item) => {
         historyData.data.push(item.close);
-        historyData.dates.push(item.date);
+        let date = new Date(item.date).toDateString();
+        historyData.dates.push(date);
       })
       getLink(historyData);
     });
@@ -58,7 +60,8 @@ getIndexHistory = (index) => {
       historyData.symbol = data.symbol;
       data.historical.slice(0, 20).map((item) => {
         historyData.data.push(item.close);
-        historyData.dates.push(item.date);
+        let date = new Date(item.date).toDateString();
+        historyData.dates.push(date);
       })
       getLink(historyData);
     });
