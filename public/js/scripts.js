@@ -31,11 +31,19 @@ window.addEventListener('load', (_event) => {
     $('.hamburger').click(function () {
         $(this).toggleClass('is-active');
         $('.side-bar').fadeToggle(50);
+        let ariaExpandedState = $(this).attr('aria-expanded');
+        if (ariaExpandedState == 'true') {
+            $(this).attr('aria-expanded', 'false');
+        }
+        else {
+            $(this).attr('aria-expanded', 'true');
+        }
     });
     // side-bar menu close
     $('.side-bar-link').click(() => {
         $('.hamburger').removeClass('is-active');
         $('.side-bar').fadeToggle(50);
+        $(this).attr('aria-expanded', 'false');
     });
     /*! track-focus v 1.0.0 | Author: Jeremy Fields [jeremy.fields@vget.com], 2015 | License: MIT */
     // inspired by: http://irama.org/pkg/keyboard-focus-0.3/jquery.keyboard-focus.js

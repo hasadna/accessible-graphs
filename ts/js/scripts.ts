@@ -38,12 +38,19 @@ window.addEventListener('load', (_event) => {
   $('.hamburger').click(function () {
     $(this).toggleClass('is-active');
     $('.side-bar').fadeToggle(50);
+    let ariaExpandedState = $(this).attr('aria-expanded');
+    if (ariaExpandedState == 'true') {
+      $(this).attr('aria-expanded', 'false');
+    } else {
+      $(this).attr('aria-expanded', 'true');
+    }
   });
 
   // side-bar menu close
   $('.side-bar-link').click(() => {
     $('.hamburger').removeClass('is-active');
     $('.side-bar').fadeToggle(50);
+    $(this).attr('aria-expanded', 'false');
   });
 
 
@@ -88,7 +95,7 @@ $('.language-click').click(() => {
 const addNoOpener = (link) => {
   let linkTypes = (link.getAttribute('rel') || '').split(' ');
   if (!linkTypes.includes('noopener')) {
-      linkTypes.push('noopener');
+    linkTypes.push('noopener');
   }
   link.setAttribute('rel', linkTypes.join(' ').trim());
 }
@@ -96,7 +103,7 @@ const addNoOpener = (link) => {
 
 const addNewTabMessage = (link) => {
   if (!link.querySelector('.screen-reader-only')) {
-      link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
+    link.insertAdjacentHTML('beforeend', '<span class="screen-reader-only">(opens in a new tab)</span>');
   }
 }
 
