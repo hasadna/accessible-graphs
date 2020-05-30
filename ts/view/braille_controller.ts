@@ -229,6 +229,7 @@ class BrailleController {
 
   showLiveRegion() {
     document.getElementById('liveRegion').setAttribute('style', '');
+    brailleController.currentPosition = -1;
   }
 
   hideLiveRegion() {
