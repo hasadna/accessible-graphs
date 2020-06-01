@@ -22,6 +22,9 @@ function initializeViewScript() {
     }
 }
 function brailleControllerSelectionListener(event) {
+    if (document.activeElement.id !== 'brailleControllerText') {
+        return;
+    }
     focusedRowIndex = dataHeaders.length == 0 ? 0 : 1;
     const position = event.position;
     const positionInData = position - (position / 40 | 0) * 11;
