@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="canonical" href="https://sensoryinterface.com/" />
+  <title> Braille tutorial - Sensory interface </title>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <!--========== web tags ==========-->
+  <meta name="description" content="Sensory interface" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
+
+  <meta property="og:title" content="Sensory interface" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sensoryinterface.com/" />
+  <meta property="og:image" content="https://sensoryinterface.com/assets/images/social-image.png" />
+
+  <!--========== google fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/tutorial.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <!--========== navbar ==========-->
+  <nav class="wonder-nav">
+    <ul class="wonder-nav-ul" dir="ltr">
+
+      <!--===== desktop view =====-->
+      <li class="nav-logo d-none d-md-block">
+        <img class="top-bar-icon-desk" src="../assets/images/logo/s-logo-white.svg" alt="">
+      </li>
+
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="usage_tutorial_en.html" id="tutorial">
+          Tutorial
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#about-anchor" id="aboutUs1">
+          About us
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#how-anchor" id="howWork">
+          How it works
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#team-anchor" id="theTeam">
+          The team
+        </a>
+      </li>
+      <!--===== desktop view end =====-->
+      <!--===== mobile view =====-->
+
+      <li class="nav-logo d-md-none">
+        <a href="../index.html">
+          <img class="top-bar-icon" src="../assets/images/logo/s-logo-blue.svg" alt="Home">
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-md-none">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px" aria-expanded="false">
+          <span class="hamburger-box" aria-hidden=”true”>
+            <span class="hamburger-inner" aria-hidden=”true”></span></span>
+        </button>
+      </li>
+      <!--===== mobile view end =====-->
+    </ul>
+
+  </nav>
+  <!--========== navbar end ==========-->
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
+    <div class="container">
+      <div class="side-bar-row text-center">
+        <ul>
+          <li>
+            <a class="side-bar-link" href="usage_tutorial_en.html">
+              Tutorial
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#about-anchor">
+              About us
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#how-anchor">
+              How it works
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#team-anchor">
+              The team
+            </a>
+          </li>
+        </ul>
+    </div>
+  </div>
+  </div>
+  <!--========== side bar end ==========-->
+
+  <!--========== header ==========-->
+  <main>
+    <div class="header-tut">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-12 text-center">
+            <h1 class="tut-title">
+              Sensory interface tutorial
+            </h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--========== header end ==========-->
+    <br>
+    <div class="tutorial-div">
+      <h2>Introduction</h2>
+      <p>
+        Welcome to the Sensory Interface tutorial!
+      </p>
+      <p>
+        The tutorial aims to provide you with a walk-through on using braille in our system.
+      </p>
+      <p>
+        Braille greatly enhances the experience of using our system, and this tutorial shows you how we use braille to
+        achieve that experience.
+      </p>
+      <p>
+        Before we continue the tutorial, please:
+      </p>
+      <ul>
+        <li>Connect a braille display to your computer</li>
+        <li>Configure the screen reader to use it if necessary</li>
+      </ul>
+      <hr>
+      <h2>Stage 1 - Drawing with braille</h2>
+      <p>
+        Let’s try to understand how we use braille in our system.
+      </p>
+      <p>
+        So, we use braille in a very unconventional way. To give you an initial taste of how we use braille and the
+        braille
+        display, let’s “look” at the following shape we draw on the braille display:
+      </p>
+      <p>
+        ⠊⠉⠑⢄⣀⡠⠊⠉⠑⢄⣀⡠⠊
+      </p>
+      <p>
+        So, we are “seeing” a wave that goes up and down, up and down, again and again. See how we used braille to draw
+        something? These are not text characters. We will be using the braille display as a sort of drawing pad to draw
+        up
+        our visualizations.
+      </p>
+      <hr>
+      <h2>Stage 2 - As easy as 1 2 3 4</h2>
+      <p>
+        After we had an initial taste of how we are using braille in our system, let’s dive more deeply into how exactly
+        we
+        present data using braille.
+      </p>
+      <p>
+        So, as you might know, we want to present numerical data using braille, speech, and tones. In this tutorial, we
+        will
+        focus on braille only.
+      </p>
+      <p>
+        separated with commas:
+      </p>
+      <p>
+        1, 2, 3, 4
+      </p>
+      <p>
+        According to our algorithm, we map each one of the numbers to a different braille pattern as follows:
+      </p>
+      <ul style="list-style: none;">
+        <li>⣀ - This pattern (dots 7 and 8) presents the value of 1.</li>
+        <li>⠤ - This pattern (dots 3 and 6) presents the value of 2.</li>
+        <li>⠒ - This pattern (dots 2 and 5) presents the value of 3.</li>
+        <li>⠉ - This pattern (dots 1 and 4) presents the value of 4.</li>
+      </ul>
+      <p>
+        Therefore, our braille representation of “1 2 3 4” will look like this:
+      </p>
+      <p>
+        ⣀⠤⠒⠉
+      </p>
+      <hr>
+      <h2>Stage 3 - Another example</h2>
+      <p>
+        Let’s now have a more advanced example: Let’s assume we want to present the following data in braille, again,
+        separated by commas:
+      </p>
+      <p>
+        1, 2, 3, 4, 3, 2, 1
+      </p>
+      <p>
+        Then, according to the method we just described, we will get the following braille representation:
+      </p>
+      <p>
+        ⣀⠤⠒⠉⠒⠤⣀
+      </p>
+      <hr>
+      <h2>Stage 4 - Representing numbers 1 to 20</h2>
+      <p>
+        Now, what happens if we have more than 4 characters to display? For example, let’s say we want to present the
+        numbers from 1 to 20 in braille:
+      </p>
+      <p>
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+      </p>
+      <p>
+        We know how to map 1 2 3 4, but how would we map 5 and above? As you can see, we can’t use the same method as
+        before, because we have more than 4 values.
+      </p>
+      <p>
+        To present this data, we divide the range of 1 to 20 into 4 equal subranges. Each braille pattern represents one
+        subrange of the data:
+      </p>
+      <ul>
+        <li>⣀ will represent any value from 1 to 5</li>
+        <li>⠤ will represent any value from 6 to 10</li>
+        <li>⠒ will represent any value from 11 to 15</li>
+        <li>⠉ will represent any value from 16 to 20</li>
+      </ul>
+      <p>
+        So in braille, our numbers from 1 to 20 will look like this:
+      </p>
+      <p>
+        ⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠒⠒⠒⠒⠒⠉⠉⠉⠉⠉
+      </p>
+      <hr>
+      <h2>Stage 5 - Looking at complex data</h2>
+      <p>
+        Now that we have a basic understanding of how we represent numerical data using our special braille patterns,
+        let’s
+        try to “look” at more complex data. This data can describe some graph for example.
+      </p>
+      <p>
+        Let’s assume we have the following data as input, separated by commas:
+      </p>
+      <p>
+        12, 31, 22, 5, 70, 62, 43, 55, 80, 25, 39, 1
+      </p>
+      <p>
+        First, we notice that our set of values ranges from 1 to 80, Therefore, we have to divide our range to 4 equal
+        subranges as follows:
+      </p>
+      <ul>
+        <li>⣀ will represent any value from 1 to 20</li>
+        <li>⠤ will represent any value from 21 to 40</li>
+        <li>⠒ will represent any value from 41 to 60</li>
+        <li>⠒ will represent any value from 61 to 80</li>
+      </ul>
+      <p>
+        The first value in our data is 12. This value is found in the first subrange, so we represent it with the
+        pattern
+        of
+        the first subrange:
+      </p>
+      <p>
+        ⣀
+      </p>
+      <p>
+        The second value is 31, found in the second subrange, so it’s represented with the second subrange pattern.
+        Let’s
+        add it to the sequence:
+      </p>
+      <p>
+        ⣀⠤
+      </p>
+      <p>
+        The third is 22, also found in the second subrange. Let’s add it too:
+      </p>
+      <p>
+        ⣀⠤⠤
+      </p>
+      <p>
+        Then comes 5, which is in the first subrange, and we get:
+      </p>
+      <p>
+        ⣀⠤⠤⣀
+      </p>
+      <p>
+        Next is 70, found in the 4th subrange:
+      </p>
+      <p>
+        ⣀⠤⠤⣀⠉
+      </p>
+      <p>
+        By now you probably got a general idea of what things look like in our braille representation. Let’s “see” how
+        the
+        final output looks like:
+      </p>
+      <p>
+        ⣀⠤⠤⣀⠉⠉⠒⠒⠉⠤⠤⣀
+      </p>
+      <p>
+        So, after you have reviewed the braille representation of the numerical data, do you think you can get “a
+        feeling
+        of
+        the graph”? We think you can! 😊
+      </p>
+      <hr>
+      <h2>Stage 6 - Looking at different number ranges</h2>
+      <p>
+        Let’s now talk about some interesting case where the range doesn’t start from 1. Rather, it starts from some
+        arbitrary value, let’s say 1001. So, in that case, what will the braille representation look like? Let’s assume
+        we
+        want to represent the range from 1001 to 1020. This is our input:
+      </p>
+      <p>
+        1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018,
+        1019,
+        1020
+      </p>
+      <p>
+        As we did before, we divide the range to 4 equal subranges as follows:
+      </p>
+      <ul>
+        <li>⣀ will represent any value from 1001 to 1005</li>
+        <li>⠤ will represent any value from 1006 to 1010</li>
+        <li>⠒ will represent any value from 1011 to 1015</li>
+        <li>⠉ will represent any value from 1016 to 1020</li>
+      </ul>
+      <p>
+        As a result of this, the output will look like this:
+      </p>
+      <p>
+        ⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠒⠒⠒⠒⠒⠉⠉⠉⠉⠉
+      </p>
+      <p>
+        Can you notice that our output looks exactly as in section 4, where we showed 1 to 20? So, you might ask: how I
+        am
+        supposed to distinguish between the 2 cases? The answer is simple, via braille you can’t! However, in such
+        situations, speech comes into play. It will help you to determine the exact value you are examining.
+      </p>
+      <hr>
+      <h2>Configuring your screen reader</h2>
+      <p>
+        Configure your screen reader to actually stplit words in braille. In other words, if the complete word
+        can’t be displayed on the braille display, your screen reader shouldn’t try to not split it. In NVDA for
+        example,
+        you can do this by going to NVDA Menu > Preferences > Settings > Braille and unchecking the checkbox which says
+        “Avoid splitting words when possible”. This is necessary to have braille work as expected in the system.
+      </p>
+    </div>
+  </main>
+  <!--========== footer ==========-->
+  <footer>
+    <div class="container">
+
+      <!--========== social-icons ==========-->
+      <div class="row text-center row-social-icon">
+        <div class="col">
+          <a class="footer-social-link" target="_blank" Rel=”noopener”
+            href="https://github.com/hasadna/sensory-interface" title="github">
+            <img class="footer-social-img" src="../assets/images/social-icons/github.png" alt="github logo">
+          </a>
+        </div>
+      </div>
+      <!--========== social-icons end ==========-->
+
+      <!--==========  project details ==========-->
+      <div class="big-footer-text-heb-row">
+        <p class="small-footer-text" id="credit">
+          This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
+          collaborations, please send an email to: info@sensoryinterface.com
+        </p>
+      </div>
+      <hr width="50%">
+      <div class="row text-center">
+        <div class="col">
+          <p class="small-footer-text">
+            Made with &nbsp;<img src="../assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
+              alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
+          </p>
+        </div>
+
+      </div>
+      <!--==========  project details end ==========-->
+
+    </div>
+
+  </footer>
+  <!--========== footer end ==========-->
+
+
+
+  <!---========== scripts ==========-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="../js/scripts.js"></script>
+</body>
+
+</html>
