@@ -92,5 +92,4 @@ const updateLinksAccessibility = () => {
         addNewTabMessage(link);
     });
 };
-updateLinksAccessibility();
 //# sourceMappingURL=scripts.js.map

@@ -114,5 +114,3 @@ const updateLinksAccessibility = () => {
     addNewTabMessage(link);
   });
 };
-
-updateLinksAccessibility();

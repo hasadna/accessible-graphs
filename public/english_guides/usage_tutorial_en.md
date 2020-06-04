@@ -1,4 +1,3 @@
-# Sensory Interface guide
 In this guide, we will go through how to make graphs accessible for people with low vision or blindness.
 Using the system, you can understand things like stock price behaviour, see whether a given stock has a price decrease at some point, and also other more finer details. Another popular example nowadays is the ability to understand Coronavirus data, which gets updated on a daily basis, such as daily patient count graphs.
 In this guide, you will practice making an accessible graph, with data provided as an example, in 3 stages.
@@ -33,6 +32,6 @@ You should now see an accessible graph such as the one [in this link](https://se
 
 </br>
 
-To learn more on how we use braille in the system, please click [here](tutorial_braille_en.html).
+To learn more on how we use braille in the system, go to our [Sensory Interface braille tutorial](tutorial_braille_en.html).
 
 Thanks for your time and efforts and we hope you enjoy viewing graphs!
