@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="auto">
 
 <head>
   <meta charset="utf-8">
   <link rel="canonical" href="https://sensoryinterface.com/" />
-  <title>Universal template</title>
+  <title></title>
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <!--========== web tags ==========-->
   <meta name="description" content="Sensory interface" />
@@ -26,6 +26,23 @@
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/tutorial.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!---========== scripts ==========-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+  <script defer src="../js/scripts.js"></script>
+  <script defer src="../js/utils.js"></script>
+  <script defer src="../languages/i18n.js"></script>
+  <script defer src="../languages/he.js"></script>
+  <script defer src="../languages/en.js"></script>
+  <script defer src="../js/tutorialHandler.js"></script>
+
 </head>
 
 <body onload="fillTutorial()">
@@ -68,7 +85,8 @@
       </li>
 
       <li class="wonder-nav-li d-md-none">
-        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px" aria-expanded="false">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px"
+          aria-expanded="false">
           <span class="hamburger-box" aria-hidden=”true”>
             <span class="hamburger-inner" aria-hidden=”true”></span></span>
         </button>
@@ -104,8 +122,8 @@
             </a>
           </li>
         </ul>
+      </div>
     </div>
-  </div>
   </div>
   <!--========== side bar end ==========-->
 
@@ -116,9 +134,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 col-12 text-center">
-            <h1 class="tut-title">
-              Universal template
-            </h1>
+            <h1 class="tut-title"></h1>
           </div>
         </div>
       </div>
@@ -138,29 +154,17 @@
         <div class="col">
           <a class="footer-social-link" target="_blank" Rel=”noopener”
             href="https://github.com/hasadna/sensory-interface" title="github">
-            <img class="footer-social-img" src="../assets/images/social-icons/github.png" alt="github logo">
+            <img class="footer-social-img" src="assets/images/social-icons/github.png" alt="github logo">
           </a>
         </div>
       </div>
       <!--========== social-icons end ==========-->
 
-      <!--==========  project details ==========-->
       <div class="big-footer-text-heb-row">
-        <p class="small-footer-text" id="credit">
-          This project is run by The Public Knowledge Workshop (a nonprofit). For more details and
-          collaborations, please send an email to: info@sensoryinterface.com
-        </p>
+        <p class="big-footer-text">
+          <a href="https://www.sensoryinterface.com" id="sensoryInterfaceLink">The Sensory Interface project</a>
       </div>
-      <hr width="50%">
-      <div class="row text-center">
-        <div class="col">
-          <p class="small-footer-text">
-            Made with &nbsp;<img src="../assets/images/heart.svg" style="width: 8px;opacity: 0.7;margin-top: -4px;"
-              alt="heart icon"> &nbsp; by <a style="color: #000A41;" href="https://wonder-solve.com/">Wonder</a>
-          </p>
-        </div>
 
-      </div>
       <!--==========  project details end ==========-->
 
     </div>
@@ -168,18 +172,6 @@
   </footer>
   <!--========== footer end ==========-->
 
-  <!---========== scripts ==========-->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
-    <script src="../js/scripts.js"></script>
-  <script src="../js/tutorialHandler.js"></script>
 </body>
 
 </html>

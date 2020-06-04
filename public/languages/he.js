@@ -25,6 +25,7 @@ const he = {
   ofer: 'עופר ברטל',
   ofer2: 'מהנדס תוכנה, X-Googler, עובד על מיזם <a href="https://wakka.ai">wakka.ai</a> אשר עוזר לאנשים ללמוד ולעבוד בתחום התוכנה',
   credit: 'פרויקט זה מנוהל על ידי הסדנא לידע ציבורי (עמותה). לפרטים נוספים ושיתופי פעולה, אנא שלחו דוא"ל לכתובת: info@sensoryinterface.com',
-  selectLanguage: 'בחר שפה'
+  selectLanguage: 'בחר שפה',
+  sensoryInterfaceLink: 'פרויקט Sensory Interface'
 };
 langs['he'] = he;

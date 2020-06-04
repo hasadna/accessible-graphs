@@ -4,7 +4,7 @@ const en = {
   title: 'Sensory Interface',
   tutorial: 'Tutorial',
   theTeam: 'The team',
-  howWork: 'How it\'s work',
+  howWork: 'How it works',
   aboutUs1: 'About us',
   description: 'The Sensory Interface project aims to help people with low vision and blindness understand tabular numerical data such as spreadsheets.',
   getStarted: 'Get started',
@@ -25,6 +25,7 @@ const en = {
   ofer: 'Ofer Bartal',
   ofer2: 'Software engineer, X-Googler, Co-founder at <a href="https://wakka.ai">wakka.ai</a> with a goal to help people learn and work in software',
   credit: 'This project is run by The Public Knowledge Workshop (a nonprofit). For more details and collaborations, please send an email to: info@sensoryinterface.com',
-  selectLanguage: 'Change language'
+  selectLanguage: 'Change language',
+  sensoryInterfaceLink: 'The Sensory Interface project'
 };
 langs['en'] = en;

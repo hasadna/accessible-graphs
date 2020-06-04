@@ -26,6 +26,7 @@ const setLanguage = (selectedLanguage) => {
     langDirection = langs[language].direction;
     setTranslationInHTML(language);
     document.title = i18n('title', language);
+    handleLanguageSwitch(language);
 };
 /**
  * @param {string} language
@@ -79,7 +80,6 @@ const changeLanguage = (language) => {
     $('#language-popup').modal('toggle');
     console.log(language);
     setLanguage(language);
-    handleLanguageSwitch(language);
 };
 /**
  *
@@ -89,8 +89,14 @@ const handleLanguageSwitch = (language) => {
     document.getElementsByTagName('html')[0].lang = language;
     updateLinksAccessibility();
     let tutorialLanguage = language == 'en' ? 'english' : 'hebrew';
-    let tutorialPath = `tutorial-${tutorialLanguage}.html`;
-    document.getElementById('tutorial').setAttribute('href', tutorialPath);
-    document.getElementById('goToTutorial').setAttribute('href', tutorialPath);
+    let tutorialPath = `${tutorialLanguage}_guides/usage_tutorial_${language}.html`;
+    let tutorialLink = document.getElementById('tutorial');
+    if (tutorialLink) {
+        tutorialLink.setAttribute('href', tutorialPath);
+    }
+    tutorialLink = document.getElementById('goToTutorial');
+    if (tutorialLink) {
+        tutorialLink.setAttribute('href', tutorialPath);
+    }
 };
 //# sourceMappingURL=i18n.js.map
