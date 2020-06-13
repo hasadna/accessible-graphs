@@ -24,7 +24,7 @@ const en = {
   mohammad2: 'Software developer, B.Sc in Computer Science from Technion, blind and wants to help other blind people in STEM education',
   ofer: 'Ofer Bartal',
   ofer2: 'Software engineer, X-Googler, Co-founder at <a href="https://wakka.ai">wakka.ai</a> with a goal to help people learn and work in software',
-  credit: 'This project is run by The Public Knowledge Workshop (a nonprofit). For more details and collaborations, please send an email to: info@sensoryinterface.com',
+  credit: 'This project is funded by the Israel Innovation Authority, and run by The Public Knowledge Workshop (a nonprofit). For more details and collaborations, please send an email to: info@sensoryinterface.com',
   selectLanguage: 'Change language',
   sensoryInterfaceLink: 'The Sensory Interface project'
 };
