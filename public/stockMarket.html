@@ -49,6 +49,21 @@
       <br>
       <div class="row text-center">
         <div class="col-lg-12 col-md-12 col-sm-12">
+          <h2 class="text-center">Choose  a graph type</h2>
+        </div>
+      </div>
+      <input type="radio" id="stocks" name="stocks" onclick="onGraphRadioClick(this)">
+      <label for="stocks">Stock</label>
+      <input type="radio" id="indexs" name="indexs" onclick="onGraphRadioClick(this)">
+      <label for="indexs">Index</label>
+      <input type="radio" id="crypto" name="crypto" onclick="onGraphRadioClick(this)">
+      <label for="crypto">Crypto</label>
+      <input type="radio" id="currency" name="currency" onclick="onGraphRadioClick(this)">
+      <label for="currency">Currency</label>
+      <div id="graphPickerContainer"></div>
+      <hr>
+      <div class="row text-center">
+        <div class="col-lg-12 col-md-12 col-sm-12">
           <h2 class="text-center">Popular Stocks</h2>
         </div>
       </div>
@@ -157,7 +172,7 @@
     crossorigin="anonymous"></script>
   <script src="js/scripts.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/stockMarket.js"></script>
+  <script src="stocks/stockMarket.js"></script>
 </body>
 
 </html>
