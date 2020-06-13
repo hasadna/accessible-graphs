@@ -75,16 +75,15 @@ onGraphRadioClick = (radioElement) => {
 
 shoComboBox = (radioElement) => {
   let comboBox = document.createElement('select');
-  fetch(`stocks/currency.json`)
+  fetch(`stocks/${radioElement.id}.json`)
     .then(response => response.json())
     .then(data => {
       let container = document.getElementById('graphPickerContainer');
       container.insertBefore(comboBox, container.firstChild);
-      let currencyList = data.forexList;
-      for (currency of currencyList) {
+      for (let name of data) {
         let option = document.createElement('option');
-        option.value = currency.ticker;
-        option.innerHTML = currency.ticker;
+        option.value = name.name;
+        option.innerHTML = name.name;
         comboBox.appendChild(option);
       }
     });
