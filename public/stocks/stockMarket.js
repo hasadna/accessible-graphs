@@ -1,8 +1,7 @@
-links = [];
 
 // Get data by symbol
 getStockData = (symbol) => {
-  let historyData = { symbol: symbol, data: [], dates: []};
+  let historyData = { symbol: symbol, data: [], dates: [] };
   fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=d14cc5b97d675f42397fba2bbaa98d4c&serietype=line`)
     .then(response => response.json())
     .then(data => {
@@ -10,30 +9,31 @@ getStockData = (symbol) => {
         historyData.data.push(item.close);
         let date = new Date(item.date).toDateString();
         historyData.dates.push(date);
-      })
-      getLink(historyData);
+      });
     });
+  return historyData;
 }
 
 //get Currency History data
 getCurrencyHistory = (currency) => {
-  let historyData = { symbol: "", data: [], dates: [] };
+  let historyData = { symbol: '', data: [], dates: [] };
   fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
     .then(response => response.json())
     .then(data => {
       historyData.symbol = data.symbol;
+      alert(data.symbol)
       data.historical.slice(0, 20).map((item) => {
         historyData.data.push(item.close);
         let date = new Date(item.date).toDateString();
         historyData.dates.push(date);
-      })
-      getLink(historyData);
+      });
     });
+  return historyData;
 }
 
 //get Index History data
 getIndexHistory = (index) => {
-  let historyData = { symbol: "", data: [], dates: [] };
+  let historyData = { symbol: '', data: [], dates: [] };
   fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5E${index}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
     .then(response => response.json())
     .then(data => {
@@ -42,9 +42,9 @@ getIndexHistory = (index) => {
         historyData.data.push(item.close);
         let date = new Date(item.date).toDateString();
         historyData.dates.push(date);
-      })
-      getLink(historyData);
+      });
     });
+  return historyData;
 }
 
 //get link from the data
@@ -61,12 +61,10 @@ data=${data}
 &minValue=${minValue}
 &maxValue=${maxValue}
 &instrumentType=synthesizer`;
-  this.links.push({ symbol: symbol, href: link });
-  document.getElementById(symbol).href = link;
 }
 
 onGraphRadioClick = (radioElement) => {
-  if (radioElement.id === 'stock') {
+  if (radioElement.id === 'stocks') {
     showAutoComplete();
   } else {
     shoComboBox(radioElement);
@@ -74,12 +72,14 @@ onGraphRadioClick = (radioElement) => {
 }
 
 shoComboBox = (radioElement) => {
-  let comboBox = document.createElement('select');
   fetch(`stocks/${radioElement.id}.json`)
     .then(response => response.json())
     .then(data => {
-      let container = document.getElementById('graphPickerContainer');
-      container.insertBefore(comboBox, container.firstChild);
+      let comboContainer = document.getElementById('comboContainer');
+      comboContainer.style = '';
+      let autocompleteContainer = document.getElementById('autocompleteContainer');
+      autocompleteContainer.style = 'display: none;';
+      let comboBox = document.getElementById('graphCombo');
       for (let name of data) {
         let option = document.createElement('option');
         option.value = name.name;
@@ -89,8 +89,15 @@ shoComboBox = (radioElement) => {
     });
 }
 
+showAutoComplete = () => {
+  let comboContainer = document.getElementById('comboContainer');
+  comboContainer.style = 'display: none;';
+  let autocompleteContainer = document.getElementById('autocompleteContainer');
+  autocompleteContainer.style = '';
+}
+
 symbolToName = (symbol) => {
-  switch(symbol) {
+  switch (symbol) {
     case 'FB':
       return 'Facebook';
     case 'AMZN':
@@ -120,17 +127,30 @@ symbolToName = (symbol) => {
   }
 }
 
+updateLink = (symbol, graphType) => {
+  let historyData = null;
+  if (graphType === 'stocks') {
+    historyData = getStockData(symbol);
+  } else if (graphType === 'indexes') {
+    historyData = getIndexHistory(symbol);
+  } else {
+    historyData = getCurrencyHistory(symbol);
+  }
+  let link = getLink(historyData);
+  document.getElementById(symbol).href = link;
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
-  getStockData('FB');
-  getStockData('AMZN');
-  getStockData('AAPL');
-  getStockData('TSLA');
-  getStockData('GOOG');
-  getStockData('MSFT');
-  getStockData('NFLX');
-  getStockData('BABA');
-  getCurrencyHistory('EURUSD');
-  getCurrencyHistory('EURGBP');
-  getIndexHistory('DJI');
-  getIndexHistory('GSPC');
+  updateLink('FB', 'stocks');
+  updateLink('AMZN', 'stocks');
+  updateLink('AAPL', 'stocks');
+  updateLink('TSLA', 'stocks');
+  updateLink('GOOG', 'stocks');
+  updateLink('MSFT', 'stocks');
+  updateLink('NFLX', 'stocks');
+  updateLink('BABA', 'stocks');
+  updateLink('EURUSD', 'currency');
+  updateLink('EURGBP', 'currency');
+  updateLink('DJI', 'indexes');
+  updateLink('GSPC', 'indexes');
 });

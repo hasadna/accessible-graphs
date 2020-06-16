@@ -22,8 +22,11 @@
   <!--========== css files ==========-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="./css/styles.css" />
-  <link rel="stylesheet" href="./css/stockMarket.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/stockMarket.css" />
+  <link rel="stylesheet" href="stocks/autocomplete/autocomplete.css" />
+  <link rel="stylesheet" href="stocks/autocomplete/base.css" />
+  <link rel="stylesheet" href="stocks/autocomplete/normalization.css" />
 </head>
 
 <body>
@@ -54,7 +57,7 @@
       </div>
       <fieldset>
         <legend>Graph type</legend>
-        <input type="radio" id="stocks" name="graphType" onclick="onGraphRadioClick(this)">
+        <input type="radio" id="stocks" name="graphType" onclick="onGraphRadioClick(this)" checked>
         <label for="stocks">Stock</label>
         <input type="radio" id="indexes" name="graphType" onclick="onGraphRadioClick(this)">
         <label for="indexes">Index</label>
@@ -63,7 +66,23 @@
         <input type="radio" id="currency" name="graphType" onclick="onGraphRadioClick(this)">
         <label for="currency">Currency</label>
       </fieldset>
-      <div id="graphPickerContainer"></div>
+      <div id="autocompleteContainer" data-widget="accessible-autocomplete">
+        <label for="stockSearch">Search for a stock:</label>
+        <input type="text" id="stockSearch" autocomplete="off" class="autocomplete-search-field"
+          aria-describedby="initialStr" aria-owns="results" aria-expanded="false" aria-autocomplete="both"
+          aria-activedescendant="">
+        <button type="button" id="clearText">clear text</button>
+        <button type="button" id="view">View</button>
+        <ul id="results" class="autocomplete-list" role="listbox" tabindex="0"
+          style="display: none; left: 282.85px; top: 269.25px; min-width: 260px;"></ul>
+        <span id="initialStr" style="display: none;">When autocomplete results are available use up and down arrows to
+          review and enter to select. Touch device users, explore by touch or with swipe gestures.</span>
+        <div aria-live="assertive" class="screen-reader-text"></div>
+      </div>
+      <div id="comboContainer" style="display: none;">
+        <select id="graphCombo"></select>
+        <button id="view">View</button>
+      </div>
       <hr>
       <div class="row text-center">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -176,6 +195,10 @@
   <script src="js/scripts.js"></script>
   <script src="js/utils.js"></script>
   <script src="stocks/stockMarket.js"></script>
+  <script src="stocks/autocomplete/namespacing.js"></script>
+  <script src="stocks/autocomplete/accessibility-helpers.js"></script>
+  <script src="stocks/autocomplete/autocomplete.js"></script>
 </body>
+
 
 </html>
