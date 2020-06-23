@@ -34,8 +34,11 @@ class BrailleController {
     textarea.style.whiteSpace = 'nowrap';
     textarea.style.overflowX = 'auto';
 
-    const brailleControllerLabel: HTMLLabelElement = document.createElement('label');
-    brailleControllerLabel.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.<br>To start, focus or click on the text box below:';
+    const brailleControllerInstructions: HTMLElement = document.createElement('p');
+    brailleControllerInstructions.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.<br>To start, focus or click on the text box below:';
+    parent.appendChild(brailleControllerInstructions);
+    let brailleControllerLabel: HTMLElement = document.createElement('label');
+    brailleControllerLabel.innerHTML = 'Start navigating the graph';
     brailleControllerLabel.setAttribute('for', 'brailleControllerText');
     parent.appendChild(brailleControllerLabel);
     parent.appendChild(textarea);
