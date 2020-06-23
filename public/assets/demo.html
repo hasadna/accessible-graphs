@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <a id="demo">Demo link</a>
+  <script>
+    let labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let stockValues = [1500, 1300, 1700, 2000, 1000, 1450, 1900];
+    let link = createUrl(labels, stockValues);
+    document.getElementById('demo').href = link;
+    
+    function createUrl(labels, values) {
+      let maxValue = Math.max(...stockValues);
+      let minValue = Math.min(...stockValues);
+      let stockData = stockValues.join('%09');
+      let lablesData = labels.join('%09');
+      let data = `${lablesData}%0A${stockData}`;
+      let link = `https://sensoryinterface.com/view/index.html?
+data=${data}
+&description=Demo stock example
+&minValue=${minValue}
+&maxValue=${maxValue}
+&instrumentType=synthesizer`;
+      return link;
+    }
+  </script>
+</body>
+
+</html>
