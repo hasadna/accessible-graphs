@@ -1,73 +1,122 @@
 
 // Get data by symbol
-getStockData = (symbol) => {
+getStockData = async (symbol) => {
   let historyData = { symbol: symbol, data: [], dates: [] };
-  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=d14cc5b97d675f42397fba2bbaa98d4c&serietype=line`)
-    .then(response => response.json())
-    .then(data => {
-      data.historical.slice(0, 20).map((item) => {
-        historyData.data.push(item.close);
-        let date = new Date(item.date).toDateString();
-        historyData.dates.push(date);
-      });
-    });
+  let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=d14cc5b97d675f42397fba2bbaa98d4c&serietype=line`);
+  let data = await response.json();
+  data.historical.slice(0, 20).map((item) => {
+    historyData.data.push(item.close);
+    let date = new Date(item.date).toDateString();
+    historyData.dates.push(date);
+  });
   return historyData;
 }
 
 //get Currency History data
-getCurrencyHistory = (currency) => {
+getCurrencyHistory = async (currency) => {
   let historyData = { symbol: '', data: [], dates: [] };
-  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
-    .then(response => response.json())
-    .then(data => {
-      historyData.symbol = data.symbol;
-      alert(data.symbol)
-      data.historical.slice(0, 20).map((item) => {
-        historyData.data.push(item.close);
-        let date = new Date(item.date).toDateString();
-        historyData.dates.push(date);
-      });
-    });
+  let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
+  let data = await response.json();
+  historyData.symbol = data.symbol;
+  data.historical.slice(0, 20).map((item) => {
+    historyData.data.push(item.close);
+    let date = new Date(item.date).toDateString();
+    historyData.dates.push(date);
+  });
   return historyData;
 }
 
 //get Index History data
-getIndexHistory = (index) => {
+getIndexHistory = async (index) => {
   let historyData = { symbol: '', data: [], dates: [] };
-  fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/%5E${index}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`)
-    .then(response => response.json())
-    .then(data => {
-      historyData.symbol = data.symbol;
-      data.historical.slice(0, 20).map((item) => {
-        historyData.data.push(item.close);
-        let date = new Date(item.date).toDateString();
-        historyData.dates.push(date);
-      });
-    });
+  let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/${index}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
+  let data = await response.json();
+  historyData.symbol = data.symbol;
+  data.historical.slice(0, 20).map((item) => {
+    historyData.data.push(item.close);
+    let date = new Date(item.date).toDateString();
+    historyData.dates.push(date);
+  });
+  return historyData;
+}
+
+getCryptoHistory = async (crypto) => {
+  let historyData = { symbol: '', data: [], dates: [] };
+  let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/crypto/${crypto}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
+  let data = await response.json();
+  historyData.symbol = data.symbol;
+  data.historical.slice(0, 20).map((item) => {
+    historyData.data.push(item.close);
+    let date = new Date(item.date).toDateString();
+    historyData.dates.push(date);
+  });
   return historyData;
 }
 
 //get link from the data
-getLink = (historyData) => {
+getLink = async (symbol, graphType) => {
+  let historyData = null;
+  if (graphType === 'stocks') {
+    historyData = await getStockData(symbol);
+  } else if (graphType === 'indexes') {
+    historyData = await getIndexHistory(symbol);
+  } else if (graphType === 'crypto') {
+    historyData = await getCryptoHistory(symbol);
+  }
+  else {
+    historyData = await getCurrencyHistory(symbol);
+  }
   let maxValue = Math.max(...historyData.data);
   let minValue = Math.min(...historyData.data);
   let dates = historyData.dates.join('%09');
   let prices = historyData.data.join('%09');
   let data = `${dates}%0A${prices}`;
-  let symbol = historyData.symbol;
   let link = `view/index.html?
 data=${data}
-&description=${symbolToName(symbol)}%20stock (${symbol})
+&description=${await symbolToName(symbol, graphType)}%20stock (${symbol})
 &minValue=${minValue}
 &maxValue=${maxValue}
 &instrumentType=synthesizer`;
+  return link;
 }
+
+symbolToName = async (symbol, graphType) => {
+  let response = await fetch(`stocks/${graphType}.json`)
+  let data = await response.json();
+  for (let dataElement of data) {
+    if (dataElement.symbol === symbol) {
+      return dataElement.name;
+    }
+  }
+}
+
+updateLink = async (symbol, graphType) => {
+  let link = await getLink(symbol, graphType);
+  document.getElementById(symbol).href = link;
+}
+
+window.addEventListener('DOMContentLoaded', async (event) => {
+  await updateLink('FB', 'stocks');
+  await updateLink('AMZN', 'stocks');
+  await updateLink('AAPL', 'stocks');
+  await updateLink('TSLA', 'stocks');
+  await updateLink('GOOG', 'stocks');
+  await updateLink('MSFT', 'stocks');
+  await updateLink('NFLX', 'stocks');
+  await updateLink('BABA', 'stocks');
+  await updateLink('EURUSD', 'currency');
+  await updateLink('EURGBP', 'currency');
+  await updateLink('^DJI', 'indexes');
+  await updateLink('^GSPC', 'indexes');
+});
 
 onGraphRadioClick = (radioElement) => {
   if (radioElement.id === 'stocks') {
     showAutoComplete();
+    document.getElementById('graphCombo').selectedIndex = 0;
   } else {
     shoComboBox(radioElement);
+    document.getElementById('stockSearch').value = '';
   }
 }
 
@@ -80,10 +129,11 @@ shoComboBox = (radioElement) => {
       let autocompleteContainer = document.getElementById('autocompleteContainer');
       autocompleteContainer.style = 'display: none;';
       let comboBox = document.getElementById('graphCombo');
-      for (let name of data) {
+      comboBox.innerHTML = '';
+      for (let dataElement of data) {
         let option = document.createElement('option');
-        option.value = name.name;
-        option.innerHTML = name.name;
+        option.value = dataElement.name;
+        option.innerHTML = dataElement.name;
         comboBox.appendChild(option);
       }
     });
@@ -96,61 +146,44 @@ showAutoComplete = () => {
   autocompleteContainer.style = '';
 }
 
-symbolToName = (symbol) => {
-  switch (symbol) {
-    case 'FB':
-      return 'Facebook';
-    case 'AMZN':
-      return 'Amazon';
-    case 'AAPL':
-      return 'Apple';
-    case 'TSLA':
-      return 'Tesla';
-    case 'GOOG':
-      return 'Google';
-    case 'MSFT':
-      return 'Microsoft';
-    case 'NFLX':
-      return 'Netflix';
-    case 'BABA':
-      return 'Alibaba';
-    case '^GSPC':
-      return 'S and P 500';
-    case '^DJI':
-      return 'Dow Jones';
-    case 'EUR/USD':
-      return 'EUR/USD';
-    case 'EUR/GBP':
-      return 'EUR/GBP';
-    default:
-      return '';
-  }
-}
-
-updateLink = (symbol, graphType) => {
-  let historyData = null;
-  if (graphType === 'stocks') {
-    historyData = getStockData(symbol);
-  } else if (graphType === 'indexes') {
-    historyData = getIndexHistory(symbol);
+viewGraph = async () => {
+  let container = document.getElementById('autocompleteContainer');
+  let input = '';
+  if (window.getComputedStyle(container).display === 'none') {
+    input = document.getElementById('graphCombo').value;
   } else {
-    historyData = getCurrencyHistory(symbol);
+    input = document.getElementById('stockSearch').value;
   }
-  let link = getLink(historyData);
-  document.getElementById(symbol).href = link;
+  let graphType = findGraphType();
+  let symbol = await nameToSymbol(input, graphType);
+  if (!symbol) {
+    alert('No such name');
+    return;
+  }
+  let link = await getLink(symbol, graphType);
+  window.location.href = link;
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-  updateLink('FB', 'stocks');
-  updateLink('AMZN', 'stocks');
-  updateLink('AAPL', 'stocks');
-  updateLink('TSLA', 'stocks');
-  updateLink('GOOG', 'stocks');
-  updateLink('MSFT', 'stocks');
-  updateLink('NFLX', 'stocks');
-  updateLink('BABA', 'stocks');
-  updateLink('EURUSD', 'currency');
-  updateLink('EURGBP', 'currency');
-  updateLink('DJI', 'indexes');
-  updateLink('GSPC', 'indexes');
-});
+findGraphType = () => {
+  if (document.getElementById('stocks').checked) {
+    return 'stocks';
+  } else if (document.getElementById('indexes').checked) {
+    return 'indexes';
+  } else if (document.getElementById('crypto').checked) {
+    return 'crypto';
+  } else if (document.getElementById('currency').checked) {
+    return 'currency';
+  } else {
+    return '';
+  }
+}
+
+nameToSymbol = async (name, graphType) => {
+  let response = await fetch(`stocks/${graphType}.json`)
+  let data = await response.json();
+  for (let dataElement of data) {
+    if (dataElement.name === name) {
+      return dataElement.symbol;
+    }
+  }
+}

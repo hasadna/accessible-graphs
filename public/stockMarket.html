@@ -69,19 +69,17 @@
       <div id="autocompleteContainer" data-widget="accessible-autocomplete">
         <label for="stockSearch">Search for a stock:</label>
         <input type="text" id="stockSearch" autocomplete="off" class="autocomplete-search-field"
-          aria-describedby="initialStr" aria-owns="results" aria-expanded="false" aria-autocomplete="both"
+          aria-owns="results" aria-expanded="false" aria-autocomplete="both"
           aria-activedescendant="">
         <button type="button" id="clearText">clear text</button>
-        <button type="button" id="view">View</button>
+        <button type="button" id="view" onclick="viewGraph()">View</button>
         <ul id="results" class="autocomplete-list" role="listbox" tabindex="0"
           style="display: none; left: 282.85px; top: 269.25px; min-width: 260px;"></ul>
-        <span id="initialStr" style="display: none;">When autocomplete results are available use up and down arrows to
-          review and enter to select. Touch device users, explore by touch or with swipe gestures.</span>
         <div aria-live="assertive" class="screen-reader-text"></div>
       </div>
       <div id="comboContainer" style="display: none;">
         <select id="graphCombo"></select>
-        <button id="view">View</button>
+        <button type="button" id="view" onclick="viewGraph()">View</button>
       </div>
       <hr>
       <div class="row text-center">
@@ -143,10 +141,10 @@
             <div class="col-lg-3 col-md-6 col-sm-12 stock-link">
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 stock-link">
-              <a id="EUR/USD" href="">EUR/USD</a>
+              <a id="EURUSD" href="">EUR/USD</a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 stock-link">
-              <a id="EUR/GBP" href="">EUR/GBP</a>
+              <a id="EURGBP" href="">EUR/GBP</a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 stock-link">
             </div>

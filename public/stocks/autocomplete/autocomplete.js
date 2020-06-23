@@ -14,7 +14,6 @@
     results = [],
     $live = $widget.find('[aria-live]'),
     key = NAME.keyboard,
-    directions = "Keyboard users, use up and down arrows to review and enter to select.  Touch device users, explore by touch or with swipe gestures.",
     liMarkup = '<li id="" class="autocomplete-item" role="option" aria-selected="false" tabindex="-1">';
   function getResults() {
     let value = $input.val();
@@ -59,7 +58,7 @@
   }
   function announceResults() {
     var number = results.length,
-      textToRead = number + " results are available. " + directions;
+      textToRead = number + " results are available. ";
     // if results length === 0 then say "no search results"
     if (results.length === 0) {
       textToRead = "No search results";

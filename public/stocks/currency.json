@@ -1,6 +1,7 @@
 [
   {
     "name": "EUR/USD",
+    "symbol": "EURUSD",
     "bid": "1.13555",
     "ask": "1.13557",
     "open": "1.12925",
@@ -11,6 +12,7 @@
   },
   {
     "name": "USD/JPY",
+    "symbol": "USDJPY",
     "bid": "107.763",
     "ask": "107.770",
     "open": "108.445",
@@ -21,6 +23,7 @@
   },
   {
     "name": "GBP/USD",
+    "symbol": "GBPUSD",
     "bid": "1.27275",
     "ask": "1.27284",
     "open": "1.27248",
@@ -31,6 +34,7 @@
   },
   {
     "name": "EUR/GBP",
+    "symbol": "EURGBP",
     "bid": "0.89214",
     "ask": "0.89221",
     "open": "0.88748",
@@ -41,6 +45,7 @@
   },
   {
     "name": "USD/CHF",
+    "symbol": "USDCHF",
     "bid": "0.94867",
     "ask": "0.94875",
     "open": "0.95778",
@@ -51,6 +56,7 @@
   },
   {
     "name": "EUR/JPY",
+    "symbol": "EURJPY",
     "bid": "122.370",
     "ask": "122.379",
     "open": "122.472",
@@ -61,6 +67,7 @@
   },
   {
     "name": "EUR/CHF",
+    "symbol": "EURCHF",
     "bid": "1.07729",
     "ask": "1.07734",
     "open": "1.08153",
@@ -71,6 +78,7 @@
   },
   {
     "name": "USD/CAD",
+    "symbol": "USDCAD",
     "bid": "1.34265",
     "ask": "1.34275",
     "open": "1.33826",
@@ -81,6 +89,7 @@
   },
   {
     "name": "AUD/USD",
+    "symbol": "AUDUSD",
     "bid": "0.69645",
     "ask": "0.69651",
     "open": "0.70205",
@@ -91,6 +100,7 @@
   },
   {
     "name": "GBP/JPY",
+    "symbol": "GBPJPY",
     "bid": "137.157",
     "ask": "137.170",
     "open": "137.993",
@@ -101,6 +111,7 @@
   },
   {
     "name": "AUD/CAD",
+    "symbol": "AUDCAD",
     "bid": "0.93511",
     "ask": "0.93526",
     "open": "0.93962",
@@ -111,6 +122,7 @@
   },
   {
     "name": "AUD/CHF",
+    "symbol": "AUDCHF",
     "bid": "0.66068",
     "ask": "0.66084",
     "open": "0.67242",
@@ -121,6 +133,7 @@
   },
   {
     "name": "AUD/JPY",
+    "symbol": "AUDJPY",
     "bid": "75.054",
     "ask": "75.064",
     "open": "76.138",
@@ -131,6 +144,7 @@
   },
   {
     "name": "AUD/NZD",
+    "symbol": "AUDNZD",
     "bid": "1.06752",
     "ask": "1.06765",
     "open": "1.07010",
@@ -141,6 +155,7 @@
   },
   {
     "name": "CAD/CHF",
+    "symbol": "CADCHF",
     "bid": "0.70652",
     "ask": "0.70663",
     "open": "0.71565",
@@ -151,6 +166,7 @@
   },
   {
     "name": "CAD/JPY",
+    "symbol": "CADJPY",
     "bid": "80.257",
     "ask": "80.264",
     "open": "81.029",
@@ -161,6 +177,7 @@
   },
   {
     "name": "CHF/JPY",
+    "symbol": "CHFJPY",
     "bid": "113.585",
     "ask": "113.598",
     "open": "113.229",
@@ -171,6 +188,7 @@
   },
   {
     "name": "EUR/AUD",
+    "symbol": "EURAUD",
     "bid": "1.63030",
     "ask": "1.63052",
     "open": "1.60842",
@@ -181,6 +199,7 @@
   },
   {
     "name": "EUR/CAD",
+    "symbol": "EURCAD",
     "bid": "1.52465",
     "ask": "1.52479",
     "open": "1.51133",
@@ -191,6 +210,7 @@
   },
   {
     "name": "EUR/NOK",
+    "symbol": "EURNOK",
     "bid": "10.52891",
     "ask": "10.53172",
     "open": "10.46335",
@@ -201,6 +221,7 @@
   },
   {
     "name": "EUR/NZD",
+    "symbol": "EURNZD",
     "bid": "1.74051",
     "ask": "1.74070",
     "open": "1.72195",
@@ -211,6 +232,7 @@
   },
   {
     "name": "GBP/CAD",
+    "symbol": "GBPCAD",
     "bid": "1.70882",
     "ask": "1.70909",
     "open": "1.70294",
@@ -221,6 +243,7 @@
   },
   {
     "name": "GBP/CHF",
+    "symbol": "GBPCHF",
     "bid": "1.20743",
     "ask": "1.20762",
     "open": "1.21871",
@@ -231,6 +254,7 @@
   },
   {
     "name": "NZD/JPY",
+    "symbol": "NZDJPY",
     "bid": "70.299",
     "ask": "70.314",
     "open": "71.118",
@@ -241,6 +265,7 @@
   },
   {
     "name": "NZD/USD",
+    "symbol": "NZDUSD",
     "bid": "0.65236",
     "ask": "0.65243",
     "open": "0.65579",
@@ -251,6 +276,7 @@
   },
   {
     "name": "USD/NOK",
+    "symbol": "USDNOK",
     "bid": "9.27225",
     "ask": "9.27420",
     "open": "9.26520",
@@ -261,6 +287,7 @@
   },
   {
     "name": "USD/SEK",
+    "symbol": "USDSEK",
     "bid": "9.16789",
     "ask": "9.16996",
     "open": "9.20060",
