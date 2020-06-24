@@ -1,0 +1,110 @@
+[
+  {
+    "name": "EUR/USD",
+    "symbol": "EURUSD"
+  },
+  {
+    "name": "USD/JPY",
+    "symbol": "USDJPY"
+  },
+  {
+    "name": "GBP/USD",
+    "symbol": "GBPUSD"
+  },
+  {
+    "name": "EUR/GBP",
+    "symbol": "EURGBP"
+  },
+  {
+    "name": "USD/CHF",
+    "symbol": "USDCHF"
+  },
+  {
+    "name": "EUR/JPY",
+    "symbol": "EURJPY"
+  },
+  {
+    "name": "EUR/CHF",
+    "symbol": "EURCHF"
+  },
+  {
+    "name": "USD/CAD",
+    "symbol": "USDCAD"
+  },
+  {
+    "name": "AUD/USD",
+    "symbol": "AUDUSD"
+  },
+  {
+    "name": "GBP/JPY",
+    "symbol": "GBPJPY"
+  },
+  {
+    "name": "AUD/CAD",
+    "symbol": "AUDCAD"
+  },
+  {
+    "name": "AUD/CHF",
+    "symbol": "AUDCHF"
+  },
+  {
+    "name": "AUD/JPY",
+    "symbol": "AUDJPY"
+  },
+  {
+    "name": "AUD/NZD",
+    "symbol": "AUDNZD"
+  },
+  {
+    "name": "CAD/CHF",
+    "symbol": "CADCHF"
+  },
+  {
+    "name": "CAD/JPY",
+    "symbol": "CADJPY"
+  },
+  {
+    "name": "CHF/JPY",
+    "symbol": "CHFJPY"
+  },
+  {
+    "name": "EUR/AUD",
+    "symbol": "EURAUD"
+  },
+  {
+    "name": "EUR/CAD",
+    "symbol": "EURCAD"
+  },
+  {
+    "name": "EUR/NOK",
+    "symbol": "EURNOK"
+  },
+  {
+    "name": "EUR/NZD",
+    "symbol": "EURNZD"
+  },
+  {
+    "name": "GBP/CAD",
+    "symbol": "GBPCAD"
+  },
+  {
+    "name": "GBP/CHF",
+    "symbol": "GBPCHF"
+  },
+  {
+    "name": "NZD/JPY",
+    "symbol": "NZDJPY"
+  },
+  {
+    "name": "NZD/USD",
+    "symbol": "NZDUSD"
+  },
+  {
+    "name": "USD/NOK",
+    "symbol": "USDNOK"
+  },
+  {
+    "name": "USD/SEK",
+    "symbol": "USDSEK"
+  }
+]

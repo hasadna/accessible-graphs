@@ -1,0 +1,430 @@
+[
+  {
+    "symbol": "RLCUSD",
+    "name": "iExec RLC USD"
+  },
+  {
+    "symbol": "HSRUSD",
+    "name": "Hshare USD"
+  },
+  {
+    "symbol": "SCUSD",
+    "name": "Siacoin USD"
+  },
+  {
+    "symbol": "GNOUSD",
+    "name": "Gnosis USD"
+  },
+  {
+    "symbol": "EOSUSD",
+    "name": "EOS USD"
+  },
+  {
+    "symbol": "NLC2USD",
+    "name": "NoLimitCoin USD"
+  },
+  {
+    "symbol": "ZENUSD",
+    "name": "Horizen USD"
+  },
+  {
+    "symbol": "BTCDUSD",
+    "name": "BitcoinDark USD"
+  },
+  {
+    "symbol": "FAIRUSD",
+    "name": "FairCoin USD"
+  },
+  {
+    "symbol": "MCOUSD",
+    "name": "MCO USD"
+  },
+  {
+    "symbol": "TAASUSD",
+    "name": "TaaS USD"
+  },
+  {
+    "symbol": "BLOCKUSD",
+    "name": "Blocknet USD"
+  },
+  {
+    "symbol": "LRCUSD",
+    "name": "Loopring USD"
+  },
+  {
+    "symbol": "XRPUSD",
+    "name": "XRP USD"
+  },
+  {
+    "symbol": "LTCUSD",
+    "name": "Litecoin USD"
+  },
+  {
+    "symbol": "ANTUSD",
+    "name": "Aragon USD"
+  },
+  {
+    "symbol": "GBYTEUSD",
+    "name": "Obyte USD"
+  },
+  {
+    "symbol": "GAMEUSD",
+    "name": "GameCredits USD"
+  },
+  {
+    "symbol": "XEMUSD",
+    "name": "NEM USD"
+  },
+  {
+    "symbol": "FCTUSD",
+    "name": "Factom USD"
+  },
+  {
+    "symbol": "GASUSD",
+    "name": "Gas USD"
+  },
+  {
+    "symbol": "SMARTUSD",
+    "name": "SmartCash USD"
+  },
+  {
+    "symbol": "XVGUSD",
+    "name": "Verge USD"
+  },
+  {
+    "symbol": "ADXUSD",
+    "name": "AdEx USD"
+  },
+  {
+    "symbol": "WTCUSD",
+    "name": "Waltonchain USD"
+  },
+  {
+    "symbol": "PPTUSD",
+    "name": "Populous USD"
+  },
+  {
+    "symbol": "IOCUSD",
+    "name": "I/O Coin USD"
+  },
+  {
+    "symbol": "LKKUSD",
+    "name": "Lykke USD"
+  },
+  {
+    "symbol": "GNTUSD",
+    "name": "Golem USD"
+  },
+  {
+    "symbol": "SUBUSD",
+    "name": "Substratum USD"
+  },
+  {
+    "symbol": "NEBLUSD",
+    "name": "Neblio USD"
+  },
+  {
+    "symbol": "XLMUSD",
+    "name": "Stellar USD"
+  },
+  {
+    "symbol": "DASHUSD",
+    "name": "Dash USD"
+  },
+  {
+    "symbol": "MGOUSD",
+    "name": "MobileGo USD"
+  },
+  {
+    "symbol": "DCRUSD",
+    "name": "Decred USD"
+  },
+  {
+    "symbol": "ETHUSD",
+    "name": "Ethereum USD"
+  },
+  {
+    "symbol": "XZCUSD",
+    "name": "Zcoin USD"
+  },
+  {
+    "symbol": "SYSUSD",
+    "name": "Syscoin USD"
+  },
+  {
+    "symbol": "FRSTUSD",
+    "name": "FirstCoin USD"
+  },
+  {
+    "symbol": "STRATUSD",
+    "name": "Stratis USD"
+  },
+  {
+    "symbol": "PAYUSD",
+    "name": "TenX USD"
+  },
+  {
+    "symbol": "SNMUSD",
+    "name": "SONM USD"
+  },
+  {
+    "symbol": "MLNUSD",
+    "name": "Melon USD"
+  },
+  {
+    "symbol": "BCHUSD",
+    "name": "Bitcoin Cash USD"
+  },
+  {
+    "symbol": "BTGUSD",
+    "name": "Bitcoin Gold USD"
+  },
+  {
+    "symbol": "ICXUSD",
+    "name": "ICON USD"
+  },
+  {
+    "symbol": "NAVUSD",
+    "name": "NavCoin USD"
+  },
+  {
+    "symbol": "CVCUSD",
+    "name": "Civic USD"
+  },
+  {
+    "symbol": "BTSUSD",
+    "name": "BitShares USD"
+  },
+  {
+    "symbol": "VERIUSD",
+    "name": "Veritaseum USD"
+  },
+  {
+    "symbol": "SNTUSD",
+    "name": "Status USD"
+  },
+  {
+    "symbol": "BNTUSD",
+    "name": "Bancor USD"
+  },
+  {
+    "symbol": "LSKUSD",
+    "name": "Lisk USD"
+  },
+  {
+    "symbol": "SNGLSUSD",
+    "name": "SingularDTV USD"
+  },
+  {
+    "symbol": "NXSUSD",
+    "name": "Nexus USD"
+  },
+  {
+    "symbol": "DCNUSD",
+    "name": "Dentacoin USD"
+  },
+  {
+    "symbol": "ARDRUSD",
+    "name": "Ardor USD"
+  },
+  {
+    "symbol": "KMDUSD",
+    "name": "Komodo USD"
+  },
+  {
+    "symbol": "FUNUSD",
+    "name": "FunFair USD"
+  },
+  {
+    "symbol": "DGDUSD",
+    "name": "DigixDAO USD"
+  },
+  {
+    "symbol": "QASHUSD",
+    "name": "QASH USD"
+  },
+  {
+    "symbol": "DOGEUSD",
+    "name": "Dogecoin USD"
+  },
+  {
+    "symbol": "PIVXUSD",
+    "name": "PIVX USD"
+  },
+  {
+    "symbol": "VTCUSD",
+    "name": "Vertcoin USD"
+  },
+  {
+    "symbol": "WINGSUSD",
+    "name": "Wings USD"
+  },
+  {
+    "symbol": "KINUSD",
+    "name": "Kin USD"
+  },
+  {
+    "symbol": "BTCUSD",
+    "name": "Bitcoin USD"
+  },
+  {
+    "symbol": "SALTUSD",
+    "name": "SALT USD"
+  },
+  {
+    "symbol": "XMRUSD",
+    "name": "Monero USD"
+  },
+  {
+    "symbol": "EDGUSD",
+    "name": "Edgeless USD"
+  },
+  {
+    "symbol": "WAVESUSD",
+    "name": "Waves USD"
+  },
+  {
+    "symbol": "MCAPUSD",
+    "name": "MCAP USD"
+  },
+  {
+    "symbol": "QTUMUSD",
+    "name": "Qtum USD"
+  },
+  {
+    "symbol": "ADAUSD",
+    "name": "Cardano USD"
+  },
+  {
+    "symbol": "DGBUSD",
+    "name": "DigiByte USD"
+  },
+  {
+    "symbol": "LINKUSD",
+    "name": "Chainlink USD"
+  },
+  {
+    "symbol": "MTLUSD",
+    "name": "Metal USD"
+  },
+  {
+    "symbol": "ARKUSD",
+    "name": "Ark USD"
+  },
+  {
+    "symbol": "ICNUSD",
+    "name": "Iconomi USD"
+  },
+  {
+    "symbol": "DNTUSD",
+    "name": "district0x USD"
+  },
+  {
+    "symbol": "TRXUSD",
+    "name": "TRON USD"
+  },
+  {
+    "symbol": "BCNUSD",
+    "name": "Bytecoin USD"
+  },
+  {
+    "symbol": "MAIDUSD",
+    "name": "MaidSafeCoin USD"
+  },
+  {
+    "symbol": "UBQUSD",
+    "name": "Ubiq USD"
+  },
+  {
+    "symbol": "MONAUSD",
+    "name": "MonaCoin USD"
+  },
+  {
+    "symbol": "NXTUSD",
+    "name": "Nxt USD"
+  },
+  {
+    "symbol": "STORJUSD",
+    "name": "Storj USD"
+  },
+  {
+    "symbol": "REPUSD",
+    "name": "Augur USD"
+  },
+  {
+    "symbol": "QRLUSD",
+    "name": "Quantum Resistant Ledger USD"
+  },
+  {
+    "symbol": "USDTUSD",
+    "name": "Tether USD"
+  },
+  {
+    "symbol": "AEUSD",
+    "name": "Aeternity USD"
+  },
+  {
+    "symbol": "STEEMUSD",
+    "name": "Steem USD"
+  },
+  {
+    "symbol": "ZRXUSD",
+    "name": "0x USD"
+  },
+  {
+    "symbol": "PARTUSD",
+    "name": "Particl USD"
+  },
+  {
+    "symbol": "OMGUSD",
+    "name": "OMG Network USD"
+  },
+  {
+    "symbol": "XUCUSD",
+    "name": "Exchange Union USD"
+  },
+  {
+    "symbol": "KNCUSD",
+    "name": "Kyber Network USD"
+  },
+  {
+    "symbol": "BATUSD",
+    "name": "Basic Attention Token USD"
+  },
+  {
+    "symbol": "BNBUSD",
+    "name": "Binance Coin USD"
+  },
+  {
+    "symbol": "ETCUSD",
+    "name": "Ethereum Classic USD"
+  },
+  {
+    "symbol": "ETPUSD",
+    "name": "Metaverse ETP USD"
+  },
+  {
+    "symbol": "ZECUSD",
+    "name": "Zcash USD"
+  },
+  {
+    "symbol": "BQXUSD",
+    "name": "Bitquence USD"
+  },
+  {
+    "symbol": "XCPUSD",
+    "name": "Counterparty USD"
+  },
+  {
+    "symbol": "ATBUSD",
+    "name": "ATBCoin USD"
+  },
+  {
+    "symbol": "NEOUSD",
+    "name": "Neo USD"
+  },
+  {
+    "symbol": "BTCUSD=X",
+    "name": "BTC/USD"
+  }
+]

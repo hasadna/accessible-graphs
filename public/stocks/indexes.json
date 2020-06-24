@@ -1,0 +1,230 @@
+[
+  {
+    "symbol": "^SSEC",
+    "name": "SSE Composite Index"
+  },
+  {
+    "symbol": "^STI",
+    "name": "STI Index"
+  },
+  {
+    "symbol": "^BVSP",
+    "name": "IBOVESPA"
+  },
+  {
+    "symbol": "^MXX",
+    "name": "IPC MEXICO"
+  },
+  {
+    "symbol": "^GSPTSE",
+    "name": "S&P/TSX Composite index"
+  },
+  {
+    "symbol": "^VIX",
+    "name": "CBOE Volatility Index"
+  },
+  {
+    "symbol": "^DJI",
+    "name": "Dow Jones Industrial Average"
+  },
+  {
+    "symbol": "^FCHI",
+    "name": "CAC 40"
+  },
+  {
+    "symbol": "^N100",
+    "name": "EURONEXT 100"
+  },
+  {
+    "symbol": "IMOEX.ME",
+    "name": "MOEX Russia Index"
+  },
+  {
+    "symbol": "^AXJO",
+    "name": "S&P/ASX 200"
+  },
+  {
+    "symbol": "^NYA",
+    "name": "NYSE COMPOSITE (DJ)"
+  },
+  {
+    "symbol": "^N225",
+    "name": "Nikkei 225"
+  },
+  {
+    "symbol": "^TWII",
+    "name": "TSEC weighted index"
+  },
+  {
+    "symbol": "^IPSA",
+    "name": "S&P/CLX IPSA"
+  },
+  {
+    "symbol": "^XAX",
+    "name": "NYSE AMEX COMPOSITE INDEX"
+  },
+  {
+    "symbol": "^BFX",
+    "name": "BEL 20"
+  },
+  {
+    "symbol": "^TA125.TA",
+    "name": "TA-125"
+  },
+  {
+    "symbol": "^KLSE",
+    "name": "FTSE Bursa Malaysia KLCI"
+  },
+  {
+    "symbol": "^BSESN",
+    "name": "S&P BSE SENSEX"
+  },
+  {
+    "symbol": "^STOXX50E",
+    "name": "ESTX 50 PR.EUR"
+  },
+  {
+    "symbol": "^IXIC",
+    "name": "NASDAQ Composite"
+  },
+  {
+    "symbol": "^KS11",
+    "name": "KOSPI Composite Index"
+  },
+  {
+    "symbol": "^MERV",
+    "name": "MERVAL"
+  },
+  {
+    "symbol": "^HSI",
+    "name": "HANG SENG INDEX"
+  },
+  {
+    "symbol": "^JN0U.JO",
+    "name": "Top 40 USD Net TRI Index"
+  },
+  {
+    "symbol": "000001.SS",
+    "name": "SSE Composite Index"
+  },
+  {
+    "symbol": "^CASE30",
+    "name": "EGX 30 Price Return Index"
+  },
+  {
+    "symbol": "^GSPC",
+    "name": "S%26P 500"
+  },
+  {
+    "symbol": "^FTSE",
+    "name": "FTSE 100"
+  },
+  {
+    "symbol": "^BUK100P",
+    "name": "Cboe UK 100 Price Return"
+  },
+  {
+    "symbol": "^AORD",
+    "name": "ALL ORDINARIES"
+  },
+  {
+    "symbol": "^RUT",
+    "name": "Russell 2000"
+  },
+  {
+    "symbol": "^GDAXI",
+    "name": "DAX PERFORMANCE-INDEX"
+  },
+  {
+    "symbol": "^JKSE",
+    "name": "Jakarta Composite Index"
+  },
+  {
+    "symbol": "^NZ50",
+    "name": "S&P/NZX 50 INDEX GROSS"
+  },
+  {
+    "symbol": "^NSEI",
+    "name": "NIFTY 50"
+  },
+  {
+    "symbol": "^NSEBANK",
+    "name": "NIFTY BANK"
+  },
+  {
+    "symbol": "^SP500TR",
+    "name": "S&P 500 (TR)"
+  },
+  {
+    "symbol": "^DJITR",
+    "name": "Dow Jones Industrial Average TR"
+  },
+  {
+    "symbol": "^RUTTR",
+    "name": "Russell 2000 Total Return"
+  },
+  {
+    "symbol": "^XNDX",
+    "name": "NASDAQ 100 Total Return Index"
+  },
+  {
+    "symbol": "^RUITR",
+    "name": "Russell 1000 Total Return"
+  },
+  {
+    "symbol": "^RUATR",
+    "name": "Russell 3000 Total Return"
+  },
+  {
+    "symbol": "^RMCCTR",
+    "name": "Russell Midcap Total Return"
+  },
+  {
+    "symbol": "^DJT",
+    "name": "Dow Jones Transportation Averag"
+  },
+  {
+    "symbol": "^NDX",
+    "name": "NASDAQ 100"
+  },
+  {
+    "symbol": "^MID",
+    "name": "S&P MID CAP 400 INDEX"
+  },
+  {
+    "symbol": "^RUA",
+    "name": "Russell 3000"
+  },
+  {
+    "symbol": "^RVX",
+    "name": "CBOE RUSSELL 2000 VOLATILITY IN"
+  },
+  {
+    "symbol": "^VXN",
+    "name": "CBOE NASDAQ 100 Voltility"
+  },
+  {
+    "symbol": "^OVX",
+    "name": "CBOE Crude Oil Volatility Index"
+  },
+  {
+    "symbol": "^GVZ",
+    "name": "CBOE Gold Volatitity Index"
+  },
+  {
+    "symbol": "^TYVIX",
+    "name": "CBOE/CBOT 10-year U.S. Treasury"
+  },
+  {
+    "symbol": "^VVIX",
+    "name": "CBOE VIX VOLATILITY INDEX"
+  },
+  {
+    "symbol": "^VXSLV",
+    "name": "CBOE SILVER ETF VOLATILITY INDE"
+  },
+  {
+    "symbol": "^IBEX",
+    "name": "IBEX 35."
+  }
+]
