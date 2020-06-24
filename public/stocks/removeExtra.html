@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <textarea name="test" id="test"></textarea>
+  <script>
+    async function run() {
+      let response = await fetch('');
+      let data = await response.json();
+      for (let dataElement of data) {
+        for (let key of Object.keys(dataElement)) {
+          if (key !== 'name' && key !== 'symbol') {
+            delete dataElement[key];
+          }
+        }
+      }
+      document.getElementById('test').innerHTML = JSON.stringify(data);
+    }
+    run();
+  </script>
+</body>
+
+</html>

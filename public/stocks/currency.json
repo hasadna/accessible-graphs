@@ -1,299 +1,110 @@
 [
   {
     "name": "EUR/USD",
-    "symbol": "EURUSD",
-    "bid": "1.13555",
-    "ask": "1.13557",
-    "open": "1.12925",
-    "low": "1.12409",
-    "high": "1.13590",
-    "changes": 0.5587779499667758,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURUSD"
   },
   {
     "name": "USD/JPY",
-    "symbol": "USDJPY",
-    "bid": "107.763",
-    "ask": "107.770",
-    "open": "108.445",
-    "low": "107.662",
-    "high": "108.547",
-    "changes": -0.6256627783669008,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "USDJPY"
   },
   {
     "name": "GBP/USD",
-    "symbol": "GBPUSD",
-    "bid": "1.27275",
-    "ask": "1.27284",
-    "open": "1.27248",
-    "low": "1.26175",
-    "high": "1.27561",
-    "changes": 0.024754809505834526,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "GBPUSD"
   },
   {
     "name": "EUR/GBP",
-    "symbol": "EURGBP",
-    "bid": "0.89214",
-    "ask": "0.89221",
-    "open": "0.88748",
-    "low": "0.88641",
-    "high": "0.89394",
-    "changes": 0.5290260062198465,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURGBP"
   },
   {
     "name": "USD/CHF",
-    "symbol": "USDCHF",
-    "bid": "0.94867",
-    "ask": "0.94875",
-    "open": "0.95778",
-    "low": "0.94859",
-    "high": "0.95861",
-    "changes": -0.9469815615277019,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "USDCHF"
   },
   {
     "name": "EUR/JPY",
-    "symbol": "EURJPY",
-    "bid": "122.370",
-    "ask": "122.379",
-    "open": "122.472",
-    "low": "121.322",
-    "high": "122.610",
-    "changes": -0.07961003331372264,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURJPY"
   },
   {
     "name": "EUR/CHF",
-    "symbol": "EURCHF",
-    "bid": "1.07729",
-    "ask": "1.07734",
-    "open": "1.08153",
-    "low": "1.07455",
-    "high": "1.08293",
-    "changes": -0.3897256664170277,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURCHF"
   },
   {
     "name": "USD/CAD",
-    "symbol": "USDCAD",
-    "bid": "1.34265",
-    "ask": "1.34275",
-    "open": "1.33826",
-    "low": "1.33593",
-    "high": "1.34885",
-    "changes": 0.3317740947200095,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "USDCAD"
   },
   {
     "name": "AUD/USD",
-    "symbol": "AUDUSD",
-    "bid": "0.69645",
-    "ask": "0.69651",
-    "open": "0.70205",
-    "low": "0.68983",
-    "high": "0.70429",
-    "changes": -0.7933907841321792,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "AUDUSD"
   },
   {
     "name": "GBP/JPY",
-    "symbol": "GBPJPY",
-    "bid": "137.157",
-    "ask": "137.170",
-    "open": "137.993",
-    "low": "136.227",
-    "high": "138.253",
-    "changes": -0.6011174479864891,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "GBPJPY"
   },
   {
     "name": "AUD/CAD",
-    "symbol": "AUDCAD",
-    "bid": "0.93511",
-    "ask": "0.93526",
-    "open": "0.93962",
-    "low": "0.92922",
-    "high": "0.94172",
-    "changes": -0.4719993188735954,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "AUDCAD"
   },
   {
     "name": "AUD/CHF",
-    "symbol": "AUDCHF",
-    "bid": "0.66068",
-    "ask": "0.66084",
-    "open": "0.67242",
-    "low": "0.65885",
-    "high": "0.67436",
-    "changes": -1.7340352755718158,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "AUDCHF"
   },
   {
     "name": "AUD/JPY",
-    "symbol": "AUDJPY",
-    "bid": "75.054",
-    "ask": "75.064",
-    "open": "76.138",
-    "low": "74.465",
-    "high": "76.278",
-    "changes": -1.4171635714098185,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "AUDJPY"
   },
   {
     "name": "AUD/NZD",
-    "symbol": "AUDNZD",
-    "bid": "1.06752",
-    "ask": "1.06765",
-    "open": "1.07010",
-    "low": "1.06373",
-    "high": "1.07269",
-    "changes": -0.235024764040748,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "AUDNZD"
   },
   {
     "name": "CAD/CHF",
-    "symbol": "CADCHF",
-    "bid": "0.70652",
-    "ask": "0.70663",
-    "open": "0.71565",
-    "low": "0.70606",
-    "high": "0.71654",
-    "changes": -1.2680779710752539,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "CADCHF"
   },
   {
     "name": "CAD/JPY",
-    "symbol": "CADJPY",
-    "bid": "80.257",
-    "ask": "80.264",
-    "open": "81.029",
-    "low": "79.950",
-    "high": "81.142",
-    "changes": -0.9484258722185748,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "CADJPY"
   },
   {
     "name": "CHF/JPY",
-    "symbol": "CHFJPY",
-    "bid": "113.585",
-    "ask": "113.598",
-    "open": "113.229",
-    "low": "112.602",
-    "high": "113.647",
-    "changes": 0.32014766535074685,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "CHFJPY"
   },
   {
     "name": "EUR/AUD",
-    "symbol": "EURAUD",
-    "bid": "1.63030",
-    "ask": "1.63052",
-    "open": "1.60842",
-    "low": "1.60647",
-    "high": "1.63279",
-    "changes": 1.367180214123174,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURAUD"
   },
   {
     "name": "EUR/CAD",
-    "symbol": "EURCAD",
-    "bid": "1.52465",
-    "ask": "1.52479",
-    "open": "1.51133",
-    "low": "1.50971",
-    "high": "1.52662",
-    "changes": 0.8859746051491079,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURCAD"
   },
   {
     "name": "EUR/NOK",
-    "symbol": "EURNOK",
-    "bid": "10.52891",
-    "ask": "10.53172",
-    "open": "10.46335",
-    "low": "10.42079",
-    "high": "10.59849",
-    "changes": 0.6399957948458163,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURNOK"
   },
   {
     "name": "EUR/NZD",
-    "symbol": "EURNZD",
-    "bid": "1.74051",
-    "ask": "1.74070",
-    "open": "1.72195",
-    "low": "1.71890",
-    "high": "1.74391",
-    "changes": 1.0833647899183987,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "EURNZD"
   },
   {
     "name": "GBP/CAD",
-    "symbol": "GBPCAD",
-    "bid": "1.70882",
-    "ask": "1.70909",
-    "open": "1.70294",
-    "low": "1.69978",
-    "high": "1.71128",
-    "changes": 0.3532126792488346,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "GBPCAD"
   },
   {
     "name": "GBP/CHF",
-    "symbol": "GBPCHF",
-    "bid": "1.20743",
-    "ask": "1.20762",
-    "open": "1.21871",
-    "low": "1.20520",
-    "high": "1.22107",
-    "changes": -0.917773711547456,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "GBPCHF"
   },
   {
     "name": "NZD/JPY",
-    "symbol": "NZDJPY",
-    "bid": "70.299",
-    "ask": "70.314",
-    "open": "71.118",
-    "low": "69.822",
-    "high": "71.294",
-    "changes": -1.141061334683196,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "NZDJPY"
   },
   {
     "name": "NZD/USD",
-    "symbol": "NZDUSD",
-    "bid": "0.65236",
-    "ask": "0.65243",
-    "open": "0.65579",
-    "low": "0.64685",
-    "high": "0.65809",
-    "changes": -0.517696213726944,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "NZDUSD"
   },
   {
     "name": "USD/NOK",
-    "symbol": "USDNOK",
-    "bid": "9.27225",
-    "ask": "9.27420",
-    "open": "9.26520",
-    "low": "9.21697",
-    "high": "9.42557",
-    "changes": 0.08661442818287732,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "USDNOK"
   },
   {
     "name": "USD/SEK",
-    "symbol": "USDSEK",
-    "bid": "9.16789",
-    "ask": "9.16996",
-    "open": "9.20060",
-    "low": "9.15485",
-    "high": "9.30040",
-    "changes": -0.34427102580266394,
-    "date": "2020-06-09 11:16:43"
+    "symbol": "USDSEK"
   }
 ]

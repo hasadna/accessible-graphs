@@ -115,12 +115,12 @@ onGraphRadioClick = (radioElement) => {
     showAutoComplete();
     document.getElementById('graphCombo').selectedIndex = 0;
   } else {
-    shoComboBox(radioElement);
+    showComboBox(radioElement);
     document.getElementById('stockSearch').value = '';
   }
 }
 
-shoComboBox = (radioElement) => {
+showComboBox = (radioElement) => {
   fetch(`stocks/${radioElement.id}.json`)
     .then(response => response.json())
     .then(data => {
