@@ -3,6 +3,8 @@ from numbers import Number
 
 
 def getAccessibleGraph(rawData, description=''):
+    # TODO: allow the user to pass a list of lables and a list of values
+    # TODO: warn the user if python version is < 3.6, because rawData could be not OrderedDict in that case
     if (type(description) is not str):
         raise Exception('The description type should be string')
     data = ''
@@ -15,9 +17,9 @@ def getAccessibleGraph(rawData, description=''):
         values = rawData.values()
         if (not _checkIfNumbers(values)):
             raise Exception('The data values should be numbers')
-        dataLables = '%09'.join(labels)
+        dataLabels = '%09'.join(labels)
         dataValues = '%09'.join(str(value) for value in values)
-        data = '{}%0A{}'.format(dataLables, dataValues)
+        data = '{}%0A{}'.format(dataLabels, dataValues)
         minValue = min(values)
         maxValue = max(values)
     elif (type(rawData) is list):
