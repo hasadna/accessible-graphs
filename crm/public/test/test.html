@@ -1,0 +1,30 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Mocha Tests</title>
+	<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+	<link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div id="mocha"></div>
+
+	<script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+	<script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+
+	<script>
+		mocha.setup('bdd')
+	</script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+	<script src="test.firestore.js"></script>
+
+	<script>
+		mocha.run();
+	</script>
+</body>
+
+</html>
