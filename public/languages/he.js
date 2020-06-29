@@ -6,7 +6,7 @@ const he = {
   theTeam: 'הצוות',
   howWork: 'איך זה עובד',
   aboutUs1: 'עלינו',
-  description: 'פרויקט Accessible Graphs נועד לעזור לאנשים עם לקות ראייה ועיוורון להבין נתונים מספריים טבלאיים כמו גיליונות אלקטרוניים.',
+  description: 'פרויקט Accessible Graphs נועד ליצור גרפים נגישים לאנשים עם לקות ראייה ועיוורון.',
   getStarted: 'בואו נתחיל',
   learnMore: 'למד עוד',
   aboutUs2: 'עלינו',

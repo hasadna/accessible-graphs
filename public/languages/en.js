@@ -6,7 +6,7 @@ const en = {
   theTeam: 'The team',
   howWork: 'How it works',
   aboutUs1: 'About us',
-  description: 'The Accessible Graphs project aims to help people with low vision and blindness understand tabular numerical data such as spreadsheets.',
+  description: 'The Accessible Graphs project aims to create accessible graphs for blind and visually impaired people.',
   getStarted: 'Get started',
   learnMore: 'Learn more',
   aboutUs2: 'About us',
