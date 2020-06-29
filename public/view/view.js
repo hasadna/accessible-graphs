@@ -59,6 +59,7 @@ function processData() {
     liveRegion.className = 'hidden';
     liveRegion.setAttribute('style', 'display: none;');
     container.appendChild(liveRegion);
+    setGraph(data, dataHeaders);
 }
 function createTtsCombo() {
     const ttsCombo = document.createElement('select');
@@ -307,3 +308,4 @@ function updateTtsCombo() {
     return;
 }
 //# sourceMappingURL=view.js.map
+
