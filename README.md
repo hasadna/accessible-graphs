@@ -8,7 +8,7 @@ Data is often visualized using graphs, charts, heatmaps etc, which are inaccessi
 
 Our hope is that this project will unlock employment opportunities for blind people in high-quality fields such as Finance, Data Science, Scientific Research, Education and others.
 
-Team: [Ofer Bartal](https://www.linkedin.com/in/ofer-bartal-58a50811), [Mohammad Suliman](https://www.linkedin.com/in/mohammad-suliman-0440a8106)
+Team: [Ofer Bartal](https://www.linkedin.com/in/ofer-bartal-58a50811), [Mohammad Suliman](https://www.linkedin.com/in/mohammad-suliman-0440a8106), [Eilana Benish](https://adn-accesstime.com/author/benisheilana)
 
 This project is run by [The Public Knowledge Workshop](https://www.hasadna.org.il/en) (a nonprofit).
 
