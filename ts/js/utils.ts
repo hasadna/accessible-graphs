@@ -17,7 +17,7 @@ const setQueryParam = (name: string, value: string) => {
   let urlParams: URLSearchParams = new URLSearchParams(window.location.search);
   urlParams.set(name, value);
   urlParams.sort();
-  window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
+  window.history.pushState('Accessible Graphs', 'Accessible Graphs', window.location.pathname + '?' + urlParams.toString());
 };
 
 
@@ -29,5 +29,5 @@ const deleteQueryParam = (name: string) => {
   const queryString: string = window.location.search;
   const urlParams: URLSearchParams = new URLSearchParams(queryString);
   urlParams.delete(name);
-  window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
+  window.history.pushState('Accessible Graphs', 'Accessible Graphs', window.location.pathname + '?' + urlParams.toString());
 };

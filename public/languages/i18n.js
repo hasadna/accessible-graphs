@@ -49,6 +49,7 @@ const setTranslationByID = (id, langKey, language) => {
     const element = document.getElementById(id);
     if (element) {
         element.innerHTML = i18n(langKey, language);
+        element.dir = langDirection;
     }
 };
 /**

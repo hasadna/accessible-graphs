@@ -1,0 +1,14 @@
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #000A41;
+  font-family: 'Lato', sans-serif;
+  text-align: initial;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}

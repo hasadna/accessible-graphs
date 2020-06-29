@@ -1,5 +1,5 @@
 ## Introduction
-Welcome to the Sensory Interface tutorial! 
+Welcome to the Accessible Graphs tutorial! 
 The tutorial aims to provide you with a walk-through on using braille in our system. 
 Braille greatly enhances the experience of using our system, and this tutorial shows you how we use braille to achieve that experience. 
 Before we continue the tutorial, please: 

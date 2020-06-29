@@ -2,7 +2,6 @@ let langs = {};
 let lang;
 let langDirection;
 
-
 /**
  * @returns {string} Defaults to "en" if no language defined by query string or local storage
  */
@@ -60,6 +59,7 @@ const setTranslationByID = (id: string, langKey: string, language: string) => {
   const element: HTMLElement = document.getElementById(id);
   if (element) {
     element.innerHTML = i18n(langKey, language);
+    element.dir = langDirection;
   }
 };
 
