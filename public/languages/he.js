@@ -26,7 +26,7 @@ const he = {
   mohammad2: 'מפתח תוכנה, B.Sc במדעי המחשב מהטכניון, עיוור ורוצה לעזור לעיוורים אחרים בחינוך במקצועות ה- STEM',
   ofer: 'עופר ברטל',
   ofer2: 'מהנדס תוכנה, X-Googler, עובד על מיזם <a href="https://wakka.ai">wakka.ai</a> אשר עוזר לאנשים ללמוד ולעבוד בתחום התוכנה',
-  credit: 'פרויקט זה ממומן ע"י הרשות לחדשנות, ומנוהל על ידי הסדנא לידע ציבורי (עמותה). לפרטים נוספים ושיתופי פעולה, אנא שלחו דוא"ל לכתובת: info@accessiblegraphs.org',
+  credit: 'פרויקט זה ממומן ע"י הרשות לחדשנות, ומנוהל על ידי הסדנא לידע ציבורי (עמותה). לפרטים נוספים ושיתופי פעולה, אנא שלחו דוא"ל לכתובת: <a href="mailto:info@accessiblegraphs.org">info@accessiblegraphs.org</a>',
   selectLanguage: 'בחר שפה',
   accessibleGraphsLink: 'פרויקט Accessible Graphs'
 };
