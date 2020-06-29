@@ -37,16 +37,16 @@ function findDocumentLanguage(filePath: string): string {
 
 
 const filePathToTitle: Record<string, string> = {
-  '/english_guides/tutorial_braille_en.html': 'Braille tutorial - Sensory interface',
-  '/english_guides/usage_tutorial_en.html': 'Basic Sensory Interface guide',
-  '/hebrew_guides/tutorial_braille_he.html': 'אודות השימוש בשיטת הברייל במערכת Sensory interface',
-  '/hebrew_guides/usage_tutorial_he.html': 'מדריך התנסות במערכת Sensory interface'
+  '/english_guides/tutorial_braille_en.html': 'Braille tutorial - Accessible Graphs',
+  '/english_guides/usage_tutorial_en.html': 'Basic Accessible Graphs guide',
+  '/hebrew_guides/tutorial_braille_he.html': 'אודות השימוש בשיטת הברייל במערכת Accessible Graphs',
+  '/hebrew_guides/usage_tutorial_he.html': 'מדריך התנסות במערכת Accessible Graphs'
 }
 
 
 const filePathToHeading: Record<string, string> = {
-  '/english_guides/tutorial_braille_en.html': 'Sensory interface braille tutorial',
-  '/english_guides/usage_tutorial_en.html': 'Sensory Interface basic guide',
-  '/hebrew_guides/tutorial_braille_he.html': 'אודות השימוש בשיטת הברייל במערכת Sensory interface',
-  '/hebrew_guides/usage_tutorial_he.html': 'מדריך למערכת Sensory Interface'
+  '/english_guides/tutorial_braille_en.html': 'Accessible Graphs braille tutorial',
+  '/english_guides/usage_tutorial_en.html': 'Accessible Graphs basic guide',
+  '/hebrew_guides/tutorial_braille_he.html': 'אודות השימוש בשיטת הברייל במערכת Accessible Graphs',
+  '/hebrew_guides/usage_tutorial_he.html': 'מדריך למערכת Accessible Graphs'
 }

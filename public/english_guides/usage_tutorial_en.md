@@ -4,7 +4,7 @@ In this guide, you will practice making an accessible graph, with data provided 
 Note: Currently, this guide is intended for Windows users, using your preferred browser and screen reader.
 
 ## Stage 1
-* [Download the Excel file spreadsheet to your computer](http://sensoryinterface.com/assets/tutorial_data.xlsx)
+* [Download the Excel file spreadsheet to your computer](http://accessiblegraphs.org/assets/tutorial_data.xlsx)
 * Copy the first column, which consists of 10 rows. You can perform this by following those steps:
 
 
@@ -12,14 +12,14 @@ Note: Currently, this guide is intended for Windows users, using your preferred 
 2. Copy the data in this column by pressing Ctrl + C
 
 ## Stage 2
-* To make this data accessible, please visit the link [Builder - Sensory interface](https://sensoryinterface.com/builder/index.html)
+* To make this data accessible, please visit the link [Builder - Accessible Graphs](https://accessiblegraphs.org/builder/index.html)
 * Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press Tab.
 * If the data is copied successfully, your screen reader will report that the data is valid.
 * From here onwards, you can navigate to the view button to produce the accessible graph.
 Note: In this stage, we will skip some more advanced options.
 
 ## Stage 3
-You should now see an accessible graph such as the one [in this link](https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&minValue=0&maxValue=100&instrumentType=synthesizer&ttsName=Google%20US%20English).
+You should now see an accessible graph such as the one [in this link](https://accessiblegraphs.org/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&minValue=0&maxValue=100&instrumentType=synthesizer&ttsName=Google%20US%20English).
 
 ### Navigating the graph with a screen reader
 * With left and right arrows, you can move between the values found on the Y axis. The data is conveyed using 3 channels - braille, speech and tones.
@@ -32,6 +32,6 @@ You should now see an accessible graph such as the one [in this link](https://se
 
 </br>
 
-To learn more on how we use braille in the system, go to our [Sensory Interface braille tutorial](tutorial_braille_en.html).
+To learn more on how we use braille in the system, go to our [Accessible Graphs braille tutorial](tutorial_braille_en.html).
 
 Thanks for your time and efforts and we hope you enjoy viewing graphs!
