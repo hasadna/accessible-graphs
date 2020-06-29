@@ -8,13 +8,13 @@
 
 ## שלב 1
 
- * [הורידו למחשב את גיליון הנתונים בקובץ אקסל](http://sensoryinterface.com/assets/tutorial_data.xlsx)
+ * [הורידו למחשב את גיליון הנתונים בקובץ אקסל](http://accessiblegraphs.org/assets/tutorial_data.xlsx)
  * העתיקו את העמודה הראשונה, שהיא בת 10 שורות. תוכלו לעשות זאת ע"י:
   1.     סימון עמודת הנתונים: לחיצה על קונטרול + רווח - בכדי לסמן את עמודת הנתונים כולה
   1.     העתקת נתונים על ידי CTRL+C
 
 ## שלב 2
- * בכדי להנגיש את הנתונים, היכנסו ליישום [Builder - Sensory interface](https://sensoryinterface.com/builder/index.html)
+ * בכדי להנגיש את הנתונים, היכנסו ליישום [Builder - Accessible Graphs](https://accessiblegraphs.org/builder/index.html)
  * הדביקו את הנתונים שהעתקתם מגיליון האקסל בתיבת העריכה הראשונה ביישום (ע"י צירוף המקשים Ctrl + V או בדרך אחרת המוכרת לכם) ולאחר מכן לחצו על מקש ה TAB
  * אם הנתונים הודבקו כהלכה, קוראי המסכים התומכים יציינו שהנתונים הועתקו בהצלחה 
  * מכאן ניתן להמשיך ולנווט אל כפתור ה View  בכדי להפיק את הגרף המונגש
@@ -22,7 +22,7 @@
   הערה: בשלב ההתנסות הראשונית, נדלג על תכונות מתקדמות יותר.
 
 ## שלב 3
-[הגעתם לעמוד הצגת הגרף המונגש](https://sensoryinterface.com/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&minValue=0&maxValue=100&instrumentType=synthesizer&ttsName=Google%20US%20English)
+[הגעתם לעמוד הצגת הגרף המונגש](https://accessiblegraphs.org/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&minValue=0&maxValue=100&instrumentType=synthesizer&ttsName=Google%20US%20English)
 
 ### ניווט בגרף עם תוכנה קוראת מסך
  * באמצעות מקשי החיצים ימינה ושמאלה ניתן לעבור על הנתונים בציר ה X בגרף. המידע יוצג בשלושה ערוצים - ברייל, צלילים ודיבור.
@@ -36,8 +36,8 @@
 
  * החלק הימני (תאים 31 עד 40) מציג את הנתון תחת הסמן בחלק השמאלי ברמת דיוק יותר גבוהה. אפשר לחשוב על החלק הימני כאזור בו מוצג הערך שמתחת לסמן באופן מוגדל.
 
-אנו מודים לך על שיתוף הפעולה בהתנסות במערכת Sensory Interface.
+אנו מודים לך על שיתוף הפעולה בהתנסות במערכת Accessible Graphs.
 
 [נודה לך על משוב קצר בטופס מקוון ואנונימי](https://docs.google.com/forms/d/e/1FAIpQLSfaYX_axRDfrM_BCRNiwsQMA5PHyPG_gkLeUyNZJXCSdbCILg/viewform)
 
-למידע נוסף על השימוש בברייל במערכת Sensory Interface בקרו [במדריך המורחב](tutorial_braille_he.html)
+למידע נוסף על השימוש בברייל במערכת Accessible Graphs בקרו [במדריך המורחב](tutorial_braille_he.html)
