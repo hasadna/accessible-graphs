@@ -15,7 +15,7 @@ const setQueryParam = (name, value) => {
     let urlParams = new URLSearchParams(window.location.search);
     urlParams.set(name, value);
     urlParams.sort();
-    window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
+    window.history.pushState('Accessible Graphs', 'Accessible Graphs', window.location.pathname + '?' + urlParams.toString());
 };
 /**
  * Note, code is not currently used
@@ -25,6 +25,6 @@ const deleteQueryParam = (name) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     urlParams.delete(name);
-    window.history.pushState('Sensory interface', 'Sensory interface', window.location.pathname + '?' + urlParams.toString());
+    window.history.pushState('Accessible Graphs', 'Accessible Graphs', window.location.pathname + '?' + urlParams.toString());
 };
 //# sourceMappingURL=utils.js.map

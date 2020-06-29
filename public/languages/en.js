@@ -20,11 +20,13 @@ const en = {
   stage3: '3. Start using it!',
   goToTutorial: 'Go to tutorial',
   theTeam2: 'The team',
+  eilana: 'Eilana Benish',
+  eilana2: 'Product manager, website accessibility expert',
   mohammad: 'Mohammad Suliman',
   mohammad2: 'Software developer, B.Sc in Computer Science from Technion, blind and wants to help other blind people in STEM education',
   ofer: 'Ofer Bartal',
   ofer2: 'Software engineer, X-Googler, Co-founder at <a href="https://wakka.ai">wakka.ai</a> with a goal to help people learn and work in software',
-  credit: 'This project is funded by the Israel Innovation Authority, and run by The Public Knowledge Workshop (a nonprofit). For more details and collaborations, please send an email to: info@accessiblegraphs.org',
+  credit: 'This project is funded by the Israel Innovation Authority, and is run by The Public Knowledge Workshop (a nonprofit).<br>For more details and collaborations, please send an email to: <a href="mailto:info@accessiblegraphs.org">info@accessiblegraphs.org</a>',
   selectLanguage: 'Change language',
   accessibleGraphsLink: 'The Accessible Graphs project'
 };
