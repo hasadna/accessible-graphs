@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: accessible-graphs
-Version: 0.0.3
+Version: 0.0.3.1
 Summary: A package to make specific types of graphs accessible to low vision and blind users
-Home-page: https://github.com/hasadna/sensory-interface
+Home-page: https://github.com/hasadna/accessible-graphs
 Author: Mohammad Suliman
 Author-email: mohmad.s93@gmail.com
 License: UNKNOWN
