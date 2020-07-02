@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body onload="run()">
+  <div id="add_contact_button_container">
+    <button id="newContact" name="newContact" onclick="showNewContactForm()">Add new contact</button>
+  </div>
+  <div id="entity_table"></div>
+  <div id="edit_entity"></div>
+  <div id="add_contact_form">
+    <form action="">
+      <h1 id="newContactHeading" tabindex="0">Add new contact</h1>
+      <br>
+      <label for="name">Name</label><br>
+      <input type="text" id="name" name="Name" required>
+      <br>
+      <label for="nextAction">Next Action</label><br>
+      <input type="text" id="nextAction" name="Next Action" required>
+      <br>
+      <label for="doDate">Do date</label><br>
+      <input type="date" id="doDate" name="Do Date" required>
+      <br>
+      <label for="status">Status</label><br>
+      <select id="status" name="Status">
+        <option value="New">New</option>
+        <option value="Processing">Processing</option>
+        <option value="Finished">Finished</option>
+      </select>
+      <br>
+      <label for="comment">Comment</label><br>
+      <input type="text" id="comment" name="Comment">
+      <br>
+      <label for="email">Email</label><br>
+      <input type="email" id="email" name="Email" required>
+      <br>
+      <label for="mobilePhone">Mobile Phone</label><br>
+      <input type="tel" id="mobilePhone" name="Mobile Phone" required>
+      <br>
+      <label for="officePhone">Office Phone</label><br>
+      <input type="tel" id="officePhone" name="Office Phone">
+      <br>
+      <label for="address">Address</label><br>
+      <input type="text" id="address" name="Address">
+      <label for="description">Description</label><br>
+      <input type="text" id="description" name="Description">
+      <br>
+      <label for="webSite">Website</label><br>
+      <input type="url" id="webSite" name="Website">
+      <br>
+      <label for="type">Type</label><br>
+      <select id="type" name="Type">
+        <option value="Person">Person</option>
+        <option value="Organization">Organization</option>
+      </select>
+      <br>
+      <div id="new_contact_buttons">
+        <button id="submit" name="submit">Add</button>
+        <button id="cancel" name="cancel" onclick="discardContact()">Cancel</button>
+      </div>
+      <div id="update_contact_buttons">
+        <button id="updateContact" name="updateContact">Save</button>
+        <button id="removeContact" name="removeContact">Remove contact</button>
+        <button id="cancel" name="cancel" onclick="discardContact()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
