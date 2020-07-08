@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /{document=**} {
+      allow read, write: if request.auth.token.email == 'mohmad.s93@gmail.com';
+    }
+    match /{document=**} {
+      allow read, write: if request.auth.token.email == 'benish.ilana@gmail.com';
+    }
+    match /{document=**} {
+      allow read, write: if request.auth.token.email == 'blueofer@gmail.com';
+    }
+  }
+}

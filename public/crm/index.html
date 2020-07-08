@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <title>CRM - Accessible Graphs Project</title>
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+  <script src="/__/firebase/7.15.5/firebase-app.js"></script>
+  <script src="/__/firebase/7.15.5/firebase-auth.js"></script>
+  <script src="/__/firebase/7.15.5/firebase-firestore.js"></script>
   <script src="app.js"></script>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
 
-<body onload="run()">
-  <div id="add_contact_button_container">
+<body>
+  <div id="add_contact_button_container" style="display: none;">
     <button id="newContact" name="newContact" onclick="showNewContactForm()">Add new contact</button>
   </div>
-  <div id="entity_table"></div>
-  <div id="edit_entity"></div>
-  <div id="add_contact_form">
+  <div id="entity_table" style="display: none;"></div>
+  <div id="edit_entity" style="display: none;"></div>
+  <div id="add_contact_form" style="display: none;">
     <form action="">
       <h1 id="newContactHeading" tabindex="0">Add new contact</h1>
       <br>
@@ -73,6 +73,9 @@
         <button id="cancel" name="cancel" onclick="discardContact()">Cancel</button>
       </div>
     </form>
+  </div>
+  <div id="sign_in_container">
+    <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in">Sign in with Google</button>
   </div>
 </body>
 

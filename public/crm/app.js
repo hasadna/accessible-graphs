@@ -1,3 +1,4 @@
+let app;
 let db;
 let state;
 let currentIdUnderEditing = null;
@@ -6,12 +7,88 @@ const ENTITY_TABLE = 'ENTITY_TABLE';
 const EDIT_ENTITY = 'EDIT_ENTITY';
 const NEW_CONTACT_FORM = 'NEW_ConTACT_FORM';
 function run() {
-  let config = {
+  let prodConfig = {
     apiKey: "AIzaSyAIqw87uhiX-YlQPJSOXLJlRtzF9gSo6KU",
     authDomain: "sensory-interface-prod.firebaseapp.com",
     projectId: "sensory-interface-prod",
   };
+  const devConfig = {
+    apiKey: "AIzaSyC5rmfKlS4hnmPcUOs9tHfvTQw6_8XqT0Q",
+    authDomain: "sensory-interface-dev.firebaseapp.com",
+    databaseURL: "https://sensory-interface-dev.firebaseio.com",
+    projectId: "sensory-interface-dev",
+    storageBucket: "sensory-interface-dev.appspot.com",
+    messagingSenderId: "642262600007",
+    appId: "1:642262600007:web:af395261e278958eba2462"
+  };
+  app = firebase.initializeApp(devConfig);
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      // [START_EXCLUDE]
+      document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+      // [END_EXCLUDE]
+      loadData();
+      document.getElementsByTagName('iframe')[0].style = 'display: none;';
+    } else {
+      // User is signed out.
+      // [START_EXCLUDE]
+      document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
+      // document.getElementById('quickstart-oauthtoken').textContent = 'null';
+      // [END_EXCLUDE]
+    }
+  });
+  document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+}
+
+window.onload = function () {
+  run();
+};
+
+function toggleSignIn() {
+  if (!firebase.auth().currentUser) {
+    // [START createprovider]
+    var provider = new firebase.auth.GoogleAuthProvider();
+    // [END createprovider]
+    // [START addscopes]
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    // [END addscopes]
+    // [START signin]
+    firebase.auth().signInWithPopup(provider).then(function (result) {
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // [START_EXCLUDE]
+      if (errorCode === 'auth/account-exists-with-different-credential') {
+        alert('You have already signed up with a different auth provider for that email.');
+        // If you are using multiple auth providers on your app you should handle linking
+        // the user's accounts here.
+      } else {
+        console.error(error);
+      }
+      // [END_EXCLUDE]
+    });
+    // [END signin]
+  } else {
+    // [START signout]
+    firebase.auth().signOut();
+    document.getElementById('entity_table').innerHTML = '';
+    hideDiv('add_contact_button_container');
+    hideDiv('entity_table');
+
+    // [END signout]
+  }
+}
+
+function loadData() {
+=======
   let app = firebase.initializeApp(config);
+>>>>>>> master
   db = firebase.firestore(app);
   renderEntityTable();
   state = { 'viewType': 'ENTITY_TABLE' };
@@ -40,6 +117,7 @@ function render(state) {
     hideDiv('edit_entity');
     hideDiv('entity_table');
     hideDiv('add_contact_button_container');
+    hideDiv('sign_in_container');
     showDiv('add_contact_form');
   }
 }
