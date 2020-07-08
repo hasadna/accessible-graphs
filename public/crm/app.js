@@ -86,6 +86,9 @@ function toggleSignIn() {
 }
 
 function loadData() {
+=======
+  let app = firebase.initializeApp(config);
+>>>>>>> master
   db = firebase.firestore(app);
   renderEntityTable();
   state = { 'viewType': 'ENTITY_TABLE' };
