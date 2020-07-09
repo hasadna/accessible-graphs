@@ -21,7 +21,11 @@ function run() {
     messagingSenderId: "642262600007",
     appId: "1:642262600007:web:af395261e278958eba2462"
   };
-  app = firebase.initializeApp(devConfig);
+  if (isOnProd()) {
+    app = firebase.initializeApp(prodConfig);
+  } else {
+    app = firebase.initializeApp(devConfig);
+  }
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.
@@ -29,12 +33,14 @@ function run() {
       document.getElementById('quickstart-sign-in').textContent = 'Sign out';
       // [END_EXCLUDE]
       loadData();
-      document.getElementsByTagName('iframe')[0].style = 'display: none;';
+      let iframe = document.getElementsByTagName('iframe')[0];
+      if (iframe) {
+        iframe.style = 'display: none;';
+      }
     } else {
       // User is signed out.
       // [START_EXCLUDE]
       document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
-      // document.getElementById('quickstart-oauthtoken').textContent = 'null';
       // [END_EXCLUDE]
     }
   });
@@ -43,6 +49,7 @@ function run() {
 
 window.onload = function () {
   run();
+  document.getElementById('backup').addEventListener('click', backup);
 };
 
 function toggleSignIn() {
@@ -80,15 +87,13 @@ function toggleSignIn() {
     document.getElementById('entity_table').innerHTML = '';
     hideDiv('add_contact_button_container');
     hideDiv('entity_table');
+    hideDiv('backup_button_container');
 
     // [END signout]
   }
 }
 
 function loadData() {
-=======
-  let app = firebase.initializeApp(config);
->>>>>>> master
   db = firebase.firestore(app);
   renderEntityTable();
   state = { 'viewType': 'ENTITY_TABLE' };
@@ -101,6 +106,8 @@ function render(state) {
   if (state.viewType === ENTITY_TABLE) {
     showDiv('entity_table');
     showDiv('add_contact_button_container');
+    showDiv('backup_button_container');
+    showDiv('sign_in_container');
     hideDiv('edit_entity');
     hideDiv('add_contact_form');
     document.getElementById('newContact').focus();
@@ -118,6 +125,7 @@ function render(state) {
     hideDiv('entity_table');
     hideDiv('add_contact_button_container');
     hideDiv('sign_in_container');
+    hideDiv('backup_button_container');
     showDiv('add_contact_form');
   }
 }
@@ -344,4 +352,30 @@ async function removeContact(event) {
   state = { 'viewType': 'ENTITY_TABLE' };
   history.replaceState(state, null, '');
   render(state);
+}
+
+async function backup() {
+  let querySnapshot = await db.collection("contacts").get();
+  let data = await querySnapshot.docs.map(doc => doc.data());
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+  var downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href",     dataStr);
+  downloadAnchorNode.setAttribute("download", "backup.json");
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
+
+const productionDomains = [
+  'sensory-interface-prod.firebaseapp.com',
+  'accessiblegraphs.org',
+  'sensoryinterface.com'
+]
+
+function isOnProd() {
+  if (location.hostname in productionDomains) {
+    return true;
+  } else {
+    return false;
+  }
 }
