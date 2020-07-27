@@ -8,7 +8,18 @@ body {
   text-align: initial;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
+}
+
+#entity_table,
+#timeline_entity,
+#add_contact_form {
+  margin: auto;
+  width: 80%;
+  height: 90%;
+  padding: 100px;
 }
