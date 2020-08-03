@@ -25,14 +25,13 @@ class BrailleController {
     textarea.addEventListener('keydown', this.onKeyDown);
     textarea.addEventListener('oncut', this.ignoreEvent);
     textarea.addEventListener('mousedown', this.onSecondRoutingKeyPress);
-    textarea.addEventListener('focus', this.showLiveRegion);
-    textarea.addEventListener('blur', this.hideLiveRegion);
     if (listenForAllEvents == true) {
-      BrailleController.bindAllEvents(textarea[0], this.logEvent);
+      BrailleController.bindAllEvents(textarea, BrailleController.logEvent);
     }
     // Limit the textarea to one line using css techniques
     textarea.style.whiteSpace = 'nowrap';
     textarea.style.overflowX = 'auto';
+    textarea.addEventListener('focus', this.onFocus);
 
     const brailleControllerInstructions: HTMLElement = document.createElement('p');
     brailleControllerInstructions.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.<br>To start, focus or click on the text box below:';
@@ -48,7 +47,7 @@ class BrailleController {
     // Note: We initially tried document.addEventListener('selectionchange', func)
     //       but that didn't work in Firefox.
     setInterval(this.checkSelection, 50);
-    this.currentPosition = -1;
+    this.currentPosition = 0;
     this.data = data;
     this.initializeBraille();
   }
@@ -58,13 +57,11 @@ class BrailleController {
    * @param {callback} callback
    */
   static bindAllEvents(element: HTMLTextAreaElement, callback) {
-    const eventsList = [];
-    for (let key in this) {
-      if (key.indexOf('on') === 0) {
-        eventsList.push(key.slice(2));
+    for (let key in element) {
+      if (/^on/.test(key)) {
+        element.addEventListener(key.slice(2), callback);
       }
     }
-    element.addEventListener(eventsList.join(' '), callback);
   }
 
   static normalizeData(data: number[], range: number): number[] {
@@ -91,7 +88,7 @@ class BrailleController {
     return normalizedDataElement;
   }
 
-  logEvent(event) {
+  static logEvent(event) {
     console.debug(event.type);
   }
 
@@ -167,7 +164,6 @@ class BrailleController {
     }
   }
 
-
   ignoreEvent(event: Event) {
     event.preventDefault();
   }
@@ -230,12 +226,11 @@ class BrailleController {
     return string.slice(0, position) + substring + string.slice(position + substring.length);
   }
 
-  showLiveRegion() {
-    document.getElementById('liveRegion').setAttribute('style', '');
-    brailleController.currentPosition = -1;
+  onFocus(event) {
+    // @ts-ignore
+    if (!window.chrome) {
+      brailleController.onSelection();
+    }
   }
 
-  hideLiveRegion() {
-    document.getElementById('liveRegion').setAttribute('style', 'display: none;');
-  }
 }

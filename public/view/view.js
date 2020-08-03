@@ -41,7 +41,9 @@ function processData() {
     if (graphDescription !== '') {
         const graphDescriptionHeading = document.createElement('h1');
         graphDescriptionHeading.innerText = graphDescription;
+        graphDescriptionHeading.setAttribute('tabindex', '0');
         container.appendChild(graphDescriptionHeading);
+        graphDescriptionHeading.focus();
     }
     parseData(getUrlParam('data'));
     createTtsCombo();
@@ -53,11 +55,14 @@ function processData() {
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    addLiveRegion();
+}
+function addLiveRegion() {
+    const container = document.getElementById('container');
     const liveRegion = document.createElement('p');
     liveRegion.id = 'liveRegion';
     liveRegion.setAttribute('aria-live', 'assertive');
     liveRegion.className = 'hidden';
-    liveRegion.setAttribute('style', 'display: none;');
     container.appendChild(liveRegion);
 }
 function createTtsCombo() {
@@ -258,9 +263,9 @@ function getTextToReportOnArrows() {
 function getTextToReportOnSpace() {
     let graphValuesNum = data.length;
     let currentPosition = focusedColIndex + 1;
-    let minValue = Math.min(...data);
-    let maxValue = Math.max(...data);
-    let average = getAverage(data);
+    let minValue = Math.min(...data).toFixed(2);
+    let maxValue = Math.max(...data).toFixed(2);
+    let average = getAverage(data).toFixed(2);
     return `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
 }
 function getAverage(data) {
@@ -287,9 +292,9 @@ function reportText(onSpace) {
 }
 function getGraphSummary() {
     let graphValuesNum = data.length;
-    let minValue = Math.min(...data);
-    let maxValue = Math.max(...data);
-    let average = getAverage(data);
+    let minValue = Math.min(...data).toFixed(2);
+    let maxValue = Math.max(...data).toFixed(2);
+    let average = getAverage(data).toFixed(2);
     return `This graph has ${graphValuesNum} values. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}.
 During graph navigation, press space to hear this again.`;
 }
