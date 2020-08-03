@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>CRM - Accessible Graphs Project</title>
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
   <script src="/__/firebase/7.15.5/firebase-app.js"></script>
   <script src="/__/firebase/7.15.5/firebase-auth.js"></script>
   <script src="/__/firebase/7.15.5/firebase-firestore.js"></script>
@@ -16,10 +17,11 @@
     <button id="newContact" name="newContact" onclick="showNewContactForm()">Add new contact</button>
   </div>
   <div id="entity_table" style="display: none;"></div>
-  <div id="edit_entity" style="display: none;"></div>
+  <div id="timeline_entity" style="display: none;"></div>
   <div id="add_contact_form" style="display: none;">
+    <div id="edit_entity" style="display: none;"></div>
     <form action="">
-      <h1 id="newContactHeading" tabindex="0">Add new contact</h1>
+      <h1 id="contactFormHeading" tabindex="0">Add new contact</h1>
       <br>
       <label for="name">Name</label><br>
       <input type="text" id="name" name="Name" required>
@@ -36,9 +38,6 @@
         <option value="Processing">Processing</option>
         <option value="Finished">Finished</option>
       </select>
-      <br>
-      <label for="comment">Comment</label><br>
-      <input type="text" id="comment" name="Comment">
       <br>
       <label for="email">Email</label><br>
       <input type="email" id="email" name="Email" required>
