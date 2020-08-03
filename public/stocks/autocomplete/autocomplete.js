@@ -16,13 +16,13 @@
     key = NAME.keyboard,
     liMarkup = '<li id="" class="autocomplete-item" role="option" aria-selected="false" tabindex="-1">';
   function getResults() {
-    let value = $input.val();
+    let value = $input.val().toLowerCase();
     let foundResults = [];
     fetch('stocks/stocks.json')
       .then(response => response.json())
       .then(data => {
         for (let stock of data) {
-          if (stock.name && stock.name.startsWith(value)) {
+          if (stock.name && stock.name.toLowerCase().startsWith(value)) {
             foundResults.push(stock.name);
           }
           if (foundResults.length === 10) {

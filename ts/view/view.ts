@@ -47,7 +47,9 @@ function processData() {
   if (graphDescription !== '') {
     const graphDescriptionHeading: HTMLHeadingElement = document.createElement('h1');
     graphDescriptionHeading.innerText = graphDescription;
+    graphDescriptionHeading.setAttribute('tabindex', '0');
     container.appendChild(graphDescriptionHeading);
+    graphDescriptionHeading.focus();
   }
   parseData(getUrlParam('data'));
   createTtsCombo();
@@ -59,11 +61,16 @@ function processData() {
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
+  addLiveRegion();
+}
+
+
+function addLiveRegion() {
+  const container: HTMLElement = document.getElementById('container');
   const liveRegion: HTMLParagraphElement = document.createElement('p');
   liveRegion.id = 'liveRegion';
   liveRegion.setAttribute('aria-live', 'assertive');
   liveRegion.className = 'hidden';
-  liveRegion.setAttribute('style', 'display: none;');
   container.appendChild(liveRegion);
 }
 
@@ -293,9 +300,9 @@ function getTextToReportOnArrows() {
 function getTextToReportOnSpace() {
   let graphValuesNum: number = data.length;
   let currentPosition: number = focusedColIndex + 1;
-  let minValue: number = Math.min(...data);
-  let maxValue: number = Math.max(...data);
-  let average: number = getAverage(data);
+  let minValue: string = Math.min(...data).toFixed(2);
+  let maxValue: string = Math.max(...data).toFixed(2);
+  let average: string = getAverage(data).toFixed(2);
   return `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
 }
 
@@ -326,9 +333,9 @@ function reportText(onSpace: boolean) {
 
 function getGraphSummary() {
   let graphValuesNum: number = data.length;
-  let minValue: number = Math.min(...data);
-  let maxValue: number = Math.max(...data);
-  let average: number = getAverage(data);
+  let minValue: string = Math.min(...data).toFixed(2);
+  let maxValue: string = Math.max(...data).toFixed(2);
+  let average: string = getAverage(data).toFixed(2);
   return `This graph has ${graphValuesNum} values. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}.
 During graph navigation, press space to hear this again.`;
 }

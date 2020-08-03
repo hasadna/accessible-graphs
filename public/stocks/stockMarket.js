@@ -4,7 +4,7 @@ getStockData = async (symbol) => {
   let historyData = { symbol: symbol, data: [], dates: [] };
   let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=d14cc5b97d675f42397fba2bbaa98d4c&serietype=line`);
   let data = await response.json();
-  data.historical.slice(0, 20).map((item) => {
+  data.historical.slice(0, 20).reverse().map((item) => {
     historyData.data.push(item.close);
     let date = new Date(item.date).toDateString();
     historyData.dates.push(date);
@@ -18,7 +18,7 @@ getCurrencyHistory = async (currency) => {
   let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/forex/${currency}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
   let data = await response.json();
   historyData.symbol = data.symbol;
-  data.historical.slice(0, 20).map((item) => {
+  data.historical.slice(0, 20).reverse().map((item) => {
     historyData.data.push(item.close);
     let date = new Date(item.date).toDateString();
     historyData.dates.push(date);
@@ -32,7 +32,7 @@ getIndexHistory = async (index) => {
   let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/index/${index}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
   let data = await response.json();
   historyData.symbol = data.symbol;
-  data.historical.slice(0, 20).map((item) => {
+  data.historical.slice(0, 20).reverse().map((item) => {
     historyData.data.push(item.close);
     let date = new Date(item.date).toDateString();
     historyData.dates.push(date);
@@ -45,7 +45,7 @@ getCryptoHistory = async (crypto) => {
   let response = await fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/crypto/${crypto}?apikey=d14cc5b97d675f42397fba2bbaa98d4c`);
   let data = await response.json();
   historyData.symbol = data.symbol;
-  data.historical.slice(0, 20).map((item) => {
+  data.historical.slice(0, 20).reverse().map((item) => {
     historyData.data.push(item.close);
     let date = new Date(item.date).toDateString();
     historyData.dates.push(date);
@@ -182,7 +182,7 @@ nameToSymbol = async (name, graphType) => {
   let response = await fetch(`stocks/${graphType}.json`)
   let data = await response.json();
   for (let dataElement of data) {
-    if (dataElement.name === name) {
+    if (dataElement.name.toLowerCase() === name.toLowerCase()) {
       return dataElement.symbol;
     }
   }
