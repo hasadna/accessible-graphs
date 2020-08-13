@@ -65,6 +65,7 @@ function playSoundWithSynthesizer() {
         synth.context.resume();
     }
     synth.connect(panner);
+    panner.toDestination();
     synth.triggerAttackRelease(getFrequency(selectedCell), '8n');
 }
 function playSoundFromAudioFile() {

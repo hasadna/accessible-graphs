@@ -1,3 +1,4 @@
+let previousFocus = null;
 let brailleController = null;
 // A flag for debugging
 // Reset it to true to have the BrailleController listen for all events of the textarea which contains the braille text
@@ -50,6 +51,7 @@ class BrailleController {
     this.currentPosition = 0;
     this.data = data;
     this.initializeBraille();
+    setInterval(this.updateFocus, 1);
   }
 
   /**
@@ -164,6 +166,13 @@ class BrailleController {
     }
   }
 
+  updateFocus() {
+    if (previousFocus === document.activeElement) {
+      return;
+    }
+    previousFocus = document.activeElement;
+  }
+  
   ignoreEvent(event: Event) {
     event.preventDefault();
   }
@@ -229,6 +238,8 @@ class BrailleController {
   onFocus(event) {
     // @ts-ignore
     if (!window.chrome) {
+      brailleController.onSelection();
+    } else if (previousFocus.id !== 'brailleControllerText') {
       brailleController.onSelection();
     }
   }
