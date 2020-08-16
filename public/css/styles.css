@@ -373,6 +373,21 @@ span.focus--mouse:focus,
   text-decoration: none;
 }
 
+.side-bar ul{
+  padding: 0;
+}
+
+.side-bar li{
+  list-style-type: none;
+  padding: 20px;
+  width: 100%;
+}
+.side-bar a{
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+}
+
 /*========== side-bar end ==========*/
 
 /*========== nav-bar ==========*/
