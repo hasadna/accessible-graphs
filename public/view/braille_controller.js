@@ -153,6 +153,8 @@ class BrailleController {
         event.preventDefault();
     }
     onKeyDown(event) {
+        resetReadEntireGraph();
+        inReadAllMode = false;
         if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
             event.preventDefault();
         }
@@ -202,6 +204,9 @@ class BrailleController {
         return string.slice(0, position) + substring + string.slice(position + substring.length);
     }
     onFocus(event) {
+        if (inReadAllMode) {
+            return;
+        }
         // @ts-ignore
         if (!window.chrome) {
             brailleController.onSelection();
