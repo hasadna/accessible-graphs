@@ -51,7 +51,7 @@ class BrailleController {
     this.currentPosition = 0;
     this.data = data;
     this.initializeBraille();
-    setInterval(this.updateFocus, 1);
+    setInterval(this.updateFocus, 50);
   }
 
   /**
