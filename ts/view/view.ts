@@ -7,7 +7,8 @@ let brailleData: string = null;
 let focusedRowIndex: number = 0;
 let focusedColIndex: number = 0;
 let ttsName: string = getUrlParam('ttsName');
-
+let intervalIDForReadAll = null;
+let inReadAllMode = false;
 
 function initializeViewScript() {
   // Initialize speech synthesis
@@ -61,7 +62,48 @@ function processData() {
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
+  let readEntireGraphButton = document.createElement('button');
+  readEntireGraphButton.innerHTML = 'Read the entire graph';
+  readEntireGraphButton.id = 'readEntireGraph';
+  readEntireGraphButton.addEventListener('click', readEntireGraph);
+  container.appendChild(readEntireGraphButton);
   addLiveRegion();
+}
+
+
+function readEntireGraph(event) {
+  resetReadEntireGraph();
+  inReadAllMode = true;
+  document.getElementById('brailleControllerText').focus();
+  brailleController.setCursorPosition(data.length + 1);
+  setIntervalX(moveCursor, 2000, data.length + 1);
+}
+
+
+function setIntervalX(callback, delay, repetitions) {
+  let x = 0;
+  intervalIDForReadAll = window.setInterval(function () {
+    callback();
+    if (++x === repetitions) {
+      resetReadEntireGraph();
+      inReadAllMode = false;
+    }
+  }, delay);
+}
+
+let readEntireGraphPosition = 0;
+function moveCursor() {
+  brailleController.setCursorPosition(readEntireGraphPosition);
+  readEntireGraphPosition++;
+  if (readEntireGraphPosition === data.length + 1) {
+    readEntireGraphPosition = 0;
+  }
+}
+
+
+function resetReadEntireGraph() {
+  window.clearInterval(intervalIDForReadAll);
+  readEntireGraphPosition = 0;
 }
 
 
