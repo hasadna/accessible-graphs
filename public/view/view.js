@@ -294,7 +294,16 @@ function getTextToReportOnArrows() {
         let headerText = dataHeaders[focusedColIndex];
         yValueText = `${headerText}, position ${focusedColIndex + 1}`;
     }
-    return `${xValueText}. ${yValueText}`;
+    let textToReport = `${xValueText}. ${yValueText}. `;
+    let max = Math.max(...data);
+    let min = Math.min(...data);
+    if (xValue === max) {
+        return textToReport + 'Maximum value.';
+    }
+    if (xValue === min) {
+        return textToReport + 'Minimum value. ';
+    }
+    return textToReport;
 }
 function getTextToReportOnSpace() {
     let graphValuesNum = data.length;
@@ -302,7 +311,17 @@ function getTextToReportOnSpace() {
     let minValue = Math.min(...data).toFixed(2);
     let maxValue = Math.max(...data).toFixed(2);
     let average = getAverage(data).toFixed(2);
-    return `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
+    let textToReport = `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
+    let xValue = data[focusedColIndex];
+    let min = Math.min(...data);
+    let max = Math.max(...data);
+    if (xValue === max) {
+        return 'Maximum value. ' + textToReport;
+    }
+    if (xValue === min) {
+        return 'Minimum value. ' + textToReport;
+    }
+    return textToReport;
 }
 function getAverage(data) {
     let sum = 0;

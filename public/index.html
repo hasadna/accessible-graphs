@@ -55,8 +55,8 @@
     <ul class="wonder-nav-ul" dir="ltr">
 
       <!--===== desktop view =====-->
-      <li class="nav-logo d-none d-md-block" aria-hidden="true">
-        <a class="nav-link" target="_blank" href="" id="menu_home">
+      <li class="nav-logo d-none d-md-block">
+        <a class="nav-link" href="" id="menu_home">
           Accessible Graphs
         </a>
       </li>
@@ -69,8 +69,20 @@
 
 
       <li class="wonder-nav-li d-none d-md-block">
-        <a class="nav-link" target="_blank" href="english_guides/usage_tutorial_en.html" id="tutorial">
+        <a class="nav-link" href="english_guides/usage_tutorial_en.html" id="tutorial">
           Tutorial
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="#about-anchor" id="aboutUs1">
+          About us
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="#how-anchor" id="howWork">
+          How it works
         </a>
       </li>
 
@@ -79,37 +91,56 @@
           The team
         </a>
       </li>
-      <li class="wonder-nav-li d-none d-md-block">
-        <a class="nav-link" href="#how-anchor" id="howWork">
-          How it works
-        </a>
-      </li>
-      <li class="wonder-nav-li d-none d-md-block">
-        <a class="nav-link" href="#about-anchor" id="aboutUs1">
-          About us
-        </a>
-      </li>
       <!--===== desktop view end =====-->
       <!--===== mobile view =====-->
-      <!--
       <li class="nav-logo d-md-none">
         <a href="index.html">
-          <img class="top-bar-icon" src="assets/images/logo/s-logo-blue.svg" alt="navbar-logo">
+          <img class="top-bar-icon" src="assets/images/logo/s-logo-blue.svg" alt="Accessible Graphs">
         </a>
       </li>
 
       <li class="wonder-nav-li d-md-none">
-        <button class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px;">
+        <button aria-label="Menu" type="button" class="hamburger hamburger--minus menu-icon" type="button"
+          style="padding-right:25px;" aria-expanded="false">
           <span class="hamburger-box">
             <span class="hamburger-inner"></span></span>
         </button>
       </li>
-    -->
       <!--===== mobile view end =====-->
     </ul>
 
   </nav>
   <!--========== navbar end ==========-->
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
+    <div class="container">
+      <div class="side-bar-row text-center">
+        <ul>
+          <li>
+            <a class="side-bar-link" href="usage_tutorial_en.html">
+              Tutorial
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#about-anchor">
+              About us
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#how-anchor">
+              How it works
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#team-anchor">
+              The team
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--========== side bar end ==========-->
 
   <!--========== header ==========-->
   <header class="header-img">
@@ -119,7 +150,8 @@
         <div class="col-md-12 col-12 text-center">
           <!-- <img class="logo" src="assets/images/logo/s-logo-white.svg" alt="main logo" aria-hidden="true"> -->
           <p class="main-title" style="" id="title">Accessible Graphs</p>
-          <p class="main-description" style="" id="description">The Accessible Graphs project aims to create accessible graphs for blind and visually impaired people.</p>
+          <p class="main-description" style="" id="description">The Accessible Graphs project aims to create accessible
+            graphs for blind and visually impaired people.</p>
           <br>
           <a target="_blank" href="builder/index.html" class="button" style="margin-bottom: 7px;" role="button"
             id="getStarted">Get
@@ -127,8 +159,7 @@
           <br>
           <a href="#about-anchor" class="link" id="learnMore" style="z-index: 999999;position: relative;">Learn more</a>
           <br>
-          <img class="product-img" src="assets/images/product.svg" alt="product image" style="margin-bottom: -210px;"
-            aria-hidden="true">
+          <img class="product-img" src="assets/images/product.svg" alt="" style="margin-bottom: -210px;">
         </div>
       </div>
     </div>
@@ -166,12 +197,12 @@
 
         <!--=== img desktop view ===-->
         <div class="col-md-6 text-center d-none d-md-block">
-          <img class="main-image" src="assets/images/illustration.svg" alt="illustration image" aria-hidden="true">
+          <img class="main-image" src="assets/images/illustration.svg" alt="">
         </div>
 
         <!--=== img mobile view ===-->
         <div class="col-12 d-sm-none text-center">
-          <img class="main-image" src="assets/images/illustration.svg" alt="illustration image" aria-hidden="true">
+          <img class="main-image" src="assets/images/illustration.svg" alt="">
         </div>
 
       </div>
@@ -191,27 +222,27 @@
         <div class="col-lg-4 col-12" style="margin-top:25px;">
           <br>
           <br>
-          <h3 class="card-title" id="stage1">1. Go to our tutorial</h3>
+          <p class="card-title" id="stage1">1. Go to our tutorial</p>
           <br>
-          <img class="how-icon" src="assets/images/icons/paper.svg" alt="how icon" aria-hidden="true">
+          <img class="how-icon" src="assets/images/icons/paper.svg" alt="">
         </div>
         <div class="col-lg-4 col-12 border-desk" style="margin-top: 25px;">
           <br>
           <br>
-          <h3 class="card-title" id="stage2">2. Define your graph</h3>
+          <p class="card-title" id="stage2">2. Define your graph</p>
           <br>
-          <img class="how-icon" src="assets/images/icons/graph.svg" alt="how icon" aria-hidden="true">
+          <img class="how-icon" src="assets/images/icons/graph.svg" alt="">
         </div>
         <div class="col-lg-4 col-12 border-desk" style="margin-top: 25px;">
           <br>
           <br>
-          <h3 class="card-title" id="stage3">3. Start using it!</h3>
+          <p class="card-title" id="stage3">3. Start using it!</p>
           <br>
-          <img class="how-icon" src="assets/images/icons/hand.svg" alt="how icon" aria-hidden="true">
+          <img class="how-icon" src="assets/images/icons/hand.svg" alt="">
           <br>
         </div>
         <div class="col-12">
-          <a target="_blank" href="english_guides/usage_tutorial_en.html" class="b-color" style="margin-top: 70px;"
+          <a href="english_guides/usage_tutorial_en.html" class="b-color" style="margin-top: 70px;"
             id="goToTutorial">
             Go to tutorial
           </a>
@@ -239,8 +270,8 @@
               <img src="assets/images/team/ofer.svg" alt="Ofer bartal" style="max-width: 250px;max-height: 250px; ">
             </a>
             <h3 class="card-title" id="ofer">Ofer bartal</h3>
-            <h3 class="card-text" id="ofer2">Software engineer, X-Googler, Co-founder at WakkaWorks(www.wakkaworks.com)
-              to help people learn and work in software</h3>
+            <p class="card-text" id="ofer2">Software engineer, X-Googler, Co-founder at WakkaWorks(www.wakkaworks.com)
+              to help people learn and work in software</p>
           </div>
         </div>
         <div class="col-lg-4" style="margin-top: 25px;">
@@ -250,19 +281,18 @@
                 style="max-width: 250px;max-height: 250px; ">
             </a>
             <h3 class="card-title" id="mohammad">Mohammad Suliman</h3>
-            <h3 class="card-text" style="" id="mohammad2">Software developer, B.Sc in Computer Science from Technion,
+            <p class="card-text" style="" id="mohammad2">Software developer, B.Sc in Computer Science from Technion,
               blind
-              and wants to help other blind people in STEM education</h3>
+              and wants to help other blind people in STEM education</p>
           </div>
         </div>
         <div class="col-lg-4" style="margin-top: 25px;">
           <div>
             <a target="_blank" Rel=”noopener” href="https://adn-accesstime.com/">
-              <img src="assets/images/team/eilana.svg" alt="Eilana Benish"
-                style="max-width: 250px;max-height: 250px; ">
+              <img src="assets/images/team/eilana.svg" alt="Eilana Benish" style="max-width: 250px;max-height: 250px; ">
             </a>
             <h3 class="card-title" id="eilana">Eilana Benish</h3>
-            <h3 class="card-text" style="" id="eilana2">Product manager, website accessibility expert</h3>
+            <p class="card-text" style="" id="eilana2">Product manager, website accessibility expert</p>
           </div>
         </div>
       </div>
@@ -290,7 +320,8 @@
       <div class="big-footer-text-heb-row">
         <p class="small-footer-text" id="credit">
           This project is funded by the Israel Innovation Authority, and run by The Public Knowledge Workshop (a
-          nonprofit). For more details and collaborations, please send an email to: <a href="mailto:info@accessiblegraphs.org">info@accessiblegraphs.org</a>
+          nonprofit). For more details and collaborations, please send an email to: <a
+            href="mailto:info@accessiblegraphs.org">info@accessiblegraphs.org</a>
         </p>
         <p class="small-footer-text" id="credit"><a href="privacy.html">Privacy policy</a></p>
       </div>
@@ -311,46 +342,6 @@
   </footer>
   <!--========== footer end ==========-->
 
-  <!--========== side bar ==========-->
-  <div class="side-bar" style="display: none;">
-    <div class="container">
-      <div class="row side-bar-row text-center">
-        <div class="col-12">
-          <a class="side-bar-link" href="#about-anchor">
-            About us
-          </a>
-        </div>
-        <br>
-        <br>
-        <br>
-        <div class="col-12">
-          <a class="side-bar-link" href="#how-anchor">
-            How it works
-          </a>
-        </div>
-        <br>
-        <br>
-        <br>
-        <div class="col-12">
-          <a class="side-bar-link" href="#team-anchor">
-            The team
-          </a>
-        </div>
-        <br>
-        <br>
-        <br>
-        <div class="col-12">
-          <a class="side-bar-link" target="_blank" href="english_guides/usage_tutorial_en.html" id="tutorial">
-            Tutorial
-          </a>
-        </div>
-        <br>
-        <br>
-        <br>
-      </div>
-    </div>
-  </div>
-  <!--========== side bar end ==========-->
 
   <!--========== language-pop-up ==========-->
   <div style="z-index: 99999;" class="modal fadeIn" id="language-popup" tabindex="-1" role="dialog"
