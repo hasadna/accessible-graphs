@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="accessible_graphs", 
-    version="0.0.3.1",
+    version="0.0.4",
     author="Mohammad Suliman",
     author_email="mohmad.s93@gmail.com",
     description="A package to make specific types of graphs accessible to low vision and blind users",
