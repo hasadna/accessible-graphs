@@ -54,6 +54,7 @@ function processData() {
   }
   parseData(getUrlParam('data'));
   createTtsCombo();
+  addAudioConfigOptions(container);
   const graphSummary: HTMLParagraphElement = document.createElement('p');
   graphSummary.innerText = getGraphSummary();
   container.appendChild(graphSummary);
@@ -91,6 +92,7 @@ function setIntervalX(callback, delay, repetitions) {
   }, delay);
 }
 
+
 let readEntireGraphPosition = 0;
 function moveCursor() {
   brailleController.setCursorPosition(readEntireGraphPosition);
@@ -104,6 +106,51 @@ function moveCursor() {
 function resetReadEntireGraph() {
   window.clearInterval(intervalIDForReadAll);
   readEntireGraphPosition = 0;
+}
+
+
+function addAudioConfigOptions(container) {
+  let fieldset = document.createElement('fieldset');
+  let legend = document.createElement('legend');
+  legend.innerHTML = 'Choose audio feedback types you want to hear while navigating the graph';
+  fieldset.appendChild(legend);
+  let valueCheckBox = document.createElement('input');
+  valueCheckBox.type = 'checkbox';
+  valueCheckBox.id = 'valueOption';
+  valueCheckBox.checked = true;
+  fieldset.appendChild(valueCheckBox);
+  let valueLabel = document.createElement('label');
+  valueLabel.setAttribute('for', 'valueOption');
+  valueLabel.innerHTML = 'Value';
+  fieldset.appendChild(valueLabel);
+  let positionCheckBox = document.createElement('input');
+  positionCheckBox.type = 'checkbox';
+  positionCheckBox.id = 'positionOption';
+  positionCheckBox.checked = true;
+  fieldset.appendChild(positionCheckBox);
+  let positionLabel = document.createElement('label');
+  positionLabel.setAttribute('for', 'positionOption');
+  positionLabel.innerHTML = 'Position';
+  fieldset.appendChild(positionLabel);
+  let soundCheckBox = document.createElement('input');
+  soundCheckBox.type = 'checkbox';
+  soundCheckBox.id = 'soundOption';
+  soundCheckBox.checked = true;
+  fieldset.appendChild(soundCheckBox);
+  let soundLabel = document.createElement('label');
+  soundLabel.setAttribute('for', 'soundOption');
+  soundLabel.innerHTML = 'Sound';
+  fieldset.appendChild(soundLabel);
+  let minMaxCheckBox = document.createElement('input');
+  minMaxCheckBox.type = 'checkbox';
+  minMaxCheckBox.id = 'minMaxOption';
+  minMaxCheckBox.checked = true;
+  fieldset.appendChild(minMaxCheckBox);
+  let minMaxLabel = document.createElement('label');
+  minMaxLabel.setAttribute('for', 'minMaxOption');
+  minMaxLabel.innerHTML = 'Min / Max value endication';
+  fieldset.appendChild(minMaxLabel);
+  container.appendChild(fieldset);
 }
 
 
@@ -295,7 +342,10 @@ function updateSelectedCell(cell: Element) {
   if (dataHeaders.length != 0 && focusedRowIndex == 0) {
     return;
   }
-  startSoundPlayback();
+  let soundCheckBox = (<HTMLInputElement>document.getElementById('soundOption'))
+  if (soundCheckBox.checked) {
+    startSoundPlayback();
+  }
   reportText(false);
 }
 
@@ -335,8 +385,20 @@ function getTextToReportOnArrows() {
     let headerText = dataHeaders[focusedColIndex];
     yValueText = `${headerText}, position ${focusedColIndex + 1}`;
   }
-  let textToReport = `${xValueText}. ${yValueText}. `;
+  let textToReport = '';
+  let valueCheckBox = (<HTMLInputElement>document.getElementById('valueOption'));
+  if (valueCheckBox.checked) {
+    textToReport += `${xValueText}. `;
+  }
+  let positionCheckBox = (<HTMLInputElement>document.getElementById('positionOption'));
+  if (positionCheckBox.checked) {
+    textToReport += `${yValueText}. `;
+  }
   let max = Math.max(...data);
+  let minMaxCheckBox = (<HTMLInputElement>document.getElementById('minMaxOption'));
+  if (!minMaxCheckBox.checked) {
+    return textToReport;
+  }
   let min = Math.min(...data);
   if (xValue === max) {
     return textToReport + 'Maximum value.';
