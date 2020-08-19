@@ -114,45 +114,25 @@ function addAudioConfigOptions(container) {
   let legend = document.createElement('legend');
   legend.innerHTML = 'Choose audio feedback types you want to hear while navigating the graph';
   fieldset.appendChild(legend);
-  let valueCheckBox = document.createElement('input');
-  valueCheckBox.type = 'checkbox';
-  valueCheckBox.id = 'valueOption';
-  valueCheckBox.checked = true;
-  fieldset.appendChild(valueCheckBox);
-  let valueLabel = document.createElement('label');
-  valueLabel.setAttribute('for', 'valueOption');
-  valueLabel.innerHTML = 'Value';
-  fieldset.appendChild(valueLabel);
-  let positionCheckBox = document.createElement('input');
-  positionCheckBox.type = 'checkbox';
-  positionCheckBox.id = 'positionOption';
-  positionCheckBox.checked = true;
-  fieldset.appendChild(positionCheckBox);
-  let positionLabel = document.createElement('label');
-  positionLabel.setAttribute('for', 'positionOption');
-  positionLabel.innerHTML = 'Position';
-  fieldset.appendChild(positionLabel);
-  let soundCheckBox = document.createElement('input');
-  soundCheckBox.type = 'checkbox';
-  soundCheckBox.id = 'soundOption';
-  soundCheckBox.checked = true;
-  fieldset.appendChild(soundCheckBox);
-  let soundLabel = document.createElement('label');
-  soundLabel.setAttribute('for', 'soundOption');
-  soundLabel.innerHTML = 'Sound';
-  fieldset.appendChild(soundLabel);
-  let minMaxCheckBox = document.createElement('input');
-  minMaxCheckBox.type = 'checkbox';
-  minMaxCheckBox.id = 'minMaxOption';
-  minMaxCheckBox.checked = true;
-  fieldset.appendChild(minMaxCheckBox);
-  let minMaxLabel = document.createElement('label');
-  minMaxLabel.setAttribute('for', 'minMaxOption');
-  minMaxLabel.innerHTML = 'Min / Max value endication';
-  fieldset.appendChild(minMaxLabel);
+  createCheckBoxWithLabel('valueOption', 'Value', fieldset);
+  createCheckBoxWithLabel('positionOption', 'Position', fieldset);
+  createCheckBoxWithLabel('soundOption', 'Sound', fieldset);
+  createCheckBoxWithLabel('minMaxOption', 'Min / max value endication', fieldset);
   container.appendChild(fieldset);
 }
 
+
+function createCheckBoxWithLabel(id, labelText, container) {
+  let checkBox = document.createElement('input');
+  checkBox.type = 'checkbox';
+  checkBox.id = id;
+  checkBox.checked = true;
+  container.appendChild(checkBox);
+  let label = document.createElement('label');
+  label.setAttribute('for', id);
+  label.innerHTML = labelText;
+  container.appendChild(label);
+}
 
 function addLiveRegion() {
   const container: HTMLElement = document.getElementById('container');

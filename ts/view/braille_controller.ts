@@ -48,7 +48,7 @@ class BrailleController {
     // Note: We initially tried document.addEventListener('selectionchange', func)
     //       but that didn't work in Firefox.
     setInterval(this.checkSelection, 50);
-    this.currentPosition = 0;
+    this.currentPosition = -1;
     this.data = data;
     this.initializeBraille();
     setInterval(this.updateFocus, 50);
