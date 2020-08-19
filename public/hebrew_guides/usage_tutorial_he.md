@@ -9,7 +9,7 @@
 ## שלב 1
 
  * [הורידו למחשב את גיליון הנתונים בקובץ אקסל](http://accessiblegraphs.org/assets/tutorial_data_he.xlsx)
- * העתיקו את שתי העמודות הראשונות, שהן בנות12 שורות.
+ * העתיקו את שתי העמודות הראשונות, שהן בנות 12 שורות.
 
 ## שלב 2
  * בכדי להנגיש את הנתונים, היכנסו ליישום [Builder - Accessible Graphs](https://accessiblegraphs.org/builder/index.html)
