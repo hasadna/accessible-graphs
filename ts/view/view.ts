@@ -54,6 +54,7 @@ function processData() {
   }
   parseData(getUrlParam('data'));
   createTtsCombo();
+  addAudioConfigOptions(container);
   const graphSummary: HTMLParagraphElement = document.createElement('p');
   graphSummary.innerText = getGraphSummary();
   container.appendChild(graphSummary);
@@ -91,6 +92,7 @@ function setIntervalX(callback, delay, repetitions) {
   }, delay);
 }
 
+
 let readEntireGraphPosition = 0;
 function moveCursor() {
   brailleController.setCursorPosition(readEntireGraphPosition);
@@ -106,6 +108,31 @@ function resetReadEntireGraph() {
   readEntireGraphPosition = 0;
 }
 
+
+function addAudioConfigOptions(container) {
+  let fieldset = document.createElement('fieldset');
+  let legend = document.createElement('legend');
+  legend.innerHTML = 'Choose audio feedback types you want to hear while navigating the graph';
+  fieldset.appendChild(legend);
+  createCheckBoxWithLabel('valueOption', 'Value', fieldset);
+  createCheckBoxWithLabel('positionOption', 'Position', fieldset);
+  createCheckBoxWithLabel('soundOption', 'Sound', fieldset);
+  createCheckBoxWithLabel('minMaxOption', 'Min / max value endication', fieldset);
+  container.appendChild(fieldset);
+}
+
+
+function createCheckBoxWithLabel(id, labelText, container) {
+  let checkBox = document.createElement('input');
+  checkBox.type = 'checkbox';
+  checkBox.id = id;
+  checkBox.checked = true;
+  container.appendChild(checkBox);
+  let label = document.createElement('label');
+  label.setAttribute('for', id);
+  label.innerHTML = labelText;
+  container.appendChild(label);
+}
 
 function addLiveRegion() {
   const container: HTMLElement = document.getElementById('container');
@@ -295,7 +322,10 @@ function updateSelectedCell(cell: Element) {
   if (dataHeaders.length != 0 && focusedRowIndex == 0) {
     return;
   }
-  startSoundPlayback();
+  let soundCheckBox = (<HTMLInputElement>document.getElementById('soundOption'))
+  if (soundCheckBox.checked) {
+    startSoundPlayback();
+  }
   reportText(false);
 }
 
@@ -335,8 +365,20 @@ function getTextToReportOnArrows() {
     let headerText = dataHeaders[focusedColIndex];
     yValueText = `${headerText}, position ${focusedColIndex + 1}`;
   }
-  let textToReport = `${xValueText}. ${yValueText}. `;
+  let textToReport = '';
+  let valueCheckBox = (<HTMLInputElement>document.getElementById('valueOption'));
+  if (valueCheckBox.checked) {
+    textToReport += `${xValueText}. `;
+  }
+  let positionCheckBox = (<HTMLInputElement>document.getElementById('positionOption'));
+  if (positionCheckBox.checked) {
+    textToReport += `${yValueText}. `;
+  }
   let max = Math.max(...data);
+  let minMaxCheckBox = (<HTMLInputElement>document.getElementById('minMaxOption'));
+  if (!minMaxCheckBox.checked) {
+    return textToReport;
+  }
   let min = Math.min(...data);
   if (xValue === max) {
     return textToReport + 'Maximum value.';
