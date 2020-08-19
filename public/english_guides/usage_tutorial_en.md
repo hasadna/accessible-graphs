@@ -11,7 +11,7 @@ Note: Currently, this guide is intended for Windows users, using your preferred 
 * To make this data accessible, please visit the link [Builder - Accessible Graphs](https://accessiblegraphs.org/builder/index.html)
 * Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press Tab.
 * If the data is copied successfully, your screen reader will report that the data is valid.
-* Give a description to the graph, "percentage of rainy days of each month of the year" in our example by pasting the text in the description field.
+* Give a description to the graph, "Percentage of rainy days of each month of the year" in our example by pasting the text in the description field.
 * From here onwards, you can navigate to the view button to produce the accessible graph.
 Note: In this stage, we will skip some more advanced options.
 
