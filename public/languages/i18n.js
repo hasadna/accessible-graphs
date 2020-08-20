@@ -95,9 +95,21 @@ const handleLanguageSwitch = (language) => {
     if (tutorialLink) {
         tutorialLink.setAttribute('href', tutorialPath);
     }
+    tutorialLink = document.getElementById('tutorialSidebar');
+    if (tutorialLink) {
+        tutorialLink.setAttribute('href', tutorialPath);
+    }
     tutorialLink = document.getElementById('goToTutorial');
     if (tutorialLink) {
         tutorialLink.setAttribute('href', tutorialPath);
+    }
+    tutorialLink = document.getElementById('tutorial1');
+    if (tutorialLink) {
+        tutorialLink.setAttribute('href', `usage_tutorial_${language}.html`);
+    }
+    tutorialLink = document.getElementById('tutorial1Sidebar');
+    if (tutorialLink) {
+        tutorialLink.setAttribute('href', `usage_tutorial_${language}.html`);
     }
 };
 //# sourceMappingURL=i18n.js.map
