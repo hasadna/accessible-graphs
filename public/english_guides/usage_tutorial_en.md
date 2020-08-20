@@ -11,12 +11,12 @@ Note: Currently, this guide is intended for Windows users, using your preferred 
 * To make this data accessible, please visit the link [Builder - Accessible Graphs](https://accessiblegraphs.org/builder/index.html)
 * Paste the data in the first edit field of the app using Ctrl + V, or any method you prefer, and then press Tab.
 * If the data is copied successfully, your screen reader will report that the data is valid.
-* Give a description to the graph, "percentage of rainy days of each month of the year" in our example by pasting the text in the description field.
+* Give a description to the graph, "Percentage of rainy days of each month of the year" in our example by pasting the text in the description field.
 * From here onwards, you can navigate to the view button to produce the accessible graph.
 Note: In this stage, we will skip some more advanced options.
 
 ## Stage 3
-You should now see an accessible graph such as the one [in this link](https://accessiblegraphs.org/view/index.html?data=0%090%0920%0960%09100%09100%0960%0920%090%090&minValue=0&maxValue=100&instrumentType=synthesizer&ttsName=Google%20US%20English).
+You should now see an accessible graph such as the one [in this link](https://accessiblegraphs.org/view/index.html?data=January%09February%09March%09April%09May%09June%09July%09August%09September%09October%09November%09December%0D%0A90%0995%0970%0940%0920%095%090%090%0910%0930%0940%0950&description=Percentage%20of%20rainy%20days%20of%20each%20month%20of%20the%20year&minValue=0&maxValue=95&instrumentType=synthesizer&ttsName=noTts).
 
 ### Navigating the graph with a screen reader
 * With left and right arrows, you can move between the values found on the Y axis. The data is conveyed using 3 channels - braille, speech and tones.
