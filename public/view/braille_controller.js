@@ -201,6 +201,9 @@ class BrailleController {
         else if (keyNumber === 0 && keyboardRoutingKeysMode === 1) {
             position = 19;
         }
+        else {
+            return;
+        }
         let currentPosition = brailleController.textarea.selectionEnd;
         if (currentPosition !== position) {
             brailleController.setCursorPosition(position);
