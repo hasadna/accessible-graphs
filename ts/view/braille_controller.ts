@@ -10,9 +10,9 @@ class BrailleController {
   static BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
 
   static routingModeToMessages = {
-    0: 'You can use simulated routing keys to rout cursor from position 1 to 10',
-    1: 'You can use simulated routing keys to rout cursor from position 11 to 20',
-    2: 'You can use simulated routing keys to rout cursor from position 21 to 29'
+    0: 'You can use simulated routing keys to route cursor from position 1 to 10',
+    1: 'You can use simulated routing keys to route cursor from position 11 to 20',
+    2: 'You can use simulated routing keys to route cursor from position 21 to 29'
   }
 
   textarea: HTMLTextAreaElement;
