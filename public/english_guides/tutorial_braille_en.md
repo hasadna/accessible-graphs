@@ -80,7 +80,7 @@ First, we notice that our set of values ranges from 1 to 80, Therefore, we have 
 * ⣀ will represent any value from 1 to 20
 * ⠤ will represent any value from 21 to 40
 * ⠒ will represent any value from 41 to 60
-* ⠒ will represent any value from 61 to 80
+* ⠉ will represent any value from 61 to 80
 
 The first value in our data is 12. This value is found in the first subrange, so we represent it with the pattern of the first subrange: 
 
