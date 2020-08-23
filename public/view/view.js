@@ -66,6 +66,7 @@ function processData() {
     addLiveRegion();
 }
 function readEntireGraph(event) {
+    document.getElementById('liveRegion').setAttribute('style', '');
     resetReadEntireGraph();
     inReadAllMode = true;
     document.getElementById('brailleControllerText').focus();
@@ -79,6 +80,7 @@ function setIntervalX(callback, delay, repetitions) {
         if (++x === repetitions) {
             resetReadEntireGraph();
             inReadAllMode = false;
+            document.getElementById('liveRegion').setAttribute('style', 'display: none;');
         }
     }, delay);
 }
@@ -122,6 +124,7 @@ function addLiveRegion() {
     liveRegion.id = 'liveRegion';
     liveRegion.setAttribute('aria-live', 'assertive');
     liveRegion.className = 'hidden';
+    liveRegion.setAttribute('style', 'display: none;');
     container.appendChild(liveRegion);
 }
 function createTtsCombo() {
@@ -376,11 +379,14 @@ function reportText(onSpace) {
     else {
         textToReport = getTextToReportOnArrows();
     }
+    speakText(textToReport);
+}
+function speakText(textToReport) {
     if (ttsName === 'noTts') {
         document.getElementById('liveRegion').innerHTML = textToReport;
     }
     else {
-        speakText(textToReport);
+        speakTextWithTts(textToReport);
     }
 }
 function getGraphSummary() {
