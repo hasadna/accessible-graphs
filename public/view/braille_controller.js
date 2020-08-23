@@ -1,5 +1,6 @@
 let previousFocus = null;
 let brailleController = null;
+let keyboardRoutingKeysMode = 0;
 // A flag for debugging
 // Reset it to true to have the BrailleController listen for all events of the textarea which contains the braille text
 let listenForAllEvents = false;
@@ -24,6 +25,7 @@ class BrailleController {
         textarea.style.whiteSpace = 'nowrap';
         textarea.style.overflowX = 'auto';
         textarea.addEventListener('focus', this.onFocus);
+        textarea.addEventListener('blur', this.onBlur);
         const brailleControllerInstructions = document.createElement('p');
         brailleControllerInstructions.innerHTML = 'Use Left / Right arrows to navigate the graph.<br> Use space bar to get more info about the value under the cursor.<br>To start, focus or click on the text box below:';
         parent.appendChild(brailleControllerInstructions);
@@ -165,6 +167,47 @@ class BrailleController {
             }
             event.preventDefault();
         }
+        if (brailleController.isNumberKey(event.key)) {
+            brailleController.simulateRoutingKey(event.key);
+        }
+        if (event.key === '-') {
+            keyboardRoutingKeysMode = ((keyboardRoutingKeysMode + 3) - 1) % 3;
+            speakText(BrailleController.routingModeToMessages[keyboardRoutingKeysMode]);
+        }
+        if (event.key === '=') {
+            keyboardRoutingKeysMode = (keyboardRoutingKeysMode + 1) % 3;
+            speakText(BrailleController.routingModeToMessages[keyboardRoutingKeysMode]);
+        }
+    }
+    isNumberKey(key) {
+        if (key === '1' || key === '2' || key === '3'
+            || key === '4' || key === '5' || key === '6'
+            || key === '7' || key === '8' || key === '9' || key === '0') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    simulateRoutingKey(key) {
+        let keyNumber = parseInt(key);
+        let position = 0;
+        if (keyNumber >= 1 && keyNumber <= 9) {
+            position = (keyNumber - 1) + 10 * keyboardRoutingKeysMode;
+        }
+        else if (keyNumber === 0 && keyboardRoutingKeysMode === 0) {
+            position = 9;
+        }
+        else if (keyNumber === 0 && keyboardRoutingKeysMode === 1) {
+            position = 19;
+        }
+        let currentPosition = brailleController.textarea.selectionEnd;
+        if (currentPosition !== position) {
+            brailleController.setCursorPosition(position);
+        }
+        else {
+            brailleController.onSecondRoutingKeyPress();
+        }
     }
     onSecondRoutingKeyPress(event) {
         const position = brailleController.currentPosition;
@@ -207,6 +250,7 @@ class BrailleController {
         if (inReadAllMode) {
             return;
         }
+        document.getElementById('liveRegion').setAttribute('style', '');
         // @ts-ignore
         if (!window.chrome) {
             brailleController.onSelection();
@@ -215,7 +259,15 @@ class BrailleController {
             brailleController.onSelection();
         }
     }
+    onBlur(event) {
+        document.getElementById('liveRegion').setAttribute('style', 'display: none;');
+    }
 }
 // These symbols map 1:1 to numbers.
 BrailleController.BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
+BrailleController.routingModeToMessages = {
+    0: 'You can use simulated routing keys to rout cursor from position 1 to 10',
+    1: 'You can use simulated routing keys to rout cursor from position 11 to 20',
+    2: 'You can use simulated routing keys to rout cursor from position 21 to 29'
+};
 //# sourceMappingURL=braille_controller.js.map

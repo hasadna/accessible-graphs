@@ -114,7 +114,7 @@ function stopSoundPlayback() {
         console.error(e);
     }
 }
-function speakText(textToSpeak) {
+function speakTextWithTts(textToSpeak) {
     const synth = window.speechSynthesis;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
