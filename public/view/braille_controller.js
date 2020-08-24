@@ -140,9 +140,13 @@ class BrailleController {
         return value + 1 | 0;
     }
     checkSelection() {
-        if (brailleController.currentPosition !== brailleController.textarea.selectionStart) {
-            brailleController.currentPosition = brailleController.textarea.selectionStart;
+        let cursorPosition = brailleController.textarea.selectionStart;
+        if (brailleController.currentPosition !== cursorPosition && cursorPosition < data.length) {
+            brailleController.currentPosition = cursorPosition;
             brailleController.onSelection();
+        }
+        else if (brailleController.currentPosition !== cursorPosition) {
+            brailleController.setCursorPosition(brailleController.currentPosition);
         }
     }
     updateFocus() {
@@ -158,6 +162,9 @@ class BrailleController {
         resetReadEntireGraph();
         inReadAllMode = false;
         if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
+            event.preventDefault();
+        }
+        if (event.key === 'ArrowRight' && brailleController.currentPosition === data.length - 1) {
             event.preventDefault();
         }
         if (event.key == ' ') {
@@ -269,8 +276,8 @@ class BrailleController {
 // These symbols map 1:1 to numbers.
 BrailleController.BRAILLE_SYMBOLS = '⠀⣀⠤⠒⠉';
 BrailleController.routingModeToMessages = {
-    0: 'You can use simulated routing keys to rout cursor from position 1 to 10',
-    1: 'You can use simulated routing keys to rout cursor from position 11 to 20',
-    2: 'You can use simulated routing keys to rout cursor from position 21 to 29'
+    0: 'You can use simulated routing keys to route cursor from position 1 to 10',
+    1: 'You can use simulated routing keys to route cursor from position 11 to 20',
+    2: 'You can use simulated routing keys to route cursor from position 21 to 29'
 };
 //# sourceMappingURL=braille_controller.js.map

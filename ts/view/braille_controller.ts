@@ -168,9 +168,12 @@ class BrailleController {
   }
 
   checkSelection() {
-    if (brailleController.currentPosition !== brailleController.textarea.selectionStart) {
-      brailleController.currentPosition = brailleController.textarea.selectionStart;
+    let cursorPosition = brailleController.textarea.selectionStart;
+    if (brailleController.currentPosition !== cursorPosition && cursorPosition < data.length) {
+      brailleController.currentPosition = cursorPosition;
       brailleController.onSelection();
+    } else if (brailleController.currentPosition !== cursorPosition) {
+      brailleController.setCursorPosition(brailleController.currentPosition);
     }
   }
 
@@ -189,6 +192,9 @@ class BrailleController {
     resetReadEntireGraph();
     inReadAllMode = false;
     if (event.key.includes('ArrowDown') || event.key.includes('ArrowUp') || event.key.includes('Backspace') || event.key.includes('Delete')) {
+      event.preventDefault();
+    }
+    if (event.key === 'ArrowRight' && brailleController.currentPosition === data.length - 1) {
       event.preventDefault();
     }
     if (event.key == ' ') {
