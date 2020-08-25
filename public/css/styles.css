@@ -191,7 +191,7 @@ select:focus,
 textarea:focus,
 span:focus,
 .layer:focus {
-  outline: 2px solid #646e8c;
+  outline: 4px solid #646e8c;
   outline-offset: 5px;
 }
 
