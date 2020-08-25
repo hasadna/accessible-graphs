@@ -15,6 +15,8 @@ const en = {
   description: 'The Accessible Graphs project aims to create accessible graphs for blind and visually impaired people.',
   getStarted: 'Get started',
   learnMore: 'Learn more',
+  learnMore1: 'Learn more',
+  learnMore1Sidebar: 'Learn more',
   aboutUs2: 'About us',
   aboutP1: 'In today’s world, where data is ubiquitous, we view data accessibility as a basic human right. The Accessible Graphs project aims to provide an interface to numerical data for any purpose, be it Scientific Research, Software Development, Education etc.',
   aboutP2: 'This data is typically visualized using graphs, charts, heatmaps etc. You could think of these visualizations as the visual interface to the data. We aim to provide a multi-sensory interface to the data. This interface uses sound and touch, in addition to the visual channel, as a means to convey the same underlying data.',

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="canonical" href="https://accessiblegraphs.org/" />
+  <title>Learn More - Accessible Graphs</title>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <!--========== web tags ==========-->
+  <meta name="description" content="Accessible Graphs" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--========== social media tags ==========-->
+
+  <meta property="og:title" content="Accessible Graphs" />
+  <meta property="og:description" content="Helping blind people see graphs using sound and touch" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://accessiblegraphs.org/" />
+  <meta property="og:image" content="https://accessiblegraphs.org/assets/images/social-image.png" />
+
+  <!--========== google fonts ==========-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+
+  <!--========== css files ==========-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/tutorial.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!---========== scripts ==========-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+  <script defer src="js/scripts.js"></script>
+  <script defer src="js/utils.js"></script>
+  <script defer src="languages/i18n.js"></script>
+  <script defer src="languages/he.js"></script>
+  <script defer src="languages/en.js"></script>
+
+</head>
+
+<body>
+  <!--========== navbar ==========-->
+  <nav class="wonder-nav">
+    <ul class="wonder-nav-ul" dir="ltr">
+
+      <!--===== desktop view =====-->
+      <li class="nav-logo d-none d-md-block">
+        <img class="top-bar-icon-desk" src="../assets/images/logo/s-logo-white.svg" alt="">
+      </li>
+
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="usage_tutorial_en.html" id="tutorial1">
+          Tutorial
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#about-anchor" id="aboutUs1">
+          About us
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#how-anchor" id="howWork">
+          How it works
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="../index.html#team-anchor" id="theTeam">
+          The team
+        </a>
+      </li>
+      <li class="wonder-nav-li d-none d-md-block">
+        <a class="nav-link" href="" id="learnMore1">
+          Learn more
+        </a>
+      </li>
+      <!--===== desktop view end =====-->
+      <!--===== mobile view =====-->
+
+      <li class="nav-logo d-md-none">
+        <a href="../index.html">
+          <img class="top-bar-icon" src="../assets/images/logo/s-logo-blue.svg" alt="Accessible Graphs">
+        </a>
+      </li>
+
+      <li class="wonder-nav-li d-md-none">
+        <button aria-label="Menu" class="hamburger hamburger--minus menu-icon" type="button" style="padding-right:25px"
+          aria-expanded="false">
+          <span class="hamburger-box" aria-hidden=”true”>
+            <span class="hamburger-inner" aria-hidden=”true”></span></span>
+        </button>
+      </li>
+      <!--===== mobile view end =====-->
+    </ul>
+
+  </nav>
+  <!--========== navbar end ==========-->
+  <!--========== side bar ==========-->
+  <div class="side-bar" style="display: none;">
+    <div class="container">
+      <div class="side-bar-row text-center">
+        <ul>
+          <li>
+            <a class="side-bar-link" href="usage_tutorial_en.html" id="tutorial1Sidebar">
+              Tutorial
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#about-anchor" id="aboutUs1Sidebar">
+              About us
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#how-anchor" id="howWorkSidebar">
+              How it works
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="../index.html#team-anchor" id="theTeamSidebar">
+              The team
+            </a>
+          </li>
+          <li>
+            <a class="side-bar-link" href="" id="learnMore1Sidebar">
+              Learn more
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--========== side bar end ==========-->
+
+  <!--========== header ==========-->
+  <main>
+    <div class="header-tut">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-12 text-center">
+            <h1 class="tut-title">Accessible Graphs for Visually Impaired and Blind Users </h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--========== header end ==========-->
+    <br>
+    <div id="contentDiv" class="tutorial-div">
+      <p>
+        We live in a visual world where data and content are presented using graphical interfaces. The data and content
+        are presented in a variety of ways and in many cases visual content can be made accessible so that blind people
+        can access the content using screen reader software and Braille displays. And despite the tremendous advances in
+        the accessibility of websites, mobile apps, computer software and digital documents, still one area remains
+        unanswered. Access to quantitative data shown in graphs and charts is not accessible to many people with visual
+        impairment and blindness.
+        Most graphs are presented as images that include the data in the graph. Although alternate text can be added to
+        graph images - in most cases, the details provided in the alternate text do not provide full detail of the
+        graph. It is also not easy to understand the various trends reflected in the graph such as average, minimum
+        value, maximum and other details that can be felt through vision.
+      </p>
+      <p>
+        The <a href="https://accessiblegraphs.org/"></a>Accessible Graphs Project</a> aims to remove this barrier by
+        developing a dedicated system designed for people
+        with visual impairment and blindness, that will also help people who have difficulties perceiving or
+        understanding visual data such as graphs and charts. The system can help the user by providing a simpler way to
+        view graphs, and at the same time, to provide accessibility for screen reader users.
+      </p>
+      <h2>Experiencing the accessible graph </h2>
+      <p>
+        The graph is made accessible by a simple user interface that uses speech, tones and touch:
+      </p>
+      <ul>
+        <li>Speech: Using Windows, Mac or Linux’s built-in Text To Speech voices or screen reader software such as NVDA
+          and JAWS</li>
+        <li>Tones: using spatial sound that reflects the numerical data values</li>
+        <li>Touch: using a Braille display</li>
+      </ul>
+      <h2>How the system works</h2>
+      <p>
+        An end user with a visual impairment or blindness can access a given accessible graphs and navigate it using
+        screen reader software and / or a Braille display. At any given moment, a user can get more information about
+        the graph such as minimum, maximum, average values and more. In addition, while navigating the graph, the system
+        produces a spatial sound that helps the user understand the trends of change in the graph – that is, an increase
+        or decrease in the numerical value.
+      </p>
+      <p>
+        For example, a blind user can access a collection of 14,000 different stocks from all over the world, as well as
+        currency exchanges, indexes and bitcoin prices, and review the trends of change and fluctuations in a graph.
+        Anyone can experience the accessible stock graphs in the <a
+          href="https://accessiblegraphs.org/stockMarket.html">accessible stock web page</a>. Just choose one of the
+        technology companies and browse the accessible stock graph page.
+      </p>
+      <h2>Navigating the graph with a braille display</h2>
+      <ul>
+        <li>The left side of the braille display (cells 1 to 29) displays an overview of the graph. This part is static.
+        </li>
+        <li>The 30th cell is a separator between the left and the right sides</li>
+        <li>The right side (cells 31 to 40) displays the data element under the cursor in the left side more accurately.
+          You can think of the right side as an area where the data element under the cursor is displayed under a
+          greater magnification level</li>
+      </ul>
+      <p>
+        When using a Braille display, the user can navigate the graph using the navigation keys on the Braille display
+        or keyboard shortcuts used by screen reader users. Each time the numeric value under the cursor changes,
+        depending on the numeric value, the tactile output will lengthen or shorten in a way that illustrates to the
+        user the relative height of the number relative to the other numbers in the value range of the graph. More
+        detailed explanation can be found on the <a
+          href="https://accessiblegraphs.org/english_guides/tutorial_braille_en.html?lang=en">Accessible Graphs website
+          on the Braille tutorial page</a>. Here we’ll just
+        leave you with a little taste of the interesting things a Braille display can draw:
+      <p>
+        ⠊⠉⠑⢄⣀⡠⠊⠉⠑⢄⣀⡠⠊
+      </p>
+      </p>
+      <h2>Our Vision</h2>
+      <p>
+        A system for making graph accessible can provide a solution to many accessibility barriers faced by people with
+        visual impairments and blindness as students, as employees and as people seeking to be exposed to information
+        displayed in graphs across the internet. One of the important benefits of a system for making graphs accessible,
+        is the ability to help a more successful integration of people with blindness in workplaces where there is a
+        need to collect and analyze graph information, such as financial, business, analysis, science and computer
+        algorithms related jobs.
+      </p>
+      <p>
+        This project is funded by the Israel Innovation Authority, and is run by The Public Knowledge Workshop (a
+        nonprofit organization). The funding for the project will end at the end of September 2020 and from there we
+        hope that everyone who wishes to continue using the system can do so on our website, or by using the open source
+        code.
+      </p>
+      <h2>Integrating accessible graphs on a website</h2>
+      <p>
+        Integration with Accessible Graphs is super easy.
+      </p>
+      <p>
+        All you need to do, is create a url with the data as part of the url.
+      </p>
+      <ul>
+        <li>The URL will direct users to <a href="http://accessiblegraphs.org/">accessiblegraphs.org</a> and open up an
+          accessible graph with the data you provided</li>
+        <li>
+          Here's an example of such a url:
+          <a
+            href="https://accessiblegraphs.org/view/index.html?data=Sunday%09Monday%09Tuesday%09Wednesday%09Thursday%09Friday%09Saturday%0A1500%091300%091700%092000%091000%091450%091900&description=Demo%20stock%20example&minValue=1000&maxValue=2000&instrumentType=synthesizer">
+            https://accessiblegraphs.org/view/index.html?data=Sunday%09Monday%09Tuesday%09Wednesday%09Thursday%09Friday%09Saturday%0A1500%091300%091700%092000%091000%091450%091900&description=Demo%20stock%20example&minValue=1000&maxValue=2000&instrumentType=synthesizer
+          </a>
+        </li>
+        <li>
+          Here's an example javascript code that creates the url: <a
+            href="https://github.com/hasadna/accessible-graphs/blob/master/public/demo.html">https://github.com/hasadna/accessible-graphs/blob/master/public/demo.html</a>
+        </li>
+        <li>
+          Here's the same code deployed:
+          <a href="https://accessiblegraphs.org/demo.html">https://accessiblegraphs.org/demo.html</a>
+          <p>
+            Note that to see it, you'd need to "View source".
+          </p>
+        </li>
+      </ul>
+      <h2>See also</h2>
+      <ul>
+        <li>Visit our website at <a href="https://accessiblegraphs.org">https://accessiblegraphs.org</a> </li>
+        <li>View over 14,000 accessible graphs of stocks, currencies, indexes and bitcoins:
+          <a href="https://accessiblegraphs.org/stockMarket.html">https://accessiblegraphs.org/stockMarket.html</a></li>
+        <li>Our Python library that gives accessible graphs for numerical data in python (lists, dicts etc):
+          <a href="https://pypi.org/project/accessible-graphs">https://pypi.org/project/accessible-graphs</a>
+        </li>
+        <li>
+          Creating your own accessible graph using Excel spreadsheet:
+          <a href="https://accessiblegraphs.org/builder/index.html">https://accessiblegraphs.org/builder/index.html</a>
+        </li>
+        <li>
+          Our project’s open-source code:
+          <a href="https://github.com/hasadna/accessible-graphs">https://github.com/hasadna/accessible-graphs</a>
+        </li>
+        <li>
+          If your website contains graphs, you can use an example code to implement the system on your website:
+          <a
+            href="https://github.com/hasadna/accessible-graphs/blob/master/public/demo.html">https://github.com/hasadna/accessible-graphs/blob/master/public/demo.html</a>
+          Here’s the same page, deployed:
+          <a href="https://accessiblegraphs.org/demo.html">https://accessiblegraphs.org/demo.html</a>
+        </li>
+      </ul>
+    </div>
+  </main>
+  <!--========== footer ==========-->
+  <footer>
+    <div class="container">
+
+      <!--========== social-icons ==========-->
+      <div class="row text-center row-social-icon">
+        <div class="col">
+          <a class="footer-social-link" target="_blank" Rel=”noopener”
+            href="https://github.com/hasadna/sensory-interface" title="github">
+            <img class="footer-social-img" src="../assets/images/social-icons/github.png" alt="github logo">
+          </a>
+        </div>
+      </div>
+      <!--========== social-icons end ==========-->
+
+      <div class="big-footer-text-heb-row">
+        <p class="big-footer-text">
+          <a href="https://www.accessiblegraphs.org" id="accessibleGraphsLink">The Accessible Graphs project</a>
+      </div>
+
+      <!--==========  project details end ==========-->
+
+    </div>
+
+  </footer>
+  <!--========== footer end ==========-->
+
+</body>
+
+</html>
