@@ -173,7 +173,12 @@ class BrailleController {
       brailleController.currentPosition = cursorPosition;
       brailleController.onSelection();
     } else if (brailleController.currentPosition !== cursorPosition) {
-      brailleController.setCursorPosition(brailleController.currentPosition);
+      if (!inReadAllMode) {
+        brailleController.setCursorPosition(brailleController.currentPosition);
+      } else{
+        brailleController.currentPosition = cursorPosition;
+        brailleController.onSelection();
+      }
     }
   }
 

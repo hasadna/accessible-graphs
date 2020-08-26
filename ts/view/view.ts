@@ -53,7 +53,8 @@ function processData() {
     graphDescriptionHeading.focus();
   }
   parseData(getUrlParam('data'));
-  createTtsCombo();
+  createTtsCombo(container);
+  addReadEntireGraphButton(container);
   addAudioConfigOptions(container);
   const graphSummary: HTMLParagraphElement = document.createElement('p');
   graphSummary.innerText = getGraphSummary();
@@ -63,12 +64,16 @@ function processData() {
   createGrid();
   addOnClickAndOnTouchSoundToGrid();
   addNavigationToGrid();
+  addLiveRegion(container);
+}
+
+
+function addReadEntireGraphButton(container) {
   let readEntireGraphButton = document.createElement('button');
   readEntireGraphButton.innerHTML = 'Read the entire graph';
   readEntireGraphButton.id = 'readEntireGraph';
   readEntireGraphButton.addEventListener('click', readEntireGraph);
   container.appendChild(readEntireGraphButton);
-  addLiveRegion();
 }
 
 
@@ -77,7 +82,7 @@ function readEntireGraph(event) {
   resetReadEntireGraph();
   inReadAllMode = true;
   document.getElementById('brailleControllerText').focus();
-  brailleController.setCursorPosition(data.length + 1);
+  brailleController.setCursorPosition(29);
   setIntervalX(moveCursor, 2000, data.length + 1);
 }
 
@@ -136,8 +141,7 @@ function createCheckBoxWithLabel(id, labelText, container) {
   container.appendChild(label);
 }
 
-function addLiveRegion() {
-  const container: HTMLElement = document.getElementById('container');
+function addLiveRegion(container) {
   const liveRegion: HTMLParagraphElement = document.createElement('p');
   liveRegion.id = 'liveRegion';
   liveRegion.setAttribute('aria-live', 'assertive');
@@ -147,16 +151,14 @@ function addLiveRegion() {
 }
 
 
-function createTtsCombo() {
+function createTtsCombo(container) {
   const ttsCombo: HTMLSelectElement = document.createElement('select');
   ttsCombo.setAttribute('id', 'ttsVoice');
   ttsCombo.addEventListener('change', onTtsComboChange);
-  document.getElementById('container').appendChild(ttsCombo);
+  container.appendChild(ttsCombo);
   // This function is found in builder script
   populateTtsList();
   updateTtsCombo();
-  let lineBreak: HTMLElement = document.createElement('br');
-  document.getElementById('container').appendChild(lineBreak);
 }
 
 

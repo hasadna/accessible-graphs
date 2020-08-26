@@ -48,7 +48,8 @@ function processData() {
         graphDescriptionHeading.focus();
     }
     parseData(getUrlParam('data'));
-    createTtsCombo();
+    createTtsCombo(container);
+    addReadEntireGraphButton(container);
     addAudioConfigOptions(container);
     const graphSummary = document.createElement('p');
     graphSummary.innerText = getGraphSummary();
@@ -58,19 +59,21 @@ function processData() {
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    addLiveRegion(container);
+}
+function addReadEntireGraphButton(container) {
     let readEntireGraphButton = document.createElement('button');
     readEntireGraphButton.innerHTML = 'Read the entire graph';
     readEntireGraphButton.id = 'readEntireGraph';
     readEntireGraphButton.addEventListener('click', readEntireGraph);
     container.appendChild(readEntireGraphButton);
-    addLiveRegion();
 }
 function readEntireGraph(event) {
     document.getElementById('liveRegion').setAttribute('style', '');
     resetReadEntireGraph();
     inReadAllMode = true;
     document.getElementById('brailleControllerText').focus();
-    brailleController.setCursorPosition(data.length + 1);
+    brailleController.setCursorPosition(29);
     setIntervalX(moveCursor, 2000, data.length + 1);
 }
 function setIntervalX(callback, delay, repetitions) {
@@ -118,8 +121,7 @@ function createCheckBoxWithLabel(id, labelText, container) {
     label.innerHTML = labelText;
     container.appendChild(label);
 }
-function addLiveRegion() {
-    const container = document.getElementById('container');
+function addLiveRegion(container) {
     const liveRegion = document.createElement('p');
     liveRegion.id = 'liveRegion';
     liveRegion.setAttribute('aria-live', 'assertive');
@@ -127,16 +129,14 @@ function addLiveRegion() {
     liveRegion.setAttribute('style', 'display: none;');
     container.appendChild(liveRegion);
 }
-function createTtsCombo() {
+function createTtsCombo(container) {
     const ttsCombo = document.createElement('select');
     ttsCombo.setAttribute('id', 'ttsVoice');
     ttsCombo.addEventListener('change', onTtsComboChange);
-    document.getElementById('container').appendChild(ttsCombo);
+    container.appendChild(ttsCombo);
     // This function is found in builder script
     populateTtsList();
     updateTtsCombo();
-    let lineBreak = document.createElement('br');
-    document.getElementById('container').appendChild(lineBreak);
 }
 function onTtsComboChange(event) {
     const ttsCombo = document.getElementById('ttsVoice');
