@@ -352,7 +352,14 @@ function getTextToReportOnSpace() {
     let minValue = Math.min(...data).toFixed(2);
     let maxValue = Math.max(...data).toFixed(2);
     let average = getAverage(data).toFixed(2);
-    let textToReport = `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
+    let textToReport = getUrlParam('spaceInfo');
+    if (textToReport !== '') {
+        textToReport = textToReport.replace('$MIN$', minValue);
+        textToReport = textToReport.replace('$MAX$', maxValue);
+        textToReport = textToReport.replace('$AVERAGE$', average);
+        return textToReport;
+    }
+    textToReport = `Position ${currentPosition} out of ${graphValuesNum}. Maximum value is ${maxValue}, minimum is ${minValue}, average is ${average}`;
     let xValue = data[focusedColIndex];
     let min = Math.min(...data);
     let max = Math.max(...data);
