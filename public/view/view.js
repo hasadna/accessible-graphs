@@ -418,7 +418,10 @@ function reportText(onSpace) {
 }
 function speakText(textToReport) {
     if (ttsName === 'noTts') {
-        document.getElementById('liveRegion').innerHTML = textToReport;
+        // Wait for 50 MS before updating the live region to have NVDA report the message on textarea focus event
+        setTimeout(() => {
+            document.getElementById('liveRegion').innerHTML = textToReport;
+        }, 50);
     }
     else {
         speakTextWithTts(textToReport);
