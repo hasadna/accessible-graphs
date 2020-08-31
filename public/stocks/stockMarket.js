@@ -56,15 +56,20 @@ getCryptoHistory = async (crypto) => {
 //get link from the data
 getLink = async (symbol, graphType) => {
   let historyData = null;
+  let graphTypeDescription = '';
   if (graphType === 'stocks') {
     historyData = await getStockData(symbol);
+    graphTypeDescription = 'stock';
   } else if (graphType === 'indexes') {
     historyData = await getIndexHistory(symbol);
+    graphTypeDescription = 'index';
   } else if (graphType === 'crypto') {
     historyData = await getCryptoHistory(symbol);
+    graphTypeDescription = 'crypto currency';
   }
   else {
     historyData = await getCurrencyHistory(symbol);
+    graphTypeDescription = 'currency conversion';
   }
   let maxValue = Math.max(...historyData.data);
   let minValue = Math.min(...historyData.data);
@@ -73,7 +78,7 @@ getLink = async (symbol, graphType) => {
   let data = `${dates}%0A${prices}`;
   let link = `view/index.html?
 data=${data}
-&description=${await symbolToName(symbol, graphType)}%20stock (${symbol})
+&description=${await symbolToName(symbol, graphType)}%20${graphTypeDescription} (${symbol})
 &minValue=${minValue}
 &maxValue=${maxValue}
 &instrumentType=synthesizer`;
