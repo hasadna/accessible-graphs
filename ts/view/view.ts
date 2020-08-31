@@ -24,7 +24,7 @@ function initializeViewScript() {
     window.speechSynthesis.onvoiceschanged = populateTtsList;
   }
   if (!checkEnvironment()) {
-    let messageText: string = 'This browser and OS combenation is not supported! Please use Firefox or Chromium based browsers on windows to get the best experience!';
+    let messageText: string = 'This browser and OS combination is not supported. Please use Firefox, Chrome or Edge (based on Chromium) on Windows to get the best experience.';
     document.getElementById('warningMessage').innerHTML = messageText;
     let localStorage = window.localStorage;
     let warnedUser: string = localStorage.getItem('warnedUser');
