@@ -83,7 +83,7 @@ function readEntireGraph(event) {
   inReadAllMode = true;
   document.getElementById('brailleControllerText').focus();
   brailleController.setCursorPosition(29);
-  setIntervalX(moveCursor, 2000, data.length + 1);
+  setIntervalX(moveCursor, 500, data.length + 1);
 }
 
 
@@ -331,7 +331,9 @@ function updateSelectedCell(cell: Element) {
   if (soundCheckBox.checked) {
     startSoundPlayback();
   }
-  reportText(false);
+  if (!inReadAllMode) {
+    reportText(false);
+  }
 }
 
 
@@ -355,6 +357,7 @@ function parseData(dataString: string) {
     data = parseWithoutHeaders(dataString);
   }
 }
+
 
 function getTextToReportOnArrows() {
   let xValue = data[focusedColIndex];

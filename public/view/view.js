@@ -74,7 +74,7 @@ function readEntireGraph(event) {
     inReadAllMode = true;
     document.getElementById('brailleControllerText').focus();
     brailleController.setCursorPosition(29);
-    setIntervalX(moveCursor, 2000, data.length + 1);
+    setIntervalX(moveCursor, 500, data.length + 1);
 }
 function setIntervalX(callback, delay, repetitions) {
     let x = 0;
@@ -287,7 +287,9 @@ function updateSelectedCell(cell) {
     if (soundCheckBox.checked) {
         startSoundPlayback();
     }
-    reportText(false);
+    if (!inReadAllMode) {
+        reportText(false);
+    }
 }
 function getUrlParam(variableName) {
     const url = new URL(window.location.href);
