@@ -23,7 +23,7 @@ function initializeViewScript() {
         window.speechSynthesis.onvoiceschanged = populateTtsList;
     }
     if (!checkEnvironment()) {
-        let messageText = 'This browser and OS combenation is not supported! Please use Firefox or Chromium based browsers on windows to get the best experience!';
+        let messageText = 'This browser and OS combination is not supported. Please use Firefox, Chrome or Edge (based on Chromium) on Windows to get the best experience.';
         document.getElementById('warningMessage').innerHTML = messageText;
         let localStorage = window.localStorage;
         let warnedUser = localStorage.getItem('warnedUser');
@@ -102,7 +102,7 @@ function readEntireGraph(event) {
     inReadAllMode = true;
     document.getElementById('brailleControllerText').focus();
     brailleController.setCursorPosition(29);
-    setIntervalX(moveCursor, 2000, data.length + 1);
+    setIntervalX(moveCursor, 500, data.length + 1);
 }
 function setIntervalX(callback, delay, repetitions) {
     let x = 0;
@@ -315,7 +315,9 @@ function updateSelectedCell(cell) {
     if (soundCheckBox.checked) {
         startSoundPlayback();
     }
-    reportText(false);
+    if (!inReadAllMode) {
+        reportText(false);
+    }
 }
 function getUrlParam(variableName) {
     const url = new URL(window.location.href);
