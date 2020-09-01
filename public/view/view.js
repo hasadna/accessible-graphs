@@ -22,6 +22,31 @@ function initializeViewScript() {
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = populateTtsList;
     }
+    if (!checkEnvironment()) {
+        let messageText = 'This browser and OS combination is not supported. Please use Firefox, Chrome or Edge (based on Chromium) on Windows to get the best experience.';
+        document.getElementById('warningMessage').innerHTML = messageText;
+        let localStorage = window.localStorage;
+        let warnedUser = localStorage.getItem('warnedUser');
+        if (warnedUser === 'true') {
+            return;
+        }
+        localStorage.setItem('warnedUser', 'true');
+        alert(messageText);
+        return;
+    }
+}
+function checkEnvironment() {
+    let userAgent = navigator.userAgent;
+    if (userAgent.indexOf('Chrome') === -1 && userAgent.indexOf('Firefox') === -1) {
+        return false;
+    }
+    if (userAgent.indexOf('Edge') !== -1) {
+        return false;
+    }
+    if (navigator.appVersion.indexOf("Win") === -1) {
+        return false;
+    }
+    return true;
 }
 function brailleControllerSelectionListener(event) {
     if (document.activeElement.id !== 'brailleControllerText') {
@@ -47,6 +72,9 @@ function processData() {
         container.appendChild(graphDescriptionHeading);
         graphDescriptionHeading.focus();
     }
+    const warnDiv = document.createElement('div');
+    warnDiv.id = 'warningMessage';
+    container.appendChild(warnDiv);
     parseData(getUrlParam('data'));
     createTtsCombo(container);
     addReadEntireGraphButton(container);
