@@ -45,6 +45,7 @@ function initializeBuilderScript() {
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
     window.speechSynthesis.onvoiceschanged = populateTtsList;
   }
+  notifyUser();
 }
 
 /**

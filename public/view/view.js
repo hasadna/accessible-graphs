@@ -22,10 +22,19 @@ function initializeViewScript() {
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = populateTtsList;
     }
+    notifyUser();
+}
+function notifyUser() {
+    let notificationText = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE as well!';
+    let localStorage = window.localStorage;
+    if (localStorage.getItem('notifiedUser') !== 'true') {
+        alert(notificationText);
+        localStorage.setItem('notifiedUser', 'true');
+    }
+    document.getElementById('notificationDiv').innerHTML = notificationText;
     if (!checkEnvironment()) {
         let messageText = 'This browser and OS combination is not supported. Please use Firefox, Chrome or Edge (based on Chromium) on Windows to get the best experience.';
         document.getElementById('warningMessage').innerHTML = messageText;
-        let localStorage = window.localStorage;
         let warnedUser = localStorage.getItem('warnedUser');
         if (warnedUser === 'true') {
             return;
@@ -87,6 +96,10 @@ function processData() {
     createGrid();
     addOnClickAndOnTouchSoundToGrid();
     addNavigationToGrid();
+    const notificationDiv = document.createElement('div');
+    notificationDiv.id = 'notificationDiv';
+    notificationDiv.setAttribute('tabindex', '0');
+    container.appendChild(notificationDiv);
     addLiveRegion(container);
 }
 function addReadEntireGraphButton(container) {
