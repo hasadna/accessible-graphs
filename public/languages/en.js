@@ -1,5 +1,6 @@
 const en = {
   language: 'Language',
+  languageSidebar: 'Language',
   direction: 'ltr',
   title: 'Accessible Graphs',
   tutorial: 'Tutorial',
