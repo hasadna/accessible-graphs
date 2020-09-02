@@ -25,7 +25,7 @@ function initializeViewScript() {
     notifyUser();
 }
 function notifyUser() {
-    let notificationText = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE as well!';
+    let notificationText = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE';
     let localStorage = window.localStorage;
     if (localStorage.getItem('notifiedUser') !== 'true') {
         alert(notificationText);
@@ -433,10 +433,10 @@ function reportText(onSpace) {
 }
 function speakText(textToReport) {
     if (ttsName === 'noTts') {
-        // Wait for 50 MS before updating the live region to have NVDA report the message on textarea focus event
+        // Wait for 100 MS before updating the live region to have NVDA report the message on textarea focus event
         setTimeout(() => {
             document.getElementById('liveRegion').innerHTML = textToReport;
-        }, 50);
+        }, 100);
     }
     else {
         speakTextWithTts(textToReport);
