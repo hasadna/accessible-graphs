@@ -28,7 +28,7 @@ function initializeViewScript() {
 
 
 function notifyUser() {
-  let notificationText: string = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE as well!';
+  let notificationText: string = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE';
   let localStorage = window.localStorage;
   if (localStorage.getItem('notifiedUser') !== 'true') {
     alert(notificationText);
