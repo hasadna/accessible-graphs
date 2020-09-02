@@ -1,5 +1,6 @@
 const he = {
   language: 'שפה',
+  languageSidebar: 'שפה',
   direction: 'rtl',
   title: 'Accessible Graphs',
   tutorial: 'הדרכה',
