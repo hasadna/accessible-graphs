@@ -115,7 +115,7 @@ function processData() {
 
 function addReadEntireGraphButton(container) {
   let readEntireGraphButton = document.createElement('button');
-  readEntireGraphButton.innerHTML = 'Read the entire graph';
+  readEntireGraphButton.innerHTML = 'Listen to the graph sound';
   readEntireGraphButton.id = 'readEntireGraph';
   readEntireGraphButton.addEventListener('click', readEntireGraph);
   container.appendChild(readEntireGraphButton);
@@ -491,10 +491,10 @@ function reportText(onSpace: boolean) {
 
 function speakText(textToReport) {
   if (ttsName === 'noTts') {
-    // Wait for 50 MS before updating the live region to have NVDA report the message on textarea focus event
+    // Wait for 100 MS before updating the live region to have NVDA report the message on textarea focus event
     setTimeout(() => {
       document.getElementById('liveRegion').innerHTML = textToReport;
-    }, 50);
+    }, 100);
   } else {
     speakTextWithTts(textToReport);
   }
