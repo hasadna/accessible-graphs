@@ -26,12 +26,18 @@ function initializeViewScript() {
 }
 function notifyUser() {
     let notificationText = 'The system works best with NVDA and Jaws screen readers, versions 2019 or later, with Firefox, Chrome and the new Chromium EDGE';
+    document.getElementById('notificationDiv').innerHTML = notificationText;
     let localStorage = window.localStorage;
     if (localStorage.getItem('notifiedUser') !== 'true') {
-        alert(notificationText);
+        // @ts-ignore
+        if (window.chrome) {
+            document.getElementById('notificationDiv').setAttribute('role', 'alert');
+        }
+        else {
+            alert(notificationText);
+        }
         localStorage.setItem('notifiedUser', 'true');
     }
-    document.getElementById('notificationDiv').innerHTML = notificationText;
     if (!checkEnvironment()) {
         let messageText = 'This browser and OS combination is not supported. Please use Firefox, Chrome or Edge (based on Chromium) on Windows to get the best experience.';
         document.getElementById('warningMessage').innerHTML = messageText;
@@ -40,7 +46,13 @@ function notifyUser() {
             return;
         }
         localStorage.setItem('warnedUser', 'true');
-        alert(messageText);
+        // @ts-ignore
+        if (window.chrome) {
+            document.getElementById('warningMessage').setAttribute('role', 'alert');
+        }
+        else {
+            alert(messageText);
+        }
         return;
     }
 }
@@ -104,7 +116,7 @@ function processData() {
 }
 function addReadEntireGraphButton(container) {
     let readEntireGraphButton = document.createElement('button');
-    readEntireGraphButton.innerHTML = 'Read the entire graph';
+    readEntireGraphButton.innerHTML = 'Listen to the graph sound';
     readEntireGraphButton.id = 'readEntireGraph';
     readEntireGraphButton.addEventListener('click', readEntireGraph);
     container.appendChild(readEntireGraphButton);
