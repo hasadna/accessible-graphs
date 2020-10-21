@@ -104,7 +104,7 @@ function processData() {
 }
 function addReadEntireGraphButton(container) {
     let readEntireGraphButton = document.createElement('button');
-    readEntireGraphButton.innerHTML = 'Read the entire graph';
+    readEntireGraphButton.innerHTML = 'Listen to the graph sound';
     readEntireGraphButton.id = 'readEntireGraph';
     readEntireGraphButton.addEventListener('click', readEntireGraph);
     container.appendChild(readEntireGraphButton);

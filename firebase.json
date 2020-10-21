@@ -16,11 +16,43 @@
         "destination": "/universal_tutorial_template.html"
       },
       {
+        "source": "/english_guides/learnMore-en.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/english_guides/guidelines-en.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
         "source": "/hebrew_guides/tutorial_braille_he.html",
         "destination": "/universal_tutorial_template.html"
       },
       {
         "source": "/hebrew_guides/usage_tutorial_he.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/hebrew_guides/guidelines-he.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/hebrew_guides/learnMore-he.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/arabic_guides/tutorial_braille_ar.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/arabic_guides/usage_tutorial_ar.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/arabic_guides/guidelines-ar.html",
+        "destination": "/universal_tutorial_template.html"
+      },
+      {
+        "source": "/arabic_guides/learnMore-ar.html",
         "destination": "/universal_tutorial_template.html"
       }
     ]
