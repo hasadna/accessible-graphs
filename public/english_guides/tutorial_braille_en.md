@@ -48,6 +48,7 @@ Then, according to the method we just described, we will get the following brail
 
 ⣀⠤⠒⠉⠒⠤⣀ 
 
+
 ---
 
 ## Stage 4 - Representing numbers 1 to 20
@@ -66,6 +67,7 @@ To present this data, we divide the range of 1 to 20 into 4 equal subranges. Eac
 So in braille, our numbers from 1 to 20 will look like this: 
 
 ⣀⣀⣀⣀⣀⠤⠤⠤⠤⠤⠒⠒⠒⠒⠒⠉⠉⠉⠉⠉ 
+
 
 ---
 

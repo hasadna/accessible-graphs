@@ -17,6 +17,7 @@ const en = {
   getStarted: 'Get started',
   learnMore: 'Learn more',
   learnMore1: 'Learn more',
+  learnMoreSidebar: 'Learn more',
   learnMore1Sidebar: 'Learn more',
   aboutUs2: 'About us',
   aboutP1: 'In today’s world, where data is ubiquitous, we view data accessibility as a basic human right. The Accessible Graphs project aims to provide an interface to numerical data for any purpose, be it Scientific Research, Software Development, Education etc.',

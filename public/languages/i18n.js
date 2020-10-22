@@ -89,8 +89,17 @@ const changeLanguage = (language) => {
 const handleLanguageSwitch = (language) => {
     document.getElementsByTagName('html')[0].lang = language;
     updateLinksAccessibility();
-    let tutorialLanguage = language == 'en' ? 'english' : 'hebrew';
-    let tutorialPath = `${tutorialLanguage}_guides/usage_tutorial_${language}.html`;
+    let guideLanguage = '';
+    if (language === 'en') {
+        guideLanguage = 'english';
+    }
+    else if (language === 'he') {
+        guideLanguage = 'hebrew';
+    }
+    else {
+        guideLanguage = 'arabic';
+    }
+    let tutorialPath = `${guideLanguage}_guides/usage_tutorial_${language}.html`;
     let tutorialLink = document.getElementById('tutorial');
     if (tutorialLink) {
         tutorialLink.setAttribute('href', tutorialPath);
@@ -110,6 +119,23 @@ const handleLanguageSwitch = (language) => {
     tutorialLink = document.getElementById('tutorial1Sidebar');
     if (tutorialLink) {
         tutorialLink.setAttribute('href', `usage_tutorial_${language}.html`);
+    }
+    let learnMorePath = `${guideLanguage}_guides/learnMore-${language}.html`;
+    let laernMoreLink = document.getElementById('learnMore');
+    if (laernMoreLink) {
+        laernMoreLink.setAttribute('href', learnMorePath);
+    }
+    laernMoreLink = document.getElementById('learnMore1Sidebar');
+    if (laernMoreLink) {
+        laernMoreLink.setAttribute('href', learnMorePath);
+    }
+    laernMoreLink = document.getElementById('learnMore1');
+    if (laernMoreLink) {
+        laernMoreLink.setAttribute('href', learnMorePath);
+    }
+    laernMoreLink = document.getElementById('learnMoreSidebar');
+    if (laernMoreLink) {
+        laernMoreLink.setAttribute('href', learnMorePath);
     }
 };
 //# sourceMappingURL=i18n.js.map
